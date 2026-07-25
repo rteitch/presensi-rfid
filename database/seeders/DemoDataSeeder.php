@@ -11,6 +11,7 @@ use App\Models\SchoolSetting;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -34,156 +35,119 @@ class DemoDataSeeder extends Seeder
             'toleransi_menit' => 15,
         ]);
 
-        // Admin User
+        // Users
         $admin = User::firstOrCreate(
             ['email' => 'admin@sekolah.test'],
-            [
-                'name' => 'Admin Sekolah',
-                'password' => bcrypt('password'),
-            ]
+            ['name' => 'Admin Sekolah', 'password' => bcrypt('password')]
         );
         $admin->assignRole('admin');
 
-        // Teacher Users
         $guruSari = User::firstOrCreate(
             ['email' => 'guru@sekolah.test'],
-            [
-                'name' => 'Bu Sari',
-                'password' => bcrypt('password'),
-            ]
+            ['name' => 'Bu Sari', 'password' => bcrypt('password')]
         );
         $guruSari->assignRole('guru');
 
         $guruBudi = User::firstOrCreate(
             ['email' => 'pakbudi@sekolah.test'],
-            [
-                'name' => 'Pak Budi',
-                'password' => bcrypt('password'),
-            ]
+            ['name' => 'Pak Budi', 'password' => bcrypt('password')]
         );
         $guruBudi->assignRole('guru');
 
-        // Kepala Sekolah User
         $kepsek = User::firstOrCreate(
             ['email' => 'kepsek@sekolah.test'],
-            [
-                'name' => 'Dr. H. Mulyadi, M.Pd (Kepala Sekolah)',
-                'password' => bcrypt('password'),
-            ]
+            ['name' => 'Dr. H. Mulyadi, M.Pd (Kepala Sekolah)', 'password' => bcrypt('password')]
         );
         $kepsek->assignRole('kepala_sekolah');
 
-        // Classes
-        $kelasA = SchoolClass::firstOrCreate([
-            'nama_kelas' => 'VII-A',
-            'academic_year_id' => $year->id,
-        ], [
-            'wali_kelas_id' => $guruSari->id,
+        // Teachers
+        Teacher::firstOrCreate(['nip' => '198501012010011001'], [
+            'nama' => 'Bu Sari', 'email' => 'guru@sekolah.test', 'user_id' => $guruSari->id,
+            'no_hp' => '081234567892', 'mata_pelajaran' => 'Matematika', 'status' => 'aktif',
+        ]);
+        Teacher::firstOrCreate(['nip' => '198501012010011002'], [
+            'nama' => 'Pak Budi', 'email' => 'pakbudi@sekolah.test', 'user_id' => $guruBudi->id,
+            'no_hp' => '081234567893', 'mata_pelajaran' => 'Bahasa Indonesia', 'status' => 'aktif',
         ]);
 
-        $kelasB = SchoolClass::firstOrCreate([
-            'nama_kelas' => 'VII-B',
-            'academic_year_id' => $year->id,
-        ], [
-            'wali_kelas_id' => $guruBudi->id,
+        // Devices
+        Device::firstOrCreate(['nama_device' => 'Kiosk Gerbang Utama'], [
+            'lokasi' => 'Gerbang Depan', 'token_device' => Str::random(40), 'is_active' => true,
         ]);
 
-        // Students
-        $student1 = Student::firstOrCreate([
-            'nis' => '2025001',
-        ], [
-            'nama' => 'Ahmad Fauzan',
-            'rfid_uid' => '04A1B2C3',
-            'class_id' => $kelasA->id,
-            'nama_ortu' => 'Bapak Fauzan',
-            'no_hp_ortu' => '081234567890',
-            'status' => 'aktif',
-        ]);
+        // 10 Distinct Classes
+        $classNames = [
+            'X IPA 1', 'X IPA 2', 'XI IPA 1', 'XI IPS 2', 'XII IPA 1',
+            'XII IPS 1', 'VII-A', 'VIII-B', 'IX-A', 'IX-C'
+        ];
 
-        $student2 = Student::firstOrCreate([
-            'nis' => '2025002',
-        ], [
-            'nama' => 'Siti Nurhaliza',
-            'rfid_uid' => '04B2C3D4',
-            'class_id' => $kelasA->id,
-            'nama_ortu' => 'Bapak Nurhaliza',
-            'no_hp_ortu' => '081234567891',
-            'status' => 'aktif',
-        ]);
+        $classes = [];
+        foreach ($classNames as $index => $cName) {
+            $classes[] = SchoolClass::firstOrCreate(
+                ['nama_kelas' => $cName, 'academic_year_id' => $year->id],
+                ['wali_kelas_id' => ($index % 2 === 0) ? $guruSari->id : $guruBudi->id]
+            );
+        }
 
-        $student3 = Student::firstOrCreate([
-            'nis' => '2025003',
-        ], [
-            'nama' => 'Rizky Pratama',
-            'rfid_uid' => '04C3D4E5',
-            'class_id' => $kelasB->id,
-            'nama_ortu' => 'Bapak Pratama',
-            'no_hp_ortu' => '081234567894',
-            'status' => 'aktif',
-        ]);
+        // 10 Students in Different Classes
+        $studentDefs = [
+            ['nis' => '2025001', 'nama' => 'Ahmad Fauzan',     'rfid' => '04A1B2C3', 'late_count' => 12, 'class_idx' => 0],
+            ['nis' => '2025002', 'nama' => 'Siti Nurhaliza',   'rfid' => '04B2C3D4', 'late_count' => 10, 'class_idx' => 1],
+            ['nis' => '2025003', 'nama' => 'Rizky Pratama',    'rfid' => '04C3D4E5', 'late_count' => 8,  'class_idx' => 2],
+            ['nis' => '2025004', 'nama' => 'Dewi Lestari',     'rfid' => '04D4E5F6', 'late_count' => 7,  'class_idx' => 3],
+            ['nis' => '2025005', 'nama' => 'Budi Santoso',     'rfid' => '04E5F6A7', 'late_count' => 6,  'class_idx' => 4],
+            ['nis' => '2025006', 'nama' => 'Anisa Rahmawati',  'rfid' => '04F6A7B8', 'late_count' => 5,  'class_idx' => 5],
+            ['nis' => '2025007', 'nama' => 'Muhammad Ridwan',  'rfid' => '04A7B8C9', 'late_count' => 4,  'class_idx' => 6],
+            ['nis' => '2025008', 'nama' => 'Dian Sastrowardoyo','rfid' => '04B8C9D0', 'late_count' => 3,  'class_idx' => 7],
+            ['nis' => '2025009', 'nama' => 'Eko Prasetyo',     'rfid' => '04C9D0E1', 'late_count' => 2,  'class_idx' => 8],
+            ['nis' => '2025010', 'nama' => 'Fitriani Putri',   'rfid' => '04D0E1F2', 'late_count' => 1,  'class_idx' => 9],
+        ];
 
-        // Teachers (Synced with Users)
-        Teacher::firstOrCreate([
-            'nip' => '198501012010011001',
-        ], [
-            'nama' => 'Bu Sari',
-            'email' => 'guru@sekolah.test',
-            'user_id' => $guruSari->id,
-            'no_hp' => '081234567892',
-            'mata_pelajaran' => 'Matematika',
-            'status' => 'aktif',
-        ]);
+        $currentMonth = now()->format('Y-m');
 
-        Teacher::firstOrCreate([
-            'nip' => '198501012010011002',
-        ], [
-            'nama' => 'Pak Budi',
-            'email' => 'pakbudi@sekolah.test',
-            'user_id' => $guruBudi->id,
-            'no_hp' => '081234567893',
-            'mata_pelajaran' => 'Bahasa Indonesia',
-            'status' => 'aktif',
-        ]);
+        foreach ($studentDefs as $sDef) {
+            $student = Student::firstOrCreate(
+                ['nis' => $sDef['nis']],
+                [
+                    'nama' => $sDef['nama'],
+                    'rfid_uid' => $sDef['rfid'],
+                    'class_id' => $classes[$sDef['class_idx']]->id,
+                    'nama_ortu' => 'Ortu ' . $sDef['nama'],
+                    'no_hp_ortu' => '0812' . rand(10000000, 99999999),
+                    'status' => 'aktif',
+                ]
+            );
 
-        Device::firstOrCreate([
-            'nama_device' => 'Kiosk Gerbang Utama',
-        ], [
-            'lokasi' => 'Gerbang Depan',
-            'token_device' => Str::random(40),
-            'is_active' => true,
-        ]);
+            // Generate attendance records for the current month
+            // Seed "terlambat" records
+            for ($day = 1; $day <= $sDef['late_count']; $day++) {
+                $dateStr = sprintf('%s-%02d', $currentMonth, $day);
+                Attendance::updateOrCreate(
+                    ['student_id' => $student->id, 'tanggal' => $dateStr],
+                    [
+                        'jam_masuk' => sprintf('07:%02d:00', rand(16, 45)),
+                        'jam_pulang' => '15:00:00',
+                        'status' => 'terlambat',
+                        'keterangan' => 'Terlambat ' . rand(16, 45) . ' menit',
+                    ]
+                );
+            }
 
-        // Sample Attendance Data for Today
-        $today = now()->toDateString();
-        Attendance::firstOrCreate([
-            'student_id' => $student1->id,
-            'tanggal' => $today,
-        ], [
-            'jam_masuk' => '07:22:00',
-            'jam_pulang' => '15:05:00',
-            'status' => 'terlambat',
-            'keterangan' => 'Terlambat 22 menit',
-        ]);
-
-        Attendance::firstOrCreate([
-            'student_id' => $student2->id,
-            'tanggal' => $today,
-        ], [
-            'jam_masuk' => '06:55:00',
-            'jam_pulang' => '15:00:00',
-            'status' => 'hadir',
-            'keterangan' => 'Tepat waktu',
-        ]);
-
-        Attendance::firstOrCreate([
-            'student_id' => $student3->id,
-            'tanggal' => $today,
-        ], [
-            'jam_masuk' => '06:50:00',
-            'jam_pulang' => null,
-            'status' => 'hadir',
-            'keterangan' => 'Tepat waktu',
-        ]);
+            // Seed 3 "hadir" records for each student on subsequent days
+            for ($day = $sDef['late_count'] + 1; $day <= $sDef['late_count'] + 3; $day++) {
+                if ($day > 25) break;
+                $dateStr = sprintf('%s-%02d', $currentMonth, $day);
+                Attendance::updateOrCreate(
+                    ['student_id' => $student->id, 'tanggal' => $dateStr],
+                    [
+                        'jam_masuk' => sprintf('06:%02d:00', rand(40, 58)),
+                        'jam_pulang' => '15:00:00',
+                        'status' => 'hadir',
+                        'keterangan' => 'Tepat waktu',
+                    ]
+                );
+            }
+        }
 
         // Seed default school settings
         foreach (SchoolSetting::defaults() as $key => $value) {
