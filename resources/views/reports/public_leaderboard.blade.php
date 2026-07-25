@@ -102,188 +102,115 @@
         /* ── Main Area ── */
         main {
             flex: 1; display: flex; flex-direction: column;
-            gap: 0.75rem; padding: 0.75rem 1.75rem 0.9rem;
+            gap: 0.75rem; padding: 0.75rem 1.75rem 1rem;
             min-height: 0; overflow: hidden;
         }
 
-        /* ── ROW 1: PODIUM TOP 3 (Large Portrait Cards) ── */
-        .podium-row {
-            display: flex; align-items: flex-end; justify-content: center; gap: 1.1rem;
-            flex: 1.5; min-height: 0;
+        /* ── 5x2 GRID LAYOUT (Left to Right: #1 to #10) ── */
+        .cards-grid-5x2 {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 0.85rem;
+            flex: 1; min-height: 0;
         }
 
-        .podium-card {
+        .student-card {
             background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(16px);
-            border-radius: 1.25rem;
-            padding: 0.85rem;
+            border-radius: 1rem;
+            padding: 0.55rem;
             display: flex; flex-direction: column; justify-content: space-between;
             position: relative; overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+            border: 1.5px solid rgba(255,255,255,0.1);
         }
-        .podium-card:hover { transform: translateY(-4px); }
+        .student-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
 
-        /* Rank #1 Gold (Center, Taller) */
-        .podium-card.gold {
-            width: 330px; height: 100%;
+        /* Top 3 Special Card Highlight Styling */
+        .student-card.rank-1 {
             border: 2.5px solid #f59e0b;
-            box-shadow: 0 0 40px rgba(245,158,11,0.3), 0 16px 40px rgba(0,0,0,0.6);
+            box-shadow: 0 0 30px rgba(245,158,11,0.25), 0 12px 32px rgba(0,0,0,0.5);
             background: linear-gradient(180deg, rgba(245,158,11,0.15) 0%, rgba(15,23,42,0.95) 100%);
         }
-
-        /* Rank #2 Silver (Left) */
-        .podium-card.silver {
-            width: 290px; height: 92%;
+        .student-card.rank-2 {
             border: 2px solid #94a3b8;
-            box-shadow: 0 0 30px rgba(148,163,184,0.18), 0 12px 32px rgba(0,0,0,0.5);
+            box-shadow: 0 0 25px rgba(148,163,184,0.18), 0 12px 28px rgba(0,0,0,0.4);
             background: linear-gradient(180deg, rgba(148,163,184,0.12) 0%, rgba(15,23,42,0.95) 100%);
         }
-
-        /* Rank #3 Bronze (Right) */
-        .podium-card.bronze {
-            width: 290px; height: 88%;
+        .student-card.rank-3 {
             border: 2px solid #b45309;
-            box-shadow: 0 0 30px rgba(180,83,9,0.18), 0 12px 32px rgba(0,0,0,0.5);
+            box-shadow: 0 0 25px rgba(180,83,9,0.18), 0 12px 28px rgba(0,0,0,0.4);
             background: linear-gradient(180deg, rgba(180,83,9,0.12) 0%, rgba(15,23,42,0.95) 100%);
         }
 
-        /* Top Tag Banner */
-        .card-banner {
+        /* Top Header inside Card (Rank Badge + Terlambat Count) */
+        .card-top-bar {
             display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 0.5rem;
-        }
-        .banner-chip {
-            display: inline-flex; align-items: center; gap: 0.4rem;
-            padding: 0.35rem 0.85rem; border-radius: 9999px;
-            font-size: 0.85rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em;
-        }
-        .gold .banner-chip   { background: #f59e0b; color: #1c0a00; box-shadow: 0 2px 10px rgba(245,158,11,0.4); }
-        .silver .banner-chip { background: #94a3b8; color: #0f172a; box-shadow: 0 2px 10px rgba(148,163,184,0.3); }
-        .bronze .banner-chip { background: #b45309; color: #ffffff; box-shadow: 0 2px 10px rgba(180,83,9,0.3); }
-
-        .late-badge {
-            display: inline-flex; align-items: center; gap: 0.35rem;
-            padding: 0.35rem 0.85rem; border-radius: 0.6rem;
-            background: rgba(2,6,23,0.85); border: 1.5px solid rgba(245,158,11,0.4);
-            font-size: 1.05rem; font-weight: 900; color: #f59e0b;
-        }
-        .late-badge span { font-size: 0.6rem; color: #cbd5e1; font-weight: 800; text-transform: uppercase; }
-
-        /* Large HD Photo Frame (High Precision Cropped) */
-        .photo-frame {
-            width: 100%; flex: 1; min-height: 110px;
-            border-radius: 0.85rem; overflow: hidden;
-            border: 2px solid rgba(255,255,255,0.2);
-            position: relative; background: #0f172a;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-        }
-        .photo-frame img {
-            width: 100%; height: 100%;
-            object-fit: cover; object-position: center 20%;
-            display: block;
+            margin-bottom: 0.4rem; z-index: 2;
         }
 
-        /* Bottom Info Box - High Contrast & Prominent Typography */
-        .card-details {
-            margin-top: 0.55rem; text-align: center;
-            background: rgba(2, 6, 23, 0.85);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 0.75rem;
-            padding: 0.5rem;
+        .rank-pill {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            padding: 0.25rem 0.65rem; border-radius: 9999px;
+            font-size: 0.75rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.06em;
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1;
         }
-        .card-name {
-            font-size: 1.15rem; font-weight: 900; color: #ffffff;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-            letter-spacing: -0.01em; line-height: 1.25;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-        }
-        .gold .card-name { font-size: 1.35rem; color: #ffffff; }
+        .rank-1 .rank-pill { background: #f59e0b; color: #1c0a00; border: none; box-shadow: 0 2px 10px rgba(245,158,11,0.4); }
+        .rank-2 .rank-pill { background: #94a3b8; color: #0f172a; border: none; box-shadow: 0 2px 10px rgba(148,163,184,0.3); }
+        .rank-3 .rank-pill { background: #b45309; color: #ffffff; border: none; box-shadow: 0 2px 10px rgba(180,83,9,0.3); }
 
-        .card-class {
-            display: inline-block; margin-top: 0.3rem;
-            font-size: 0.75rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em;
-            padding: 0.22rem 0.75rem; border-radius: 0.45rem;
+        .late-count-badge {
+            font-size: 0.9rem; font-weight: 900; color: #f59e0b;
+            background: rgba(2,6,23,0.8); padding: 0.2rem 0.55rem; border-radius: 0.45rem;
+            border: 1px solid rgba(245,158,11,0.3);
         }
-        .gold   .card-class { background: rgba(245,158,11,0.25); color: #fde68a; border: 1px solid rgba(245,158,11,0.4); }
-        .silver .card-class { background: rgba(148,163,184,0.25); color: #f1f5f9; border: 1px solid rgba(148,163,184,0.35); }
-        .bronze .card-class { background: rgba(180,83,9,0.25); color: #fed7aa; border: 1px solid rgba(180,83,9,0.35); }
+        .late-count-badge span { font-size: 0.55rem; color: #94a3b8; font-weight: 800; text-transform: uppercase; }
 
-        /* ── ROW 2: RANK 4–10 FULL PORTRAIT POSTER CARDS (7 COLUMNS) ── */
-        .rank-grid-portraits {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 0.65rem;
-            flex: 1.1; min-height: 0;
-        }
-
-        .poster-card {
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1.5px solid rgba(255,255,255,0.12);
-            border-radius: 0.95rem;
-            padding: 0.45rem;
-            display: flex; flex-direction: column; justify-content: space-between;
-            position: relative; overflow: hidden;
-            transition: transform 0.25s ease, border-color 0.25s ease;
-        }
-        .poster-card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(245,158,11,0.6);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-        }
-
-        /* Top Header inside Poster Card (Rank + Late Count) */
-        .poster-top {
-            display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 0.35rem; z-index: 2;
-        }
-        .poster-rank-chip {
-            padding: 0.15rem 0.5rem; border-radius: 0.45rem;
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.3) 0%, rgba(180, 83, 9, 0.2) 100%);
-            border: 1.5px solid rgba(245, 158, 11, 0.4);
-            font-size: 0.72rem; font-weight: 900; color: #fde68a;
-        }
-        .poster-late-badge {
-            font-size: 0.82rem; font-weight: 900; color: #f59e0b;
-            background: rgba(2,6,23,0.7); padding: 0.1rem 0.4rem; border-radius: 0.4rem;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        /* Full Portrait Photo Box (Fills Middle Portion) */
-        .poster-photo-box {
-            width: 100%; flex: 1; min-height: 80px;
-            border-radius: 0.65rem; overflow: hidden;
+        /* Large Full Portrait Photo Box */
+        .photo-box {
+            width: 100%; flex: 1; min-height: 100px;
+            border-radius: 0.75rem; overflow: hidden;
             border: 1.5px solid rgba(255,255,255,0.15);
             background: #0f172a; position: relative;
             box-shadow: inset 0 0 15px rgba(0,0,0,0.4);
         }
-        .poster-photo-box img {
+        .rank-1 .photo-box { border-color: rgba(245,158,11,0.5); }
+        .photo-box img {
             width: 100%; height: 100%;
             object-fit: cover; object-position: center 20%;
             display: block;
         }
 
-        /* Bottom Info Box for Name & Class */
-        .poster-details {
-            margin-top: 0.4rem; text-align: center;
+        /* Bottom Info Box (Student Name & Class) */
+        .info-box {
+            margin-top: 0.45rem; text-align: center;
             background: rgba(2, 6, 23, 0.85);
             border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 0.55rem;
-            padding: 0.35rem 0.25rem;
+            border-radius: 0.6rem;
+            padding: 0.4rem 0.3rem;
         }
-        .poster-name {
-            font-size: 0.78rem; font-weight: 900; color: #ffffff;
+        .student-name {
+            font-size: 0.92rem; font-weight: 900; color: #ffffff;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
             line-height: 1.25; letter-spacing: -0.01em;
             text-shadow: 0 1px 3px rgba(0,0,0,0.8);
         }
-        .poster-class {
-            display: inline-block; margin-top: 0.15rem;
-            font-size: 0.6rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.06em;
+        .rank-1 .student-name { font-size: 1rem; }
+
+        .student-class {
+            display: inline-block; margin-top: 0.2rem;
+            font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.06em;
+            padding: 0.15rem 0.55rem; border-radius: 0.35rem;
             color: #38bdf8; background: rgba(56, 189, 248, 0.15);
             border: 1px solid rgba(56, 189, 248, 0.3);
-            padding: 0.1rem 0.45rem; border-radius: 0.35rem;
         }
+        .rank-1 .student-class { background: rgba(245,158,11,0.25); color: #fde68a; border: 1px solid rgba(245,158,11,0.4); }
+        .rank-2 .student-class { background: rgba(148,163,184,0.25); color: #f1f5f9; border: 1px solid rgba(148,163,184,0.35); }
+        .rank-3 .student-class { background: rgba(180,83,9,0.25); color: #fed7aa; border: 1px solid rgba(180,83,9,0.35); }
 
         /* Footer */
         footer {
@@ -364,85 +291,37 @@
         </div>
     </div>
 
-    {{-- ── MAIN AREA ── --}}
+    {{-- ── MAIN AREA: 5x2 SEQUENTIAL GRID (#1 to #10 Left to Right) ── --}}
     <main>
         @if($students->isNotEmpty())
 
-        {{-- ══ ROW 1: PODIUM TOP 3 (Large Full Portrait Cards) ══ --}}
-        <div class="podium-row">
+        <div class="cards-grid-5x2">
+            @foreach($students as $index => $s)
+            @php
+                $rankNum = $index + 1;
+                $rankClass = $rankNum === 1 ? 'rank-1' : ($rankNum === 2 ? 'rank-2' : ($rankNum === 3 ? 'rank-3' : ''));
+                $rankLabel = $rankNum === 1 ? '👑 #1' : ($rankNum === 2 ? '🥈 #2' : ($rankNum === 3 ? '🥉 #3' : '#'.$rankNum));
+            @endphp
+            <div class="student-card {{ $rankClass }}">
+                {{-- Card Top Bar --}}
+                <div class="card-top-bar">
+                    <span class="rank-pill">{{ $rankLabel }}</span>
+                    <div class="late-count-badge">{{ $s->total_terlambat }} <span>Telat</span></div>
+                </div>
 
-            {{-- Rank #2 (Silver - Left) --}}
-            @if($students->count() >= 2)
-            <div class="podium-card silver">
-                <div class="card-banner">
-                    <span class="banner-chip">🥈 Rank #2</span>
-                    <div class="late-badge">{{ $students[1]->total_terlambat }} <span>Telat</span></div>
-                </div>
-                <div class="photo-frame">
-                    <img src="{{ $students[1]->foto_url }}" alt="{{ $students[1]->nama }}">
-                </div>
-                <div class="card-details">
-                    <div class="card-name" title="{{ $students[1]->nama }}">{{ $students[1]->nama }}</div>
-                    <span class="card-class">{{ $students[1]->schoolClass->nama_kelas ?? '—' }}</span>
-                </div>
-            </div>
-            @endif
-
-            {{-- Rank #1 (Gold - Center, Taller) --}}
-            <div class="podium-card gold">
-                <div class="card-banner">
-                    <span class="banner-chip">👑 Rank #1</span>
-                    <div class="late-badge">{{ $students[0]->total_terlambat }} <span>Telat</span></div>
-                </div>
-                <div class="photo-frame">
-                    <img src="{{ $students[0]->foto_url }}" alt="{{ $students[0]->nama }}">
-                </div>
-                <div class="card-details">
-                    <div class="card-name" title="{{ $students[0]->nama }}">{{ $students[0]->nama }}</div>
-                    <span class="card-class">{{ $students[0]->schoolClass->nama_kelas ?? '—' }}</span>
-                </div>
-            </div>
-
-            {{-- Rank #3 (Bronze - Right) --}}
-            @if($students->count() >= 3)
-            <div class="podium-card bronze">
-                <div class="card-banner">
-                    <span class="banner-chip">🥉 Rank #3</span>
-                    <div class="late-badge">{{ $students[2]->total_terlambat }} <span>Telat</span></div>
-                </div>
-                <div class="photo-frame">
-                    <img src="{{ $students[2]->foto_url }}" alt="{{ $students[2]->nama }}">
-                </div>
-                <div class="card-details">
-                    <div class="card-name" title="{{ $students[2]->nama }}">{{ $students[2]->nama }}</div>
-                    <span class="card-class">{{ $students[2]->schoolClass->nama_kelas ?? '—' }}</span>
-                </div>
-            </div>
-            @endif
-
-        </div>
-
-        {{-- ══ ROW 2: RANK 4–10 FULL PORTRAIT POSTER CARDS (7 COLUMNS) ══ --}}
-        @if($students->count() > 3)
-        <div class="rank-grid-portraits">
-            @foreach($students->slice(3) as $index => $s)
-            @php $rankNum = $index + 4; @endphp
-            <div class="poster-card">
-                <div class="poster-top">
-                    <span class="poster-rank-chip">#{{ $rankNum }}</span>
-                    <span class="poster-late-badge">{{ $s->total_terlambat }}×</span>
-                </div>
-                <div class="poster-photo-box">
+                {{-- Full Portrait Photo --}}
+                <div class="photo-box">
                     <img src="{{ $s->foto_url }}" alt="{{ $s->nama }}">
                 </div>
-                <div class="poster-details">
-                    <div class="poster-name" title="{{ $s->nama }}">{{ $s->nama }}</div>
-                    <span class="poster-class">{{ $s->schoolClass->nama_kelas ?? '—' }}</span>
+
+                {{-- Bottom Info Box --}}
+                <div class="info-box">
+                    <div class="student-name" title="{{ $s->nama }}">{{ $s->nama }}</div>
+                    <span class="student-class">{{ $s->schoolClass->nama_kelas ?? '—' }}</span>
                 </div>
             </div>
             @endforeach
         </div>
-        @endif
 
         @else
         {{-- Empty state --}}
