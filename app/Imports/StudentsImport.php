@@ -29,12 +29,14 @@ class StudentsImport implements ToCollection, WithHeadingRow, WithValidation
             $student = Student::updateOrCreate(
                 ['nis' => $row['nis']],
                 [
-                    'nama' => $row['nama'],
-                    'rfid_uid' => $row['rfid_uid'] ?? null,
-                    'class_id' => $classId,
-                    'nama_ortu' => $row['nama_ortu'] ?? null,
-                    'no_hp_ortu' => $row['no_hp_ortu'] ?? null,
-                    'status' => $row['status'] ?? 'aktif',
+                    'nama'          => $row['nama'],
+                    'jenis_kelamin' => isset($row['jenis_kelamin']) && in_array(strtoupper($row['jenis_kelamin']), ['L','P']) ? strtoupper($row['jenis_kelamin']) : null,
+                    'agama'         => $row['agama'] ?? null,
+                    'rfid_uid'      => $row['rfid_uid'] ?? null,
+                    'class_id'      => $classId,
+                    'nama_ortu'     => $row['nama_ortu'] ?? null,
+                    'no_hp_ortu'    => $row['no_hp_ortu'] ?? null,
+                    'status'        => $row['status'] ?? 'aktif',
                 ]
             );
 
@@ -45,13 +47,15 @@ class StudentsImport implements ToCollection, WithHeadingRow, WithValidation
     public function rules(): array
     {
         return [
-            'nis' => 'required|string',
-            'nama' => 'required|string|max:255',
-            'rfid_uid' => 'nullable|string',
-            'kelas' => 'required|string',
-            'nama_ortu' => 'nullable|string|max:255',
-            'no_hp_ortu' => 'nullable|string|max:255',
-            'status' => 'nullable|in:aktif,nonaktif',
+            'nis'           => 'required|string',
+            'nama'          => 'required|string|max:255',
+            'jenis_kelamin' => 'nullable|string',
+            'agama'         => 'nullable|string|max:50',
+            'rfid_uid'      => 'nullable|string',
+            'kelas'         => 'required|string',
+            'nama_ortu'     => 'nullable|string|max:255',
+            'no_hp_ortu'    => 'nullable|string|max:255',
+            'status'        => 'nullable|in:aktif,nonaktif',
         ];
     }
 

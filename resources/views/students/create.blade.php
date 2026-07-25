@@ -34,6 +34,34 @@
                             @error('nama') <span class="text-rose-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                         </div>
 
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="form-label">Jenis Kelamin</label>
+                                <div class="flex items-center gap-4 mt-2">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="jenis_kelamin" value="L" {{ old('jenis_kelamin') == 'L' ? 'checked' : '' }} class="text-indigo-600 focus:ring-indigo-500">
+                                        <span class="text-sm font-semibold text-slate-700">Laki-laki</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="jenis_kelamin" value="P" {{ old('jenis_kelamin') == 'P' ? 'checked' : '' }} class="text-indigo-600 focus:ring-indigo-500">
+                                        <span class="text-sm font-semibold text-slate-700">Perempuan</span>
+                                    </label>
+                                </div>
+                                @error('jenis_kelamin') <span class="text-rose-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                            </div>
+
+                            <div>
+                                <label class="form-label">Agama</label>
+                                <select name="agama" class="form-input">
+                                    <option value="">— Pilih —</option>
+                                    @foreach(['Islam','Kristen','Katolik','Hindu','Buddha','Konghucu'] as $ag)
+                                        <option value="{{ $ag }}" {{ old('agama') == $ag ? 'selected' : '' }}>{{ $ag }}</option>
+                                    @endforeach
+                                </select>
+                                @error('agama') <span class="text-rose-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
                         <div>
                             <label class="form-label">Kelas <span class="text-rose-500">*</span></label>
                             <select name="class_id" required class="form-input">

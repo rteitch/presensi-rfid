@@ -51,13 +51,23 @@
                             </span>
                         </div>
 
-                        <div class="pt-1 flex items-center gap-4 text-xs text-slate-600">
+                        <div class="pt-1 flex items-center gap-4 text-xs text-slate-600 flex-wrap">
                             <div>
                                 Orang Tua: <strong class="text-slate-900">{{ $student->nama_ortu ?: '-' }}</strong>
                             </div>
                             <div>
                                 No HP Ortu: <span class="font-mono text-slate-800 font-semibold">{{ $student->no_hp_ortu ?: '-' }}</span>
                             </div>
+                            @if($student->jenis_kelamin)
+                            <div>
+                                Jenis Kelamin: <strong class="text-slate-900">{{ $student->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan' }}</strong>
+                            </div>
+                            @endif
+                            @if($student->agama)
+                            <div>
+                                Agama: <strong class="text-slate-900">{{ $student->agama }}</strong>
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>

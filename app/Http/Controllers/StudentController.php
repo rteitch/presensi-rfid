@@ -104,7 +104,7 @@ class StudentController extends Controller
 
             public function headings(): array
             {
-                return ['NIS', 'Nama', 'RFID UID', 'Kelas', 'Nama Orang Tua', 'No HP Ortu', 'Status'];
+                return ['NIS', 'Nama', 'Jenis Kelamin', 'Agama', 'RFID UID', 'Kelas', 'Nama Orang Tua', 'No HP Ortu', 'Status'];
             }
 
             public function map($student): array
@@ -112,6 +112,8 @@ class StudentController extends Controller
                 return [
                     $student->nis,
                     $student->nama,
+                    $student->jenis_kelamin === 'L' ? 'Laki-laki' : ($student->jenis_kelamin === 'P' ? 'Perempuan' : '-'),
+                    $student->agama ?: '-',
                     $student->rfid_uid,
                     $student->schoolClass->nama_kelas ?? '-',
                     $student->nama_ortu,
@@ -129,14 +131,14 @@ class StudentController extends Controller
             public function collection()
             {
                 return collect([
-                    ['2025001', 'Ahmad Fauzan', '04A1B2C3', 'VII-A', 'Bapak Fauzan', '081234567890', 'aktif'],
-                    ['2025002', 'Siti Nurhaliza', '04B2C3D4', 'VII-A', 'Bapak Nurhaliza', '081234567891', 'aktif'],
+                    ['2025001', 'Ahmad Fauzan',    'L', 'Islam', '04A1B2C3', 'VII-A', 'Bapak Fauzan',    '081234567890', 'aktif'],
+                    ['2025002', 'Siti Nurhaliza',  'P', 'Islam', '04B2C3D4', 'VII-A', 'Bapak Nurhaliza', '081234567891', 'aktif'],
                 ]);
             }
 
             public function headings(): array
             {
-                return ['nis', 'nama', 'rfid_uid', 'kelas', 'nama_ortu', 'no_hp_ortu', 'status'];
+                return ['nis', 'nama', 'jenis_kelamin', 'agama', 'rfid_uid', 'kelas', 'nama_ortu', 'no_hp_ortu', 'status'];
             }
         }, 'template-import-siswa.xlsx');
     }
