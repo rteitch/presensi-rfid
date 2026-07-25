@@ -226,21 +226,30 @@
         .trend-up   { background: rgba(220,38,38,0.85); color: #ffffff; border: 1px solid rgba(248,113,113,0.5); }
         .trend-down { background: rgba(16,185,129,0.85); color: #ffffff; border: 1px solid rgba(52,211,153,0.5); }
 
-        /* ── MAC OS FROSTED GLASS INFO PANEL (Bottom Floating Dock) ── */
+        /* ── MAC OS FROSTED GLASS INFO PANEL — 2-Column Layout ── */
         .info-panel {
             position: absolute; bottom: 0; left: 0; right: 0; z-index: 20;
-            padding: 0.5rem 0.65rem 0.55rem;
-            text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0.25rem;
-            background: rgba(15, 23, 42, 0.65); /* Transparent Dark Glass */
+            padding: 0.45rem 0.6rem 0.5rem;
+            display: flex; flex-direction: row; align-items: center; gap: 0.6rem;
+            background: rgba(15, 23, 42, 0.65);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             border-top: 1px solid rgba(255, 255, 255, 0.15);
             box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
         }
 
+        /* Left column: metric badge — fixed, shrink-proof */
+        .info-left { flex-shrink: 0; }
+
+        /* Right column: identity info */
+        .info-right {
+            flex: 1; min-width: 0;
+            display: flex; flex-direction: column; gap: 0.18rem;
+        }
+
         /* STUDENT NAME — BOLD, CLEAR, HIGH CONTRAST */
         .student-name {
-            font-size: clamp(0.85rem, 1.05vw, 1.1rem);
+            font-size: clamp(0.82rem, 1.0vw, 1.05rem);
             font-weight: 900;
             color: #ffffff;
             letter-spacing: -0.01em;
@@ -248,17 +257,18 @@
             text-transform: uppercase;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
             width: 100%;
+            text-align: left;
             text-shadow: 0 2px 6px rgba(0,0,0,0.8);
         }
         .rank-1 .student-name {
-            font-size: clamp(0.95rem, 1.15vw, 1.2rem);
+            font-size: clamp(0.9rem, 1.1vw, 1.15rem);
             color: #ffffff;
             text-shadow: 0 2px 8px rgba(245,158,11,0.5);
         }
 
-        /* META ROW: LATE BADGE & CLASS CHIP */
+        /* META ROW: CLASS CHIP only (badge moved to left column) */
         .meta-row {
-            display: flex; align-items: center; justify-content: center; gap: 0.35rem; flex-wrap: wrap; width: 100%;
+            display: flex; align-items: center; justify-content: flex-start; gap: 0.3rem; flex-wrap: wrap; width: 100%;
         }
 
         /* LATE COUNT BADGE — TV-optimized: solid, high contrast, large */
@@ -298,9 +308,10 @@
             background: rgba(168, 85, 247, 0.25); color: #d8b4fe; border: 1.5px solid rgba(168, 85, 247, 0.5);
         }
 
-        /* Extra Useful Info Footer: Terakhir Terlambat */
+        /* Terakhir Terlambat — left-aligned, clarified label */
         .last-late-text {
-            font-size: 0.58rem; color: #cbd5e1; font-weight: 700; margin-top: 1px;
+            font-size: 0.56rem; color: #94a3b8; font-weight: 700;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
 
         /* ── Clean Footer Area ── */
@@ -457,7 +468,7 @@
                 }
 
                 $lastLate = $s->attendances ? $s->attendances->first() : null;
-                $lastLateDate = $lastLate ? \Carbon\Carbon::parse($lastLate->tanggal)->translatedFormat('d M') : null;
+                $lastLateDate = $lastLate ? \Carbon\Carbon::parse($lastLate->tanggal)->translatedFormat('d M Y') : null;
 
                 $trendUp = ($rankNum <= 3 || $s->total_terlambat >= 5);
             @endphp
@@ -503,26 +514,30 @@
                     </div>
                 </div>
 
-                {{-- Mac OS Frosted Glass Info Panel Floating at Bottom --}}
+                {{-- Mac OS Frosted Glass Info Panel — 2 Column Layout --}}
                 <div class="info-panel">
-                    {{-- 1. STUDENT NAME --}}
-                    <div class="student-name" title="{{ $s->nama }}">{{ strtoupper($displayName) }}</div>
 
-                    {{-- 2. META ROW: LATE BADGE & CLASS CHIP --}}
-                    <div class="meta-row">
+                    {{-- KIRI: Badge Keterlambatan --}}
+                    <div class="info-left">
                         <div class="late-count-box">
                             <span class="late-num">{{ $s->total_terlambat }}×</span>
                             <span class="late-label">Terlambat</span>
                         </div>
-                        <div class="class-chip {{ $gradeColorClass }}">
-                            {{ $s->schoolClass->nama_kelas ?? '—' }}
-                        </div>
                     </div>
 
-                    {{-- 3. TERAKHIR TERLAMBAT --}}
-                    @if($lastLateDate)
-                        <div class="last-late-text">Terakhir: {{ $lastLateDate }}</div>
-                    @endif
+                    {{-- KANAN: Nama + Kelas + Tanggal Terakhir --}}
+                    <div class="info-right">
+                        <div class="student-name" title="{{ $s->nama }}">{{ strtoupper($displayName) }}</div>
+                        <div class="meta-row">
+                            <div class="class-chip {{ $gradeColorClass }}">
+                                {{ $s->schoolClass->nama_kelas ?? '—' }}
+                            </div>
+                        </div>
+                        @if($lastLateDate)
+                            <div class="last-late-text">Terlambat terakhir: {{ $lastLateDate }}</div>
+                        @endif
+                    </div>
+
                 </div>
             </div>
             @endforeach
