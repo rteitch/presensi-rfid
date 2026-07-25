@@ -196,7 +196,7 @@
 
         const activeDevices = @json($activeDevices ?? []);
         const urlParams = new URLSearchParams(window.location.search);
-        let activeToken = urlParams.get('token') || localStorage.getItem('kiosk_device_token') || '';
+        let activeToken = urlParams.get('token') || localStorage.getItem('kiosk_device_token') || '{{ $defaultToken ?? "" }}';
 
         if (urlParams.get('token')) {
             localStorage.setItem('kiosk_device_token', urlParams.get('token'));

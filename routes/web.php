@@ -77,7 +77,9 @@ Route::middleware(['auth'])->group(function () {
 // Halaman Kiosk Tap RFID & Leaderboard Publik (Layar Penuh, tanpa Auth)
 Route::get('/kiosk', function () {
     $activeDevices = \App\Models\Device::where('is_active', true)->select('id', 'nama_device', 'lokasi')->get();
-    return view('kiosk.scan', compact('activeDevices'));
+    $defaultDevice = \App\Models\Device::where('is_active', true)->first();
+    $defaultToken = $defaultDevice ? $defaultDevice->token_device : '';
+    return view('kiosk.scan', compact('activeDevices', 'defaultToken'));
 })->name('kiosk.scan');
 
 Route::get('/leaderboard', [ReportController::class, 'publicLeaderboard'])->name('public.leaderboard');
