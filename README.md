@@ -1,48 +1,48 @@
-# 🏫 PRESENSI RTH NEXUS
+# PRESENSI RTH NEXUS
 
-> **Sistem Manajemen Presensi Sekolah Berbasis RFID**
+> **Sistem Manajemen Presensi Sekolah Berbasis RFID**  
 > Platform modern untuk pencatatan kehadiran siswa & guru menggunakan teknologi kartu RFID, dilengkapi dashboard analytics, kiosk layar sentuh, dan TV leaderboard command center.
 
 ![Laravel](https://img.shields.io/badge/Laravel-13.x-red?logo=laravel) ![PHP](https://img.shields.io/badge/PHP-8.3+-purple?logo=php) ![Docker](https://img.shields.io/badge/Docker-Ready-blue?logo=docker) ![Tests](https://img.shields.io/badge/Tests-104%20Passed-brightgreen?logo=phpunit) ![License](https://img.shields.io/badge/License-MIT-green)
 
 ---
 
-## 📋 Daftar Isi
+## Daftar Isi
 
-- [Visualisasi & Diagram Arsitektur](#-visualisasi--diagram-arsitektur)
-- [Fitur Utama](#-fitur-utama)
-- [Tech Stack](#-tech-stack)
-- [Persyaratan Sistem](#-persyaratan-sistem)
-- [Instalasi Cepat (Docker)](#-instalasi-cepat-docker)
-- [Instalasi Manual](#-instalasi-manual-tanpa-docker)
-- [Struktur Akun & Peran](#-struktur-akun--peran)
-- [Panduan Penggunaan](#-panduan-penggunaan)
-- [API Reference](#-api-reference)
-- [Konfigurasi Pengaturan](#-konfigurasi-pengaturan)
-- [Deployment Produksi](#-deployment-produksi)
-- [Testing](#-testing)
-- [Arsitektur Database](#-arsitektur-database)
+- [Visualisasi & Diagram Arsitektur](#visualisasi--diagram-arsitektur)
+- [Fitur Utama](#fitur-utama)
+- [Tech Stack](#tech-stack)
+- [Persyaratan Sistem](#persyaratan-sistem)
+- [Instalasi Cepat (Docker)](#instalasi-cepat-docker)
+- [Instalasi Manual](#instalasi-manual-tanpa-docker)
+- [Struktur Akun & Peran](#struktur-akun--peran)
+- [Panduan Penggunaan](#panduan-penggunaan)
+- [API Reference](#api-reference)
+- [Konfigurasi Pengaturan](#konfigurasi-pengaturan)
+- [Deployment Produksi](#deployment-produksi)
+- [Testing](#testing)
+- [Arsitektur Database](#arsitektur-database)
 
 ---
 
-## 📊 Visualisasi & Diagram Arsitektur
+## Visualisasi & Diagram Arsitektur
 
-### 1. 🏗️ Diagram Arsitektur Sistem (System Architecture)
+### 1. Diagram Arsitektur Sistem (System Architecture)
 
 ```mermaid
 graph TD
-    subgraph HARDWARE["🔌 Layer Hardware & Readers"]
+    subgraph HARDWARE["Layer Hardware & Readers"]
         A1["Mode A: USB Desktop Reader (PC / Laptop)"]
         A2["Mode B: Standalone IoT ESP32 / NodeMCU"]
         A3["Mode C: Mobile Tablet / HP (USB OTG)"]
     end
 
-    subgraph NETWORK["🌐 Layer Jaringan (Online / Offline LAN)"]
+    subgraph NETWORK["Layer Jaringan (Online / Offline LAN)"]
         N1["HTTPS Cloud VPS / Domain (Online)"]
         N2["Local Intranet LAN Server (Offline)"]
     end
 
-    subgraph ENGINE["⚡ Core Engine Presensi (Laravel 13)"]
+    subgraph ENGINE["Core Engine Presensi (Laravel 13)"]
         E1["Middleware Auth & X-Device-Token"]
         E2["Atomic Cache Lock (5 Detik)"]
         E3["Validasi Hari Efektif & Kalender Libur"]
@@ -50,12 +50,12 @@ graph TD
         E5["Auto-Alpha Scheduler (17:00)"]
     end
 
-    subgraph DATA["🗄️ Layer Data & Cache"]
+    subgraph DATA["Layer Data & Cache"]
         D1[("MySQL 8.0 Database")]
         D2[("Redis 7 Cache & Queue")]
     end
 
-    subgraph UI["🖥️ Layer Presentasi & Interaksi"]
+    subgraph UI["Layer Presentasi & Interaksi"]
         U1["Kiosk Scanner Layar Sentuh (Audio Chime)"]
         U2["TV Leaderboard Command Center (Auto-Refresh 30s)"]
         U3["Dashboard Admin & Guru Wali Kelas"]
@@ -83,7 +83,7 @@ graph TD
 
 ---
 
-### 2. 🔄 Flowchart Alur Proses Tap Presensi RFID (RFID Attendance Flowchart)
+### 2. Flowchart Alur Proses Tap Presensi RFID (RFID Attendance Flowchart)
 
 ```mermaid
 flowchart TD
@@ -124,15 +124,15 @@ flowchart TD
 
 ---
 
-### 3. 👥 Flowchart Hak Akses & Role System (RBAC Flowchart)
+### 3. Flowchart Hak Akses & Role System (RBAC Flowchart)
 
 ```mermaid
 flowchart LR
     User(["Pengguna Login"]) --> RoleCheck{"Cek Role Pengguna"}
     
-    RoleCheck -->|Role: Admin| AdminView["👑 Dashboard Administrator"]
-    RoleCheck -->|Role: Guru| GuruView["👨‍🏫 Dashboard Guru Wali Kelas"]
-    RoleCheck -->|Role: Kepala Sekolah| KepsekView["👔 Dashboard Kepala Sekolah"]
+    RoleCheck -->|Role: Admin| AdminView["Dashboard Administrator"]
+    RoleCheck -->|Role: Guru| GuruView["Dashboard Guru Wali Kelas"]
+    RoleCheck -->|Role: Kepala Sekolah| KepsekView["Dashboard Kepala Sekolah"]
     
     AdminView --> A_Func["Akses Penuh: CRUD Siswa/Guru/Kelas, Import/Export, Device Token, Settings, User Management"]
     GuruView --> G_Func["Akses Scoped: Hanya Data Kelas Binaan, Input Presensi Manual, Export Rekap Kelas, Kirim WA Ortu"]
@@ -141,26 +141,26 @@ flowchart LR
 
 ---
 
-## 🚀 Fitur Utama
+## Fitur Utama
 
-### ✅ Presensi RFID Otomatis
+### Presensi RFID Otomatis
 - Siswa & guru tap kartu RFID → sistem otomatis mencatat jam masuk & status kehadiran
 - Deteksi otomatis: **Hadir**, **Terlambat** (berdasarkan jam batas yang dikonfigurasi)
 - Pencatatan jam pulang (tap kedua)
 - Validasi hari efektif sekolah (bisa dikonfigurasi: Senin–Jumat atau termasuk Sabtu)
 
-### ✅ 7 Status Kehadiran
-| Status | Deskripsi | Warna |
-|--------|-----------|-------|
-| `hadir` | Masuk tepat waktu | 🟢 Hijau |
-| `terlambat` | Masuk setelah batas jam | 🟡 Kuning |
-| `izin` | Izin resmi | 🔵 Biru |
-| `sakit` | Sakit dengan keterangan | 🟠 Oranye |
-| `dispensasi` | Kegiatan resmi sekolah | 🟣 Ungu |
-| `pulang_cepat` | Pulang sebelum jam usai | 🟤 Coklat |
-| `alpha` | Tidak hadir tanpa keterangan | 🔴 Merah |
+### 7 Status Kehadiran
+| Status | Deskripsi | Warna Visual |
+|--------|-----------|-------------|
+| `hadir` | Masuk tepat waktu | Hijau |
+| `terlambat` | Masuk setelah batas jam | Kuning |
+| `izin` | Izin resmi | Biru |
+| `sakit` | Sakit dengan keterangan | Oranye |
+| `dispensasi` | Kegiatan resmi sekolah | Ungu |
+| `pulang_cepat` | Pulang sebelum jam usai | Coklat |
+| `alpha` | Tidak hadir tanpa keterangan | Merah |
 
-### ✅ Dashboard Analitik Real-Time
+### Dashboard Analitik Real-Time
 - Ringkasan harian: total hadir, terlambat, izin, alpha, dispensasi, pulang cepat, sakit
 - Grafik tren kehadiran mingguan
 - Top 5 siswa paling sering terlambat bulan ini
@@ -168,14 +168,14 @@ flowchart LR
 - Widget statistik per status dengan persentase
 - Tombol Export PDF & Excel langsung dari dashboard
 
-### ✅ Manajemen Data Lengkap
+### Manajemen Data Lengkap
 - **Siswa**: CRUD lengkap + jenis kelamin (L/P), agama, foto profil, RFID tag, status aktif/non-aktif, **Soft Delete + Tong Sampah (Restore & Hapus Permanen)**
 - **Guru**: CRUD + foto, RFID tag, multi-kelas wali, soft delete
 - **Kelas**: Manajemen kelas + wali kelas + tahun ajaran
 - **Import/Export Excel**: Template siswa (termasuk L/P & agama) & guru (bulk upload)
 - **Device RFID**: Manajemen perangkat reader + token keamanan
 
-### ✅ Laporan & Export Dokumen
+### Laporan & Export Dokumen
 - Laporan presensi harian (filter bulan, kelas)
 - Rekap bulanan per siswa (7 kolom status)
 - Export **PDF** (DomPDF) — format resmi sekolah dengan kop
@@ -183,7 +183,7 @@ flowchart LR
 - Notifikasi WhatsApp ke orang tua (template pesan siap pakai)
 - Leaderboard siswa terlambat (internal admin, 20 teratas)
 
-### ✅ Kiosk Scanner RFID (Layar Penuh)
+### Kiosk Scanner RFID (Layar Penuh)
 - Halaman tap RFID tanpa login (akses publik)
 - Tampilan full-screen dengan animasi modern
 - Feedback visual: nama siswa, foto, status, jam masuk
@@ -191,7 +191,7 @@ flowchart LR
 - Judul & subtitle kustom per sekolah
 - Pilihan multi-device reader dari dropdown
 
-### ✅ Public Leaderboard TV (Command Center)
+### Public Leaderboard TV (Command Center)
 - Tampilan full-screen untuk dipasang di **TV Lobby / Ruang Guru**
 - Grid 5×2 (10 kartu siswa terlambat terbanyak)
 - Foto siswa uncropped (100% wajah terlihat, tanpa crop)
@@ -207,20 +207,20 @@ flowchart LR
 - 2 mode judul: *Monitoring Kedisiplinan* atau *Hall of Shame*
 - Mode privasi nama: Nama Penuh atau Inisial
 
-### ✅ Sistem Pengguna & Peran (RBAC)
+### Sistem Pengguna & Peran (RBAC)
 - Autentikasi via Laravel Breeze (session-based)
 - 3 peran berbeda: `admin`, `guru`, `kepala_sekolah`
 - Guru dibatasi hanya melihat data kelas yang diampu
 - Kepala sekolah: akses read-only seluruh data
 
-### ✅ API Integration
+### API Integration
 - REST API dengan autentikasi **X-API-Key** (bukan session)
 - Rate limiting per IP yang dapat dikonfigurasi
 - Endpoint rekap presensi & riwayat siswa
 - Health check endpoint untuk monitoring uptime
 - Manajemen API Key dari panel admin
 
-### ✅ Fitur Operasional Tambahan
+### Fitur Operasional Tambahan
 - **Input Manual**: Guru bisa menambah absensi manual (multi-select siswa dengan Select2)
 - **Hari Libur Nasional**: Tambah tanggal libur, sistem otomatis tidak mencatat pada hari tersebut
 - **Tahun Ajaran**: Manajemen multi tahun ajaran (aktif/arsip)
@@ -229,7 +229,7 @@ flowchart LR
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 | Komponen | Teknologi | Versi |
 |----------|-----------|-------|
@@ -248,7 +248,7 @@ flowchart LR
 
 ---
 
-## 💻 Persyaratan Sistem
+## Persyaratan Sistem
 
 ### Dengan Docker (Direkomendasikan)
 - **Docker Desktop** 24.x+
@@ -265,7 +265,7 @@ flowchart LR
 
 ---
 
-## ⚡ Instalasi Cepat (Docker)
+## Instalasi Cepat (Docker)
 
 ### Windows (PowerShell)
 ```powershell
@@ -289,7 +289,7 @@ Script deploy akan otomatis:
 1. Menjalankan semua container Docker (app + MySQL + Redis)
 2. Menjalankan migrasi database + seeder data demo
 3. Membuat symlink storage
-4. Menjalankan 101 automated tests sebagai verifikasi
+4. Menjalankan 104 automated tests sebagai verifikasi
 5. Menampilkan URL akses dan kredensial admin
 
 ### Akses Setelah Deploy
@@ -307,7 +307,7 @@ Password : password
 
 ---
 
-## 🔧 Instalasi Manual (Tanpa Docker)
+## Instalasi Manual (Tanpa Docker)
 
 ```bash
 # 1. Clone & install dependencies
@@ -336,7 +336,7 @@ composer run dev
 
 ---
 
-## 👥 Struktur Akun & Peran
+## Struktur Akun & Peran
 
 ### Peran yang Tersedia
 
@@ -350,20 +350,20 @@ composer run dev
 
 | Fitur | Admin | Guru | Kepala Sekolah |
 |-------|:-----:|:----:|:--------------:|
-| Dashboard | ✅ | ✅ | ✅ |
-| Data Siswa (read) | ✅ | ✅ (kelas sendiri) | ✅ |
-| Data Siswa (CRUD) | ✅ | ❌ | ❌ |
-| Import/Export Siswa | ✅ | ❌ | ❌ |
-| Data Guru (CRUD) | ✅ | ❌ | ❌ |
-| Kelola Kelas | ✅ | ❌ | ❌ |
-| Laporan & Export | ✅ | ✅ (kelas sendiri) | ✅ |
-| Input Absensi Manual | ✅ | ✅ | ❌ |
-| Kelola Device RFID | ✅ | ❌ | ❌ |
-| Pengaturan Sekolah | ✅ | ❌ | ❌ |
-| Manajemen User | ✅ | ❌ | ❌ |
-| API Key Management | ✅ | ❌ | ❌ |
-| Activity Log | ✅ | ❌ | ❌ |
-| Hari Libur | ✅ | ❌ | ❌ |
+| Dashboard | Ya | Ya | Ya |
+| Data Siswa (read) | Ya | Ya (kelas sendiri) | Ya |
+| Data Siswa (CRUD) | Ya | Tidak | Tidak |
+| Import/Export Siswa | Ya | Tidak | Tidak |
+| Data Guru (CRUD) | Ya | Tidak | Tidak |
+| Kelola Kelas | Ya | Tidak | Tidak |
+| Laporan & Export | Ya | Ya (kelas sendiri) | Ya |
+| Input Absensi Manual | Ya | Ya | Tidak |
+| Kelola Device RFID | Ya | Tidak | Tidak |
+| Pengaturan Sekolah | Ya | Tidak | Tidak |
+| Manajemen User | Ya | Tidak | Tidak |
+| API Key Management | Ya | Tidak | Tidak |
+| Activity Log | Ya | Tidak | Tidak |
+| Hari Libur | Ya | Tidak | Tidak |
 
 ### Membuat User Baru
 Panel admin → **Pengguna** → **Tambah User**
@@ -371,7 +371,7 @@ Panel admin → **Pengguna** → **Tambah User**
 
 ---
 
-## 📖 Panduan Penggunaan
+## Panduan Penggunaan
 
 ### 1. Setup Awal Sekolah
 1. Login sebagai **admin**
@@ -386,8 +386,8 @@ Panel admin → **Pengguna** → **Tambah User**
 3. Salin **Device Token** yang dihasilkan
 4. Konfigurasi firmware Arduino/ESP32 dengan token tersebut
 
-#### 🔌 Panduan Arsitektur Hardware RFID
-Sistem mendukung 2 opsi arsitektur alat reader RFID:
+#### Panduan Arsitektur Hardware RFID
+Sistem mendukung 3 opsi arsitektur alat reader RFID:
 
 - **Mode A: USB Desktop Reader (Plug & Play - Mode Kiosk)**
   - Tipe Reader: USB HID Emulation Keyboard (125kHz EM4100 atau 13.56MHz Mifare)
@@ -415,7 +415,7 @@ Sistem mendukung 2 opsi arsitektur alat reader RFID:
   - Penggunaan: Menjadikan tablet/HP sebagai Kiosk Presensi Layar Sentuh Portabel tanpa membutuhkan PC Desktop.
   - Cara Kerja: Colokkan reader ke tablet via OTG, buka browser Google Chrome ke URL `http://[IP_SERVER]:8000/kiosk`. Setiap tap kartu langsung diproses real-time dengan efek audio chime. Cocok untuk pos presensi di meja piket, kelas, maupun pos gerbang luar.
 
-#### 📍 Arsitektur Presensi Multi-Titik (Multi-Location & Multi-Kiosk)
+#### Arsitektur Presensi Multi-Titik (Multi-Location & Multi-Kiosk)
 Sistem ini dirancang untuk mendukung pencatatan presensi di **banyak lokasi secara bersamaan** (contoh: Gerbang Utama, Gerbang Barat, Lobby Gedung B, Perpustakaan, Lab Komputer):
 1. **Pendaftaran Perangkat Per Titik**: Buat entri perangkat baru di menu **Devices** (`/devices`) untuk setiap titik fisik (misal: "Kiosk Gerbang Depan", "ESP32 Lobby Utama").
 2. **Token Unik Per Titik**: Setiap perangkat menerima `token_device` yang unik. Hal ini memungkinkan sistem mengidentifikasi lokasi spesifik di mana siswa melakukan tap.
@@ -457,10 +457,10 @@ Untuk siswa yang tidak bawa kartu / dispensasi grup:
 ### 7. Export Laporan
 | Jenis Laporan | PDF | Excel | Lokasi |
 |--------------|:---:|:-----:|--------|
-| Laporan Harian | ✅ | ✅ | Menu **Laporan** |
-| Rekap Bulanan per Siswa | ✅ | ✅ | **Laporan → Rekap** |
-| Riwayat Siswa Individual | ✅ | — | **Siswa → Detail → Export** |
-| Rekap per Kelas | ✅ | ✅ | **Kelas → Detail** |
+| Laporan Harian | Ya | Ya | Menu **Laporan** |
+| Rekap Bulanan per Siswa | Ya | Ya | **Laporan → Rekap** |
+| Riwayat Siswa Individual | Ya | — | **Siswa → Detail → Export** |
+| Rekap per Kelas | Ya | Ya | **Kelas → Detail** |
 
 ### 8. Notifikasi WhatsApp Orang Tua
 Di halaman **Rekap Bulanan**:
@@ -470,7 +470,7 @@ Di halaman **Rekap Bulanan**:
 
 ---
 
-## 🔌 API Reference
+## API Reference
 
 ### Autentikasi API
 Semua endpoint API (kecuali `/health`) memerlukan header:
@@ -530,15 +530,15 @@ GET /api/health
 ### Rate Limiting
 | Endpoint Group | Default Limit | Configurable |
 |---------------|:-------------:|:------------:|
-| `/api/rfid/*` | Mengikuti `rate_limit_api` | ✅ |
-| `/api/v1/*` | Mengikuti `rate_limit_api` | ✅ |
+| `/api/rfid/*` | Mengikuti `rate_limit_api` | Ya |
+| `/api/v1/*` | Mengikuti `rate_limit_api` | Ya |
 | Web routes | — | — |
 
 > Ubah batas di: **Pengaturan → Security & Rate Limit**
 
 ---
 
-## ⚙️ Konfigurasi Pengaturan
+## Konfigurasi Pengaturan
 
 ### Pengaturan Presensi (`/settings`)
 - **Jam Masuk** — batas jam hadir normal (contoh: `07:00`)
@@ -572,19 +572,19 @@ Tab 5 — **Mode Leaderboard TV**:
 
 ---
 
-### 🔒 Checklist Keamanan Deployment Online (Production Cloud / VPS)
+### Checklist Keamanan Deployment Online (Production Cloud / VPS)
 Apakah aplikasi aman jika di-online-kan? **SANGAT AMAN**, selama checklist berikut dipenuhi:
-- ✅ **`APP_DEBUG=false`**: Mencegah tereksposnya stack trace & kredensial DB saat terjadi error.
-- ✅ **`APP_ENV=production`**: Mengaktifkan mode produksi Laravel.
-- ✅ **`APP_URL=https://presensi.sekolah.sch.id`**: Sesuaikan dengan domain resmi ber-SSL (HTTPS).
-- ✅ **Enkripsi HTTPS (SSL/TLS)**: Mengamankan lalu lintas data scan RFID, token, dan login session.
-- ✅ **Autentikasi Perangkat (`X-Device-Token`)**: Setiap alat RFID di-verifikasi menggunakan token acak 40 karakter.
-- ✅ **Rate Limiting Aktif**: Mencegah serangan DDoS / Brute Force pada endpoint scan API (`throttle:rfid` & `throttle:api`).
-- ✅ **Role-Based Access Control (RBAC)**: Pembatasan akses ketat antar admin, guru wali kelas, dan kepala sekolah.
+- **`APP_DEBUG=false`**: Mencegah tereksposnya stack trace & kredensial DB saat terjadi error.
+- **`APP_ENV=production`**: Mengaktifkan mode produksi Laravel.
+- **`APP_URL=https://presensi.sekolah.sch.id`**: Sesuaikan dengan domain resmi ber-SSL (HTTPS).
+- **Enkripsi HTTPS (SSL/TLS)**: Mengamankan lalu lintas data scan RFID, token, dan login session.
+- **Autentikasi Perangkat (`X-Device-Token`)**: Setiap alat RFID di-verifikasi menggunakan token acak 40 karakter.
+- **Rate Limiting Aktif**: Mencegah serangan DDoS / Brute Force pada endpoint scan API (`throttle:rfid` & `throttle:api`).
+- **Role-Based Access Control (RBAC)**: Pembatasan akses ketat antar admin, guru wali kelas, dan kepala sekolah.
 
 ---
 
-### 🌐 Mode Deployment: Online vs Offline (LAN Intranet)
+### Mode Deployment: Online vs Offline (LAN Intranet)
 
 | Parameter | Mode Online (Cloud / VPS) | Mode Offline (LAN / Intranet Sekolah) |
 |-----------|---------------------------|----------------------------------------|
@@ -668,7 +668,7 @@ server {
 
 ---
 
-## 🧪 Testing
+## Testing
 
 ### Menjalankan Test Suite
 ```bash
@@ -684,14 +684,14 @@ php artisan test --verbose
 
 ### Status Test Suite
 ```
-Tests:    101 passed (241 assertions)
+Tests:    104 passed (252 assertions)
 Duration: ~13 detik
 ```
 
 ### Coverage Area Test
 - **Autentikasi** — login, logout, akses halaman terproteksi
 - **RBAC** — validasi hak akses per peran
-- **Siswa** — CRUD, import, export, soft delete
+- **Siswa** — CRUD, import, export, soft delete, restore, force delete
 - **Guru** — CRUD, import, export
 - **Kelas** — CRUD, export Excel/PDF
 - **Presensi** — pencatatan manual, validasi status
@@ -702,7 +702,7 @@ Duration: ~13 detik
 
 ---
 
-## 🗄 Arsitektur Database
+## Arsitektur Database
 
 ### Tabel Utama
 
@@ -734,7 +734,7 @@ User     →  hasMany    Role (via Spatie)
 
 ---
 
-## 📁 Struktur Direktori Penting
+## Struktur Direktori Penting
 
 ```
 presensi-rfid/
@@ -777,7 +777,7 @@ presensi-rfid/
 
 ---
 
-## 🔒 Keamanan
+## Keamanan
 
 - **Autentikasi** berbasis session Laravel (CSRF protected)
 - **API RFID** diamankan dengan `X-Device-Token` per device
@@ -790,7 +790,7 @@ presensi-rfid/
 
 ---
 
-## 🤝 Kontribusi
+## Kontribusi
 
 1. Fork repositori
 2. Buat branch fitur: `git checkout -b feature/nama-fitur`
@@ -805,13 +805,13 @@ presensi-rfid/
 
 ---
 
-## 📄 Lisensi
+## Lisensi
 
 MIT License — bebas digunakan, dimodifikasi, dan didistribusikan dengan mencantumkan atribusi.
 
 ---
 
-## 🆘 Troubleshooting
+## Troubleshooting
 
 ### Container tidak mau start
 ```bash
