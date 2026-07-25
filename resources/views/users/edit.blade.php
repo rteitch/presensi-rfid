@@ -35,8 +35,9 @@
                 <div>
                     <label class="form-label required">Role / Hak Akses</label>
                     <select name="role" class="form-input" required>
-                        <option value="admin" {{ old('role', $user->hasRole('admin') ? 'admin' : 'guru') === 'admin' ? 'selected' : '' }}>ADMINISTRATOR — Full Akses (Semua Menu & Pengaturan)</option>
-                        <option value="guru" {{ old('role', $user->hasRole('guru') ? 'guru' : 'admin') === 'guru' ? 'selected' : '' }}>GURU / WALI KELAS — Terbatas (Hanya Kelas Binaan & Laporan)</option>
+                        <option value="admin" {{ old('role', $user->roles->first()?->name) === 'admin' ? 'selected' : '' }}>ADMINISTRATOR — Full Akses (Semua Menu & Pengaturan)</option>
+                        <option value="guru" {{ old('role', $user->roles->first()?->name) === 'guru' ? 'selected' : '' }}>GURU / WALI KELAS — Terbatas (Hanya Kelas Binaan & Laporan)</option>
+                        <option value="kepala_sekolah" {{ old('role', $user->roles->first()?->name) === 'kepala_sekolah' ? 'selected' : '' }}>KEPALA SEKOLAH — View Only (Monitoring Seluruh Kelas & Laporan)</option>
                     </select>
                     @error('role') <p class="text-rose-600 text-xs mt-1 font-medium">{{ $message }}</p> @enderror
                 </div>

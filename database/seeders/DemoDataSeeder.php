@@ -63,6 +63,16 @@ class DemoDataSeeder extends Seeder
         );
         $guruBudi->assignRole('guru');
 
+        // Kepala Sekolah User
+        $kepsek = User::firstOrCreate(
+            ['email' => 'kepsek@sekolah.test'],
+            [
+                'name' => 'Dr. H. Mulyadi, M.Pd (Kepala Sekolah)',
+                'password' => bcrypt('password'),
+            ]
+        );
+        $kepsek->assignRole('kepala_sekolah');
+
         // Classes
         $kelasA = SchoolClass::firstOrCreate([
             'nama_kelas' => 'VII-A',

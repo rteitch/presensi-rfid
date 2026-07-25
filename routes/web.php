@@ -49,7 +49,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('holidays', \App\Http\Controllers\HolidayController::class)->only(['index', 'store', 'update', 'destroy']);
     });
 
-    Route::middleware('role:admin|guru')->group(function () {
+    Route::middleware('role:admin|guru|kepala_sekolah')->group(function () {
         Route::get('/students', [StudentController::class, 'index'])->name('students.index');
         Route::get('/students/{student}', [StudentController::class, 'show'])->name('students.show');
         Route::get('/students/{student}/export-attendance', [StudentController::class, 'exportAttendance'])->name('students.export-attendance');

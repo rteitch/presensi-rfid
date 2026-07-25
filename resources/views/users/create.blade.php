@@ -36,6 +36,7 @@
                     <select name="role" class="form-input" required>
                         <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>ADMINISTRATOR — Full Akses (Semua Menu & Pengaturan)</option>
                         <option value="guru" {{ old('role', 'guru') === 'guru' ? 'selected' : '' }}>GURU / WALI KELAS — Terbatas (Hanya Kelas Binaan & Laporan)</option>
+                        <option value="kepala_sekolah" {{ old('role') === 'kepala_sekolah' ? 'selected' : '' }}>KEPALA SEKOLAH — View Only (Monitoring Seluruh Kelas & Laporan)</option>
                     </select>
                     @error('role') <p class="text-rose-600 text-xs mt-1 font-medium">{{ $message }}</p> @enderror
                 </div>
