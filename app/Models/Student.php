@@ -29,6 +29,9 @@ class Student extends Model
     public function getFotoUrlAttribute(): ?string
     {
         if ($this->foto) {
+            if (str_starts_with($this->foto, 'http://') || str_starts_with($this->foto, 'https://')) {
+                return $this->foto;
+            }
             return asset('storage/'.$this->foto);
         }
 
