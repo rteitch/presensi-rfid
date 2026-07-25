@@ -479,15 +479,20 @@ class ComprehensiveIstqbCoverageTest extends TestCase
         $res3->assertStatus(429);
     }
 
-    /** 23. Dynamic School Work Days (5-day vs 6-day) Handling */
+    /** 23. Dynamic School Work Days (Multi-day & Pesantren Jumat Libur) Handling */
     public function test_school_work_days_setting_and_auto_alpha_handling(): void
     {
-        // 1. Set to 6-day school (Senin - Sabtu)
-        \App\Models\SchoolSetting::set('hari_kerja', '6_hari');
-        $this->assertEquals('6_hari', \App\Models\SchoolSetting::get('hari_kerja'));
+        // 1. Set to Pesantren school (Sabtu - Kamis, Jumat Libur)
+        $pesantrenDays = ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
+        \App\Models\SchoolSetting::set('hari_efektif', json_encode($pesantrenDays));
+        $decoded = json_decode(\App\Models\SchoolSetting::get('hari_efektif'), true);
+        $this->assertEquals($pesantrenDays, $decoded);
+        $this->assertNotContains('Friday', $decoded);
 
         // 2. Set to 5-day school (Senin - Jumat)
-        \App\Models\SchoolSetting::set('hari_kerja', '5_hari');
-        $this->assertEquals('5_hari', \App\Models\SchoolSetting::get('hari_kerja'));
+        $standardDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+        \App\Models\SchoolSetting::set('hari_efektif', json_encode($standardDays));
+        $decoded2 = json_decode(\App\Models\SchoolSetting::get('hari_efektif'), true);
+        $this->assertEquals($standardDays, $decoded2);
     }
 }

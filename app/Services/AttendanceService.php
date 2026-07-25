@@ -27,10 +27,10 @@ class AttendanceService
 
         $today = Carbon::today();
 
-        $hariKerja = \App\Models\SchoolSetting::get('hari_kerja', '5_hari');
-        $isNonWorkingDay = $today->isSunday() || ($hariKerja === '5_hari' && $today->isSaturday());
+        $rawHariEfektif = \App\Models\SchoolSetting::get('hari_efektif');
+        $hariEfektif = $rawHariEfektif ? (json_decode($rawHariEfektif, true) ?: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']) : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
-        if ($isNonWorkingDay) {
+        if (! in_array($today->format('l'), $hariEfektif)) {
             $this->logScan($rfidUid, $deviceId, false, 'Hari ini adalah hari libur rutin sekolah.', $student->id);
 
             return [

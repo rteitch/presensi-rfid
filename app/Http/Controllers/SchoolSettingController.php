@@ -33,20 +33,25 @@ class SchoolSettingController extends Controller
             'kiosk_title' => 'nullable|string|max:255',
             'kiosk_subtitle' => 'nullable|string|max:255',
             'rate_limit_api' => 'required|integer|min:10|max:1000',
-            'hari_kerja' => 'required|in:5_hari,6_hari',
+            'hari_efektif' => 'required|array|min:1',
+            'hari_efektif.*' => 'in:Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday',
         ]);
 
         $textFields = [
             'app_name', 'school_name', 'school_tagline', 'school_address',
             'school_phone', 'school_email', 'footer_text',
             'kiosk_bg_type', 'kiosk_bg_color',
-            'kiosk_title', 'kiosk_subtitle', 'rate_limit_api', 'hari_kerja',
+            'kiosk_title', 'kiosk_subtitle', 'rate_limit_api',
         ];
 
         foreach ($textFields as $field) {
             if ($request->has($field)) {
                 SchoolSetting::set($field, $request->input($field));
             }
+        }
+
+        if ($request->has('hari_efektif')) {
+            SchoolSetting::set('hari_efektif', json_encode($request->input('hari_efektif')));
         }
 
         // Handle logo upload

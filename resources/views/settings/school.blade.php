@@ -267,18 +267,37 @@
                             <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                             <span>Konfigurasi Performa & Security Rate Limit</span>
                         </h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="space-y-4">
                             <div>
-                                <label for="hari_kerja" class="form-label">Sistem Hari Kerja Sekolah <span class="text-rose-500">*</span></label>
-                                @php $currentHariKerja = old('hari_kerja', \App\Models\SchoolSetting::get('hari_kerja', '5_hari')); @endphp
-                                <select name="hari_kerja" id="hari_kerja" class="form-input text-sm font-semibold">
-                                    <option value="5_hari" {{ $currentHariKerja === '5_hari' ? 'selected' : '' }}>5 Hari Kerja (Senin – Jumat)</option>
-                                    <option value="6_hari" {{ $currentHariKerja === '6_hari' ? 'selected' : '' }}>6 Hari Kerja (Senin – Sabtu)</option>
-                                </select>
-                                <p class="text-xs text-slate-400 mt-1">Mengontrol hari sekolah efektif. Untuk 6 hari kerja, Sabtu dianggap hari sekolah aktif dan wajib presensi/auto-alpha.</p>
-                                @error('hari_kerja') <p class="text-xs text-rose-500 mt-1">{{ $message }}</p> @enderror
+                                <label class="form-label">Hari Sekolah Efektif <span class="text-rose-500">*</span></label>
+                                @php
+                                    $rawSetting = \App\Models\SchoolSetting::get('hari_efektif');
+                                    $selectedDays = old('hari_efektif', $rawSetting ? json_decode($rawSetting, true) : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']);
+                                    $allDays = [
+                                        'Monday' => 'Senin',
+                                        'Tuesday' => 'Selasa',
+                                        'Wednesday' => 'Rabu',
+                                        'Thursday' => 'Kamis',
+                                        'Friday' => 'Jumat',
+                                        'Saturday' => 'Sabtu',
+                                        'Sunday' => 'Minggu',
+                                    ];
+                                @endphp
+                                <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2.5 mt-1.5">
+                                    @foreach($allDays as $enDay => $idDay)
+                                        <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-slate-100/80 cursor-pointer transition">
+                                            <input type="checkbox" name="hari_efektif[]" value="{{ $enDay }}"
+                                                   {{ in_array($enDay, (array)$selectedDays) ? 'checked' : '' }}
+                                                   class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 w-4 h-4">
+                                            <span class="text-xs font-bold text-slate-700">{{ $idDay }}</span>
+                                        </label>
+                                    @endforeach
+                                </div>
+                                <p class="text-xs text-slate-400 mt-2">Centang hari-hari sekolah efektif. Sangat fleksibel untuk Sekolah Umum (Senin–Jumat / Senin–Sabtu) maupun Pesantren/Sekolah Islam (Jumat Libur).</p>
+                                @error('hari_efektif') <p class="text-xs text-rose-500 mt-1">{{ $message }}</p> @enderror
                             </div>
-                            <div>
+
+                            <div class="max-w-md">
                                 <label for="rate_limit_api" class="form-label">Batas Rate Limit API Eksternal (Req/Menit)</label>
                                 <input type="number" min="10" max="1000" name="rate_limit_api" id="rate_limit_api"
                                        value="{{ old('rate_limit_api', \App\Models\SchoolSetting::get('rate_limit_api', 60)) }}"
