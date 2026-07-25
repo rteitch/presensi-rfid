@@ -55,7 +55,7 @@
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 4px 20px rgba(99,102,241,0.4);
         }
-        .hd-school-name { font-size: 1rem; font-weight: 800; letter-spacing: -0.01em; color: #ffffff; }
+        .hd-school-name { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.01em; color: #ffffff; }
         .hd-badge { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.12em; color: #f59e0b; font-weight: 900; }
 
         .live-pill {
@@ -68,7 +68,7 @@
         @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 
         .clock-wrap { text-align: right; }
-        .clock-time { font-size: 1.5rem; font-weight: 900; letter-spacing: 0.04em; color: #f59e0b; line-height: 1; font-family: monospace; }
+        .clock-time { font-size: 1.55rem; font-weight: 900; letter-spacing: 0.04em; color: #f59e0b; line-height: 1; font-family: monospace; }
         .clock-date { font-size: 0.65rem; color: #94a3b8; font-weight: 600; margin-top: 2px; }
 
         /* ── Sub Header / Filter Row ── */
@@ -78,7 +78,7 @@
             border-bottom: 1px solid rgba(255,255,255,0.06);
             background: rgba(15,23,42,0.4);
         }
-        .title-block .eyebrow { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.15em; color: #f59e0b; font-weight: 900; }
+        .title-block .eyebrow { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.15em; color: #f59e0b; font-weight: 900; }
         .title-block .main-title {
             font-size: clamp(1.2rem, 2.2vw, 1.55rem); font-weight: 900; letter-spacing: -0.03em;
             background: linear-gradient(90deg, #fff 30%, #fde68a 100%);
@@ -102,21 +102,21 @@
         /* ── Main Area ── */
         main {
             flex: 1; display: flex; flex-direction: column;
-            gap: 0.75rem; padding: 0.75rem 1.75rem;
+            gap: 0.85rem; padding: 0.75rem 1.75rem 1rem;
             min-height: 0; overflow: hidden;
         }
 
         /* ── PODIUM ROW (Top 3 Cards) ── */
         .podium-row {
             display: flex; align-items: flex-end; justify-content: center; gap: 1.1rem;
-            flex: 1.45; min-height: 0;
+            flex: 1.5; min-height: 0;
         }
 
         .podium-card {
             background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(16px);
             border-radius: 1.25rem;
-            padding: 0.9rem;
+            padding: 0.85rem;
             display: flex; flex-direction: column; justify-content: space-between;
             position: relative; overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -150,7 +150,7 @@
         /* Top Tag Banner */
         .card-banner {
             display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 0.55rem;
+            margin-bottom: 0.5rem;
         }
         .banner-chip {
             display: inline-flex; align-items: center; gap: 0.35rem;
@@ -164,14 +164,14 @@
         .late-badge {
             display: inline-flex; align-items: center; gap: 0.3rem;
             padding: 0.3rem 0.75rem; border-radius: 0.55rem;
-            background: rgba(2,6,23,0.8); border: 1px solid rgba(245,158,11,0.3);
-            font-size: 0.9rem; font-weight: 900; color: #f59e0b;
+            background: rgba(2,6,23,0.85); border: 1px solid rgba(245,158,11,0.35);
+            font-size: 0.95rem; font-weight: 900; color: #f59e0b;
         }
         .late-badge span { font-size: 0.58rem; color: #cbd5e1; font-weight: 800; text-transform: uppercase; }
 
         /* Dedicated Photo Container (Framed, High Precision Cropped) */
         .photo-frame {
-            width: 100%; flex: 1; min-height: 110px;
+            width: 100%; flex: 1; min-height: 100px;
             border-radius: 0.85rem; overflow: hidden;
             border: 1.5px solid rgba(255,255,255,0.15);
             position: relative; background: #0f172a;
@@ -185,11 +185,11 @@
 
         /* Bottom Info Box - High Contrast & Prominent Typography */
         .card-details {
-            margin-top: 0.65rem; text-align: center;
-            background: rgba(2, 6, 23, 0.7);
+            margin-top: 0.55rem; text-align: center;
+            background: rgba(2, 6, 23, 0.75);
             border: 1px solid rgba(255,255,255,0.08);
             border-radius: 0.75rem;
-            padding: 0.55rem 0.5rem;
+            padding: 0.5rem;
         }
         .card-name {
             font-size: 1.15rem; font-weight: 900; color: #ffffff;
@@ -197,75 +197,82 @@
             letter-spacing: -0.01em; line-height: 1.25;
             text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
-        .gold .card-name { font-size: 1.3rem; color: #ffffff; }
+        .gold .card-name { font-size: 1.35rem; color: #ffffff; }
 
         .card-class {
-            display: inline-block; margin-top: 0.35rem;
+            display: inline-block; margin-top: 0.3rem;
             font-size: 0.75rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em;
-            padding: 0.25rem 0.75rem; border-radius: 0.45rem;
+            padding: 0.22rem 0.75rem; border-radius: 0.45rem;
         }
         .gold   .card-class { background: rgba(245,158,11,0.25); color: #fde68a; border: 1px solid rgba(245,158,11,0.4); }
         .silver .card-class { background: rgba(148,163,184,0.25); color: #f1f5f9; border: 1px solid rgba(148,163,184,0.35); }
         .bronze .card-class { background: rgba(180,83,9,0.25); color: #fed7aa; border: 1px solid rgba(180,83,9,0.35); }
 
-        /* ── RANK 4–10 GRID ── */
-        .rank-grid {
-            display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.65rem;
+        /* ── RANK 4–10 GRID (Wide Horizontal Cards - Clear Names & Classes) ── */
+        .rank-grid-horizontal {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.65rem;
             flex: 1; min-height: 0;
         }
 
-        .mini-card {
+        .h-card {
             background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(12px);
             border: 1.5px solid rgba(255,255,255,0.1);
-            border-radius: 0.9rem;
-            padding: 0.55rem;
-            display: flex; flex-direction: column; justify-content: space-between;
-            transition: transform 0.25s ease, border-color 0.25s ease;
+            border-radius: 0.85rem;
+            padding: 0.5rem 0.75rem;
+            display: flex; align-items: center; gap: 0.75rem;
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
         }
-        .mini-card:hover { transform: translateY(-3px); border-color: rgba(245,158,11,0.5); }
-
-        .mc-top {
-            display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 0.45rem;
-        }
-        .mc-rank-chip {
-            padding: 0.15rem 0.45rem; border-radius: 0.4rem;
-            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-            font-size: 0.65rem; font-weight: 900; color: #e2e8f0;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .mc-late-count {
-            font-size: 0.82rem; font-weight: 900; color: #f59e0b;
+        .h-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(245,158,11,0.5);
+            background: rgba(30, 41, 59, 0.9);
         }
 
-        .mc-photo-frame {
-            width: 100%; flex: 1; min-height: 60px;
-            border-radius: 0.65rem; overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: #0f172a;
+        /* Avatar Photo Frame */
+        .h-avatar {
+            width: 48px; height: 48px; border-radius: 0.65rem;
+            overflow: hidden; shrink-0: 0;
+            border: 1.5px solid rgba(255,255,255,0.15);
+            background: #0f172a; flex-shrink: 0;
         }
-        .mc-photo-frame img {
+        .h-avatar img {
             width: 100%; height: 100%;
             object-fit: cover; object-position: center 20%;
             display: block;
         }
 
-        .mc-details {
-            margin-top: 0.45rem; text-align: center;
-            background: rgba(2, 6, 23, 0.7);
-            padding: 0.35rem 0.25rem;
-            border-radius: 0.5rem;
-            border: 1px solid rgba(255,255,255,0.06);
+        /* Center Student Info (Name & Class) */
+        .h-info {
+            flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.15rem;
         }
-        .mc-name {
-            font-size: 0.78rem; font-weight: 800; color: #ffffff;
+        .h-name {
+            font-size: 0.88rem; font-weight: 800; color: #ffffff;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-            line-height: 1.25;
+            line-height: 1.2; letter-spacing: -0.01em;
         }
-        .mc-class {
-            font-size: 0.62rem; font-weight: 800; color: #38bdf8;
-            text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px;
+        .h-class {
+            display: inline-flex; align-self: flex-start;
+            font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
+            color: #38bdf8; background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            padding: 0.1rem 0.45rem; border-radius: 0.35rem;
+        }
+
+        /* Right Stats Badge */
+        .h-stats {
+            display: flex; flex-direction: column; align-items: flex-end; justify-content: center;
+            flex-shrink: 0;
+        }
+        .h-rank {
+            font-size: 0.65rem; font-weight: 900; color: #94a3b8;
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+            padding: 0.1rem 0.4rem; border-radius: 0.35rem; margin-bottom: 0.15rem;
+        }
+        .h-late {
+            font-size: 0.95rem; font-weight: 900; color: #f59e0b; line-height: 1;
         }
 
         /* Footer */
@@ -405,22 +412,22 @@
 
         </div>
 
-        {{-- ══ RANK 4–10 GRID ══ --}}
+        {{-- ══ RANK 4–10 GRID (Wide Horizontal Cards: Clear Names & Classes) ══ --}}
         @if($students->count() > 3)
-        <div class="rank-grid">
+        <div class="rank-grid-horizontal">
             @foreach($students->slice(3) as $index => $s)
             @php $rankNum = $index + 4; @endphp
-            <div class="mini-card">
-                <div class="mc-top">
-                    <span class="mc-rank-chip">#{{ $rankNum }}</span>
-                    <span class="mc-late-count">{{ $s->total_terlambat }}×</span>
-                </div>
-                <div class="mc-photo-frame">
+            <div class="h-card">
+                <div class="h-avatar">
                     <img src="{{ $s->foto_url }}" alt="{{ $s->nama }}">
                 </div>
-                <div class="mc-details">
-                    <div class="mc-name" title="{{ $s->nama }}">{{ $s->nama }}</div>
-                    <div class="mc-class">{{ $s->schoolClass->nama_kelas ?? '—' }}</div>
+                <div class="h-info">
+                    <div class="h-name" title="{{ $s->nama }}">{{ $s->nama }}</div>
+                    <span class="h-class">{{ $s->schoolClass->nama_kelas ?? '—' }}</span>
+                </div>
+                <div class="h-stats">
+                    <span class="h-rank">#{{ $rankNum }}</span>
+                    <span class="h-late">{{ $s->total_terlambat }}×</span>
                 </div>
             </div>
             @endforeach
