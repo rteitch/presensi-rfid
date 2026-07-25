@@ -33,7 +33,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/teachers/import', [TeacherController::class, 'importStore'])->name('teachers.import-store');
         Route::get('/teachers/export', [TeacherController::class, 'export'])->name('teachers.export');
         Route::get('/teachers/template', [TeacherController::class, 'template'])->name('teachers.template');
-        Route::resource('teachers', TeacherController::class)->except(['show']);
+        Route::resource('teachers', TeacherController::class);
         Route::resource('devices', DeviceController::class)->except(['show']);
         Route::post('/devices/{device}/regenerate-token', [DeviceController::class, 'regenerateToken'])->name('devices.regenerate');
         Route::get('/settings', [AttendanceSettingController::class, 'index'])->name('settings.index');

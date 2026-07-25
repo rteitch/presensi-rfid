@@ -30,6 +30,14 @@ class AutoMarkAlpha extends Command
             return Command::SUCCESS;
         }
 
+        // 3. Skip jika belum melewati jam pulang sekolah
+        $setting = \App\Models\AttendanceSetting::whereHas('academicYear', fn ($q) => $q->where('is_active', true))->first() ?? \App\Models\AttendanceSetting::first();
+        $jamPulang = $setting?->jam_pulang ?? '15:00:00';
+        if (now()->format('H:i:s') < $jamPulang) {
+            $this->info("Waktu saat ini (" . now()->format('H:i:s') . ") belum melewati jam pulang sekolah ({$jamPulang}). Auto-Alpha dilewati.");
+            return Command::SUCCESS;
+        }
+
         // 3. Ambil seluruh siswa aktif
         $activeStudents = Student::where('status', 'aktif')->get();
         $markedCount = 0;

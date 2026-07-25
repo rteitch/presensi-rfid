@@ -33,6 +33,13 @@ class TeacherController extends Controller
         return view('teachers.index', compact('teachers', 'search'));
     }
 
+    public function show(Teacher $teacher)
+    {
+        $teacher->load(['user', 'user.managedClasses']);
+
+        return view('teachers.show', compact('teacher'));
+    }
+
     public function create()
     {
         return view('teachers.create');

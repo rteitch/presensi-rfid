@@ -39,7 +39,7 @@ class EnterpriseP1P2Test extends TestCase
 
     public function test_auto_mark_alpha_command()
     {
-        Carbon::setTestNow('2026-07-27'); // Monday (school day)
+        Carbon::setTestNow('2026-07-27 18:00:00'); // Monday evening after jam_pulang
 
         $ay = AcademicYear::create([
             'nama' => '2025/2026 Ganjil',
