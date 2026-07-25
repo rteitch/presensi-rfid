@@ -127,16 +127,28 @@ flowchart TD
 ### 3. Flowchart Hak Akses & Role System (RBAC Flowchart)
 
 ```mermaid
-flowchart LR
+flowchart TD
     User(["Pengguna Login"]) --> RoleCheck{"Cek Role Pengguna"}
-    
-    RoleCheck -->|Role: Admin| AdminView["Dashboard Administrator"]
-    RoleCheck -->|Role: Guru| GuruView["Dashboard Guru Wali Kelas"]
-    RoleCheck -->|Role: Kepala Sekolah| KepsekView["Dashboard Kepala Sekolah"]
-    
-    AdminView --> A_Func["Akses Penuh: CRUD Siswa/Guru/Kelas, Import/Export, Device Token, Settings, User Management"]
-    GuruView --> G_Func["Akses Scoped: Hanya Data Kelas Binaan, Input Presensi Manual, Export Rekap Kelas, Kirim WA Ortu"]
-    KepsekView --> K_Func["Akses Read-Only: Pantau Statistik Seluruh Kelas, Laporan Rekapitulasi, & Leaderboard Sekolah"]
+
+    RoleCheck -->|Admin| AdminView["Dashboard Administrator"]
+    RoleCheck -->|Guru| GuruView["Dashboard Guru Wali Kelas"]
+    RoleCheck -->|Kepala Sekolah| KepsekView["Dashboard Kepala Sekolah"]
+
+    AdminView --> A1["CRUD Siswa, Guru & Kelas"]
+    AdminView --> A2["Import / Export Excel"]
+    AdminView --> A3["Kelola Device & Token RFID"]
+    AdminView --> A4["Pengaturan Sekolah & Kiosk"]
+    AdminView --> A5["Manajemen User & API Key"]
+
+    GuruView --> G1["Lihat Data Kelas Binaan Saja"]
+    GuruView --> G2["Input Presensi Manual"]
+    GuruView --> G3["Export Rekap Kelas (PDF/Excel)"]
+    GuruView --> G4["Kirim Notifikasi WA ke Orang Tua"]
+
+    KepsekView --> K1["Pantau Statistik Seluruh Kelas"]
+    KepsekView --> K2["Lihat Laporan Rekapitulasi"]
+    KepsekView --> K3["Akses TV Leaderboard Sekolah"]
+    KepsekView --> K4["Read-Only - Tidak Bisa Edit Data"]
 ```
 
 ---
