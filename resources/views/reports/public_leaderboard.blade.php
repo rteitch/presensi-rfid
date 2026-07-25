@@ -58,9 +58,7 @@
         .hd-school-name { font-size: 1rem; font-weight: 800; color: #ffffff; line-height: 1.2; }
 
         /* Centered Header Title Block */
-        .hd-center-title {
-            text-align: center; flex: 1;
-        }
+        .hd-center-title { text-align: center; flex: 1; }
         .hd-center-title .eyebrow {
             font-size: 0.62rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.15em; color: #f59e0b;
         }
@@ -81,9 +79,7 @@
         }
 
         /* Executive Insights Bar */
-        .insights-bar {
-            display: flex; align-items: center; gap: 0.5rem;
-        }
+        .insights-bar { display: flex; align-items: center; gap: 0.5rem; }
         .insight-pill {
             display: inline-flex; align-items: center; gap: 0.35rem;
             padding: 0.25rem 0.65rem; border-radius: 0.5rem;
@@ -163,25 +159,41 @@
             filter: drop-shadow(0 4px 10px rgba(245,158,11,0.8));
         }
 
-        /* ── PHOTO CONTAINER (Naturally Framed - Face & Hair 100% Fully Visible!) ── */
+        /* ── PHOTO CONTAINER (100% UNCROPPED GUARANTEED WITH CINEMATIC BACKDROP) ── */
         .photo-container {
-            width: 100%; flex: 1.7; min-height: 165px;
+            width: 100%; flex: 1.8; min-height: 175px;
             position: relative; overflow: hidden;
-            background: #0b1120;
+            background: #090d16;
+            display: flex; align-items: center; justify-content: center;
         }
-        .photo-img {
-            width: 100%; height: 100%;
-            object-fit: cover; object-position: center 25%;
-            display: block;
-            filter: brightness(1.05) contrast(1.05);
+
+        /* Ambient Blurred Background Image */
+        .photo-bg-blur {
+            position: absolute; inset: -15px;
+            width: calc(100% + 30px); height: calc(100% + 30px);
+            object-fit: cover; filter: blur(14px) brightness(0.5);
+            z-index: 1; opacity: 0.65;
             transition: transform 0.5s ease;
         }
-        .student-card:hover .photo-img { transform: scale(1.04); }
+
+        /* 100% UNCROPPED MAIN PHOTO */
+        .photo-img-full {
+            position: relative; z-index: 2;
+            max-height: 100%; max-width: 100%; height: 100%; width: 100%;
+            object-fit: contain; /* GUARANTEES ZERO CROPPING OF FACES! */
+            display: block;
+            filter: brightness(1.06) contrast(1.06);
+            transition: transform 0.5s ease;
+        }
+
+        .student-card:hover .photo-img-full { transform: scale(1.04); }
+        .student-card:hover .photo-bg-blur { transform: scale(1.08); }
 
         /* Light Bottom Gradient Overlay */
         .photo-overlay {
-            position: absolute; inset: 0;
-            background: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.25) 25%, transparent 55%);
+            position: absolute; inset: 0; z-index: 3;
+            background: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.15) 25%, transparent 50%);
+            pointer-events: none;
         }
 
         /* Rank Watermark Badge Top Right */
@@ -190,7 +202,7 @@
             padding: 0.2rem 0.6rem; border-radius: 9999px;
             font-size: 0.72rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.06em;
             backdrop-filter: blur(8px);
-            background: rgba(2,6,23,0.75); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1;
+            background: rgba(2,6,23,0.8); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1;
         }
         .rank-1 .rank-watermark { background: #f59e0b; color: #1c0a00; border: none; font-size: 0.78rem; box-shadow: 0 2px 10px rgba(245,158,11,0.4); }
         .rank-2 .rank-watermark { background: #94a3b8; color: #0f172a; border: none; font-size: 0.75rem; box-shadow: 0 2px 10px rgba(148,163,184,0.3); }
@@ -206,7 +218,7 @@
         .trend-up   { background: rgba(220,38,38,0.85); color: #ffffff; border: 1px solid rgba(248,113,113,0.5); }
         .trend-down { background: rgba(16,185,129,0.85); color: #ffffff; border: 1px solid rgba(52,211,153,0.5); }
 
-        /* ── INFO PANEL (Compact & High-Contrast - Centered) ── */
+        /* ── INFO PANEL ── */
         .info-panel {
             position: relative; z-index: 10;
             padding: 0.55rem 0.65rem 0.6rem;
@@ -416,9 +428,14 @@
                     <div class="top1-crown">👑</div>
                 @endif
 
-                {{-- Full Portrait Photo Container (Uncropped Face & Hair!) --}}
+                {{-- 100% Uncropped Photo Container (Cinematic Ambient Backdrop + Uncropped Main Photo) --}}
                 <div class="photo-container">
-                    <img src="{{ $s->foto_url }}" alt="{{ $s->nama }}" class="photo-img">
+                    {{-- Ambient Blurred Backdrop Image --}}
+                    <img src="{{ $s->foto_url }}" alt="" class="photo-bg-blur">
+                    
+                    {{-- 100% Uncropped Main Photo --}}
+                    <img src="{{ $s->foto_url }}" alt="{{ $s->nama }}" class="photo-img-full">
+                    
                     <div class="photo-overlay"></div>
                     
                     {{-- Trend Indicator Badge Top Left --}}
