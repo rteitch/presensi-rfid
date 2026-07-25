@@ -268,4 +268,165 @@ class ComprehensiveIstqbCoverageTest extends TestCase
         $response->assertSessionHas('error');
         $this->assertDatabaseHas('classes', ['id' => $this->class->id]);
     }
+
+    /** 14. Manual Attendance Overwrites Record */
+    public function test_manual_attendance_overwrites_existing_record(): void
+    {
+        $student = Student::create([
+            'class_id' => $this->class->id,
+            'nis' => '99001122',
+            'nama' => 'Manual Overwrite Student',
+            'status' => 'aktif',
+        ]);
+
+        Attendance::create([
+            'student_id' => $student->id,
+            'tanggal' => '2026-07-25',
+            'status' => 'hadir',
+        ]);
+
+        $response = $this->actingAs($this->admin)->post(route('attendances.manual'), [
+            'student_id' => $student->id,
+            'tanggal' => '2026-07-25',
+            'status' => 'izin',
+            'keterangan' => 'Izin via surat dokter',
+        ]);
+
+        $response->assertRedirect();
+        $this->assertDatabaseHas('attendances', [
+            'student_id' => $student->id,
+            'tanggal' => '2026-07-25',
+            'status' => 'izin',
+        ]);
+    }
+
+    /** 15. Auto-Alpha Skips Already Marked Student */
+    public function test_auto_alpha_skips_already_marked_student(): void
+    {
+        Carbon::setTestNow('2026-07-27 18:00:00'); // Monday evening
+
+        $student = Student::create([
+            'class_id' => $this->class->id,
+            'nis' => '55443322',
+            'nama' => 'Hadir Student',
+            'status' => 'aktif',
+        ]);
+
+        Attendance::create([
+            'student_id' => $student->id,
+            'tanggal' => '2026-07-27',
+            'status' => 'hadir',
+        ]);
+
+        $this->artisan('attendance:auto-alpha')->assertExitCode(0);
+
+        $this->assertDatabaseHas('attendances', [
+            'student_id' => $student->id,
+            'tanggal' => '2026-07-27',
+            'status' => 'hadir',
+        ]);
+
+        Carbon::setTestNow();
+    }
+
+    /** 16. Auto-Alpha Ignores Inactive Student */
+    public function test_auto_alpha_ignores_inactive_student(): void
+    {
+        Carbon::setTestNow('2026-07-27 18:00:00'); // Monday evening
+
+        $inactiveStudent = Student::create([
+            'class_id' => $this->class->id,
+            'nis' => '11002299',
+            'nama' => 'Non Aktif Student',
+            'status' => 'nonaktif',
+        ]);
+
+        $this->artisan('attendance:auto-alpha')->assertExitCode(0);
+
+        $this->assertDatabaseMissing('attendances', [
+            'student_id' => $inactiveStudent->id,
+            'tanggal' => '2026-07-27',
+        ]);
+
+        Carbon::setTestNow();
+    }
+
+    /** 17. API Student History Invalid Month Format */
+    public function test_api_student_history_invalid_month_format(): void
+    {
+        $integration = \App\Models\ApiIntegration::create([
+            'nama_aplikasi' => 'Test App History',
+            'api_key' => 'valid-history-key-111',
+            'is_active' => true,
+        ]);
+
+        $student = Student::create([
+            'class_id' => $this->class->id,
+            'nis' => '88223344',
+            'nama' => 'Test Student API',
+            'status' => 'aktif',
+        ]);
+
+        $response = $this->withHeader('X-API-Key', 'valid-history-key-111')
+            ->getJson("/api/v1/students/{$student->id}/history?bulan=invalid-month");
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['bulan']);
+    }
+
+    /** 18. API Student History Non-Existent Student */
+    public function test_api_student_history_non_existent_student(): void
+    {
+        $integration = \App\Models\ApiIntegration::create([
+            'nama_aplikasi' => 'Test App History 404',
+            'api_key' => 'valid-history-key-404',
+            'is_active' => true,
+        ]);
+
+        $response = $this->withHeader('X-API-Key', 'valid-history-key-404')
+            ->getJson('/api/v1/students/999999/history');
+
+        $response->assertStatus(404);
+    }
+
+    /** 19. Academic Year Creation */
+    public function test_admin_can_create_academic_year(): void
+    {
+        $response = $this->actingAs($this->admin)->post(route('settings.academic-year'), [
+            'nama' => '2026/2027 Ganjil',
+            'tanggal_mulai' => '2026-07-01',
+            'tanggal_selesai' => '2026-12-31',
+        ]);
+
+        $response->assertRedirect();
+        $this->assertDatabaseHas('academic_years', ['nama' => '2026/2027 Ganjil']);
+    }
+
+    /** 20. Device Update and Delete */
+    public function test_admin_can_update_and_delete_device(): void
+    {
+        $device = Device::create([
+            'nama_device' => 'Scanner Gerbang Barat',
+            'lokasi' => 'Gerbang Barat',
+            'token_device' => 'token-barat-123',
+            'tipe_device' => 'kiosk_browser',
+            'is_active' => true,
+        ]);
+
+        // Update
+        $updateRes = $this->actingAs($this->admin)->put(route('devices.update', $device), [
+            'nama_device' => 'Scanner Gerbang Barat Revisi',
+            'lokasi' => 'Gerbang Barat Lt 1',
+            'tipe_device' => 'kiosk',
+            'token_device' => 'token-barat-123',
+            'is_active' => true,
+        ]);
+        $updateRes->assertRedirect(route('devices.index'));
+        $this->assertDatabaseHas('devices', ['nama_device' => 'Scanner Gerbang Barat Revisi']);
+
+        // Delete
+        $deleteRes = $this->actingAs($this->admin)->delete(route('devices.destroy', $device));
+        $deleteRes->assertRedirect(route('devices.index'));
+        $this->assertDatabaseMissing('devices', ['id' => $device->id]);
+    }
 }
