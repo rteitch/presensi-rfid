@@ -261,16 +261,23 @@
             display: flex; align-items: center; justify-content: center; gap: 0.35rem; flex-wrap: wrap; width: 100%;
         }
 
-        /* LATE COUNT BADGE */
+        /* LATE COUNT BADGE — TV-optimized: solid, high contrast, large */
         .late-count-box {
-            display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem;
-            padding: 0.18rem 0.5rem; border-radius: 0.45rem;
-            background: linear-gradient(135deg, rgba(220, 38, 38, 0.45) 0%, rgba(185, 28, 28, 0.3) 100%);
-            border: 1.5px solid rgba(248, 113, 113, 0.6);
-            color: #ffffff; font-size: 0.7rem; font-weight: 900;
-            box-shadow: 0 2px 8px rgba(220,38,38,0.3);
+            display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 0;
+            padding: 0.3rem 0.65rem 0.25rem; border-radius: 0.5rem;
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            border: 2px solid #f87171;
+            color: #ffffff; font-weight: 900;
+            box-shadow: 0 0 14px rgba(220,38,38,0.7), 0 3px 10px rgba(0,0,0,0.5);
         }
-        .late-count-box .late-num { font-size: 0.9rem; font-weight: 900; color: #fde68a; }
+        .late-count-box .late-num {
+            font-size: clamp(1rem, 1.3vw, 1.25rem);
+            font-weight: 900; color: #fef08a; line-height: 1; letter-spacing: -0.02em;
+        }
+        .late-count-box .late-label {
+            font-size: 0.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em;
+            color: rgba(255,255,255,0.85); line-height: 1; margin-top: 1px;
+        }
 
         /* GRADE COLOR-CODED CLASS CHIP (X=Cyan, XI=Emerald, XII=Purple) */
         .class-chip {
@@ -504,8 +511,8 @@
                     {{-- 2. META ROW: LATE BADGE & CLASS CHIP --}}
                     <div class="meta-row">
                         <div class="late-count-box">
-                            <svg class="w-3 h-3 text-amber-300 shrink-0 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             <span class="late-num">{{ $s->total_terlambat }}×</span>
+                            <span class="late-label">Terlambat</span>
                         </div>
                         <div class="class-chip {{ $gradeColorClass }}">
                             {{ $s->schoolClass->nama_kelas ?? '—' }}
