@@ -198,72 +198,110 @@
         </div>
     </div>
 
-    {{-- Select2 --}}
+    {{-- Select2: Load jQuery first (required), then Select2 --}}
+    @push('scripts')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <style>
+        /* Select2 theming agar menyesuaikan desain aplikasi */
         .select2-container { width: 100% !important; }
         .select2-container--default .select2-selection--multiple {
             border: 1px solid #e2e8f0;
             border-radius: 0.5rem;
-            padding: 0.25rem 0.5rem;
-            min-height: 42px;
-            background: white;
+            padding: 0.3rem 0.5rem;
+            min-height: 44px;
+            background: #fff;
             font-size: 0.875rem;
+            cursor: text;
         }
-        .select2-container--default.select2-container--focus .select2-selection--multiple {
+        .select2-container--default.select2-container--focus .select2-selection--multiple,
+        .select2-container--default.select2-container--open .select2-selection--multiple {
             border-color: #6366f1;
-            outline: none;
             box-shadow: 0 0 0 3px rgb(99 102 241 / 0.15);
         }
         .select2-dropdown {
             border: 1px solid #e2e8f0;
             border-radius: 0.5rem;
-            box-shadow: 0 10px 30px rgb(0 0 0 / 0.1);
+            box-shadow: 0 12px 32px rgb(0 0 0 / 0.12);
             font-size: 0.875rem;
+            overflow: hidden;
         }
-        .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        .select2-search--dropdown {
+            padding: 8px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .select2-search--dropdown .select2-search__field {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.4rem;
+            padding: 0.45rem 0.65rem;
+            font-size: 0.875rem;
+            width: 100%;
+            outline: none;
+        }
+        .select2-search--dropdown .select2-search__field:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgb(99 102 241 / 0.15);
+        }
+        .select2-results__option {
+            padding: 0.5rem 0.75rem;
+        }
+        .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
             background-color: #6366f1;
+            color: #fff;
+        }
+        .select2-container--default .select2-results__option--selected {
+            background-color: #f0f0ff;
+            color: #4338ca;
         }
         .select2-container--default .select2-selection--multiple .select2-selection__choice {
             background-color: #6366f1;
             border: none;
-            color: white;
+            color: #fff;
             border-radius: 0.375rem;
-            padding: 1px 8px;
+            padding: 2px 10px 2px 6px;
             font-size: 0.75rem;
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
         .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
-            color: rgba(255,255,255,0.8);
-            margin-right: 4px;
+            color: rgba(255,255,255,0.75);
+            border: none;
+            background: none;
+            margin-right: 2px;
+            font-size: 1rem;
         }
-        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover { color: white; }
-        .select2-search--dropdown .select2-search__field {
-            border: 1px solid #e2e8f0;
-            border-radius: 0.375rem;
-            padding: 0.4rem 0.6rem;
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+            color: #fff;
         }
         .select2-results__group {
-            color: #64748b;
-            font-size: 0.7rem;
+            color: #94a3b8;
+            font-size: 0.68rem;
             font-weight: 700;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.07em;
             text-transform: uppercase;
-            padding: 6px 12px 3px;
+            padding: 8px 12px 4px;
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__placeholder {
+            color: #94a3b8;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        $(document).ready(function () {
             $('#select-students').select2({
-                placeholder: '🔍 Ketik nama atau NIS siswa...',
+                placeholder: 'Cari nama atau NIS siswa...',
                 allowClear: true,
                 width: '100%',
+                closeOnSelect: false,
                 language: {
-                    noResults: function() { return "Siswa tidak ditemukan"; },
-                    searching: function() { return "Mencari..."; },
-                    inputTooShort: function() { return ""; },
+                    noResults: function () { return 'Siswa tidak ditemukan'; },
+                    searching:  function () { return 'Mencari siswa...'; },
+                    removeAllItems: function() { return 'Hapus semua'; },
                 }
             });
         });
     </script>
+    @endpush
 </x-app-layout>
