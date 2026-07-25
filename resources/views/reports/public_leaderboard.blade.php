@@ -102,11 +102,11 @@
         /* ── Main Area ── */
         main {
             flex: 1; display: flex; flex-direction: column;
-            gap: 0.85rem; padding: 0.75rem 1.75rem 1rem;
+            gap: 0.75rem; padding: 0.75rem 1.75rem 0.9rem;
             min-height: 0; overflow: hidden;
         }
 
-        /* ── PODIUM ROW (Top 3 Cards) ── */
+        /* ── ROW 1: PODIUM TOP 3 (Large Portrait Cards) ── */
         .podium-row {
             display: flex; align-items: flex-end; justify-content: center; gap: 1.1rem;
             flex: 1.5; min-height: 0;
@@ -171,15 +171,11 @@
 
         /* Large HD Photo Frame (High Precision Cropped) */
         .photo-frame {
-            width: 100%; height: 175px;
-            border-radius: 0.9rem; overflow: hidden;
+            width: 100%; flex: 1; min-height: 110px;
+            border-radius: 0.85rem; overflow: hidden;
             border: 2px solid rgba(255,255,255,0.2);
             position: relative; background: #0f172a;
             box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-        }
-        .gold .photo-frame {
-            height: 205px;
-            border-color: rgba(245,158,11,0.5);
         }
         .photo-frame img {
             width: 100%; height: 100%;
@@ -190,7 +186,7 @@
         /* Bottom Info Box - High Contrast & Prominent Typography */
         .card-details {
             margin-top: 0.55rem; text-align: center;
-            background: rgba(2, 6, 23, 0.75);
+            background: rgba(2, 6, 23, 0.85);
             border: 1px solid rgba(255,255,255,0.08);
             border-radius: 0.75rem;
             padding: 0.5rem;
@@ -212,83 +208,81 @@
         .silver .card-class { background: rgba(148,163,184,0.25); color: #f1f5f9; border: 1px solid rgba(148,163,184,0.35); }
         .bronze .card-class { background: rgba(180,83,9,0.25); color: #fed7aa; border: 1px solid rgba(180,83,9,0.35); }
 
-        /* ── RANK 4–10 GRID (Wide Horizontal Cards - Large Sharp Photo & Clear Rank) ── */
-        .rank-grid-horizontal {
+        /* ── ROW 2: RANK 4–10 FULL PORTRAIT POSTER CARDS (7 COLUMNS) ── */
+        .rank-grid-portraits {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(7, 1fr);
             gap: 0.65rem;
-            flex: 1; min-height: 0;
+            flex: 1.1; min-height: 0;
         }
 
-        .h-card {
+        .poster-card {
             background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(12px);
             border: 1.5px solid rgba(255,255,255,0.12);
-            border-radius: 0.85rem;
-            padding: 0.55rem 0.75rem;
-            display: flex; align-items: center; gap: 0.7rem;
-            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+            border-radius: 0.95rem;
+            padding: 0.45rem;
+            display: flex; flex-direction: column; justify-content: space-between;
+            position: relative; overflow: hidden;
+            transition: transform 0.25s ease, border-color 0.25s ease;
         }
-        .h-card:hover {
-            transform: translateY(-2px);
-            border-color: rgba(245,158,11,0.5);
-            background: rgba(30, 41, 59, 0.9);
+        .poster-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(245,158,11,0.6);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
         }
 
-        /* Large Prominent Rank Box */
-        .h-rank-box {
-            width: 40px; height: 40px; border-radius: 0.6rem;
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(180, 83, 9, 0.15) 100%);
+        /* Top Header inside Poster Card (Rank + Late Count) */
+        .poster-top {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 0.35rem; z-index: 2;
+        }
+        .poster-rank-chip {
+            padding: 0.15rem 0.5rem; border-radius: 0.45rem;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.3) 0%, rgba(180, 83, 9, 0.2) 100%);
             border: 1.5px solid rgba(245, 158, 11, 0.4);
-            color: #fde68a;
-            font-size: 1.1rem; font-weight: 900;
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            font-size: 0.72rem; font-weight: 900; color: #fde68a;
+        }
+        .poster-late-badge {
+            font-size: 0.82rem; font-weight: 900; color: #f59e0b;
+            background: rgba(2,6,23,0.7); padding: 0.1rem 0.4rem; border-radius: 0.4rem;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* Large HD Photo Frame for Rank 4-10 (60px x 60px) */
-        .h-avatar {
-            width: 60px; height: 60px; border-radius: 0.75rem;
-            overflow: hidden;
-            border: 2px solid rgba(255,255,255,0.2);
-            background: #0f172a; flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        /* Full Portrait Photo Box (Fills Middle Portion) */
+        .poster-photo-box {
+            width: 100%; flex: 1; min-height: 80px;
+            border-radius: 0.65rem; overflow: hidden;
+            border: 1.5px solid rgba(255,255,255,0.15);
+            background: #0f172a; position: relative;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.4);
         }
-        .h-avatar img {
+        .poster-photo-box img {
             width: 100%; height: 100%;
             object-fit: cover; object-position: center 20%;
             display: block;
         }
 
-        /* Center Student Info (Name & Class) */
-        .h-info {
-            flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.2rem;
+        /* Bottom Info Box for Name & Class */
+        .poster-details {
+            margin-top: 0.4rem; text-align: center;
+            background: rgba(2, 6, 23, 0.85);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 0.55rem;
+            padding: 0.35rem 0.25rem;
         }
-        .h-name {
-            font-size: 0.92rem; font-weight: 800; color: #ffffff;
+        .poster-name {
+            font-size: 0.78rem; font-weight: 900; color: #ffffff;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-            line-height: 1.2; letter-spacing: -0.01em;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+            line-height: 1.25; letter-spacing: -0.01em;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
         }
-        .h-class {
-            display: inline-flex; align-self: flex-start;
-            font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.06em;
+        .poster-class {
+            display: inline-block; margin-top: 0.15rem;
+            font-size: 0.6rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.06em;
             color: #38bdf8; background: rgba(56, 189, 248, 0.15);
             border: 1px solid rgba(56, 189, 248, 0.3);
-            padding: 0.12rem 0.5rem; border-radius: 0.35rem;
-        }
-
-        /* Right Stats Badge */
-        .h-stats {
-            display: flex; flex-direction: column; align-items: flex-end; justify-content: center;
-            flex-shrink: 0;
-        }
-        .h-late {
-            font-size: 1.1rem; font-weight: 900; color: #f59e0b; line-height: 1;
-        }
-        .h-late-sub {
-            font-size: 0.55rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-top: 2px;
+            padding: 0.1rem 0.45rem; border-radius: 0.35rem;
         }
 
         /* Footer */
@@ -374,7 +368,7 @@
     <main>
         @if($students->isNotEmpty())
 
-        {{-- ══ PODIUM TOP 3 (Precision Large HD Framed Photos) ══ --}}
+        {{-- ══ ROW 1: PODIUM TOP 3 (Large Full Portrait Cards) ══ --}}
         <div class="podium-row">
 
             {{-- Rank #2 (Silver - Left) --}}
@@ -428,23 +422,22 @@
 
         </div>
 
-        {{-- ══ RANK 4–10 GRID (Large HD Avatars: 60px x 60px) ══ --}}
+        {{-- ══ ROW 2: RANK 4–10 FULL PORTRAIT POSTER CARDS (7 COLUMNS) ══ --}}
         @if($students->count() > 3)
-        <div class="rank-grid-horizontal">
+        <div class="rank-grid-portraits">
             @foreach($students->slice(3) as $index => $s)
             @php $rankNum = $index + 4; @endphp
-            <div class="h-card">
-                <div class="h-rank-box">#{{ $rankNum }}</div>
-                <div class="h-avatar">
+            <div class="poster-card">
+                <div class="poster-top">
+                    <span class="poster-rank-chip">#{{ $rankNum }}</span>
+                    <span class="poster-late-badge">{{ $s->total_terlambat }}×</span>
+                </div>
+                <div class="poster-photo-box">
                     <img src="{{ $s->foto_url }}" alt="{{ $s->nama }}">
                 </div>
-                <div class="h-info">
-                    <div class="h-name" title="{{ $s->nama }}">{{ $s->nama }}</div>
-                    <span class="h-class">{{ $s->schoolClass->nama_kelas ?? '—' }}</span>
-                </div>
-                <div class="h-stats">
-                    <span class="h-late">{{ $s->total_terlambat }}×</span>
-                    <span class="h-late-sub">Telat</span>
+                <div class="poster-details">
+                    <div class="poster-name" title="{{ $s->nama }}">{{ $s->nama }}</div>
+                    <span class="poster-class">{{ $s->schoolClass->nama_kelas ?? '—' }}</span>
                 </div>
             </div>
             @endforeach
