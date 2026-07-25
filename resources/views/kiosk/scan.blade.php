@@ -237,7 +237,8 @@
             })
             .then(res => res.json())
             .then(data => {
-                if (data.status === 'success') {
+                const isSuccess = data.success === true || data.status === 'success';
+                if (isSuccess) {
                     playSuccessSound();
 
                     displayCard.className = "bg-emerald-950/80 backdrop-blur-xl border border-emerald-500/60 rounded-3xl p-8 text-center shadow-2xl transition-all duration-300 transform scale-105";
@@ -245,12 +246,15 @@
                     iconRfid.outerHTML = `<svg id="icon-rfid" class="w-12 h-12 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>`;
 
                     mainMessage.innerText = data.message;
-                    subMessage.innerText = "Status Presensi: " + (data.data.status || 'Berhasil');
+                    const presensiStatus = data.status === 'terlambat' ? 'Terlambat' : (data.status === 'hadir' ? 'Hadir Tepat Waktu' : (data.status || 'Berhasil'));
+                    subMessage.innerText = "Status Presensi: " + presensiStatus;
 
-                    if (data.data && data.data.siswa) {
-                        studentName.innerText = data.data.siswa.nama;
-                        studentDetails.innerText = data.data.siswa.nis + " (" + (data.data.siswa.kelas || '-') + ")";
-                        studentPhoto.src = data.data.siswa.foto_url || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(data.data.siswa.nama);
+                    const student = data.student || (data.data ? data.data.siswa : null);
+                    if (student) {
+                        studentName.innerText = student.nama;
+                        const kelasName = student.school_class ? student.school_class.nama_kelas : (student.kelas || '-');
+                        studentDetails.innerText = (student.nis || '-') + " (" + kelasName + ")";
+                        studentPhoto.src = student.foto_url || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(student.nama);
                         studentInfo.classList.remove('hidden');
                     }
                 } else {
