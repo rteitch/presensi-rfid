@@ -80,7 +80,12 @@
                                             {{ $h->tanggal_mulai->format('d M Y') }} - {{ $h->tanggal_selesai->format('d M Y') }}
                                         </span>
                                     </td>
-                                    <td class="px-6 py-4 text-right">
+                                    <td class="px-6 py-4 text-right flex justify-end gap-1">
+                                        <button type="button" 
+                                                onclick="openEditHolidayModal('{{ $h->id }}', '{{ addslashes($h->nama_libur) }}', '{{ $h->tanggal_mulai->format('Y-m-d') }}', '{{ $h->tanggal_selesai->format('Y-m-d') }}', '{{ addslashes($h->keterangan ?? '') }}')" 
+                                                class="p-1.5 text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 rounded-lg transition" title="Edit Agenda">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                        </button>
                                         <form method="POST" action="{{ route('holidays.destroy', $h) }}" onsubmit="confirmDelete(event, 'Hapus jadwal libur ini?')">
                                             @csrf
                                             @method('DELETE')
@@ -109,4 +114,59 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Edit Hari Libur -->
+    <div id="editHolidayModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden">
+        <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl space-y-4 border border-slate-200">
+            <div class="flex justify-between items-center pb-3 border-b border-slate-100">
+                <h3 class="text-base font-bold text-slate-900">Edit Agenda Libur Sekolah</h3>
+                <button type="button" onclick="closeEditHolidayModal()" class="text-slate-400 hover:text-slate-600 p-1">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <form id="editHolidayForm" method="POST" action="" class="space-y-4">
+                @csrf
+                @method('PUT')
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nama Agenda / Hari Libur</label>
+                    <input type="text" name="nama_libur" id="edit_nama_libur" required class="form-input text-sm">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Tanggal Mulai</label>
+                        <input type="date" name="tanggal_mulai" id="edit_tanggal_mulai" required class="form-input text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Tanggal Selesai</label>
+                        <input type="date" name="tanggal_selesai" id="edit_tanggal_selesai" required class="form-input text-sm">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Keterangan (Opsional)</label>
+                    <textarea name="keterangan" id="edit_keterangan" rows="2" class="form-input text-sm"></textarea>
+                </div>
+                <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                    <button type="button" onclick="closeEditHolidayModal()" class="btn-secondary">Batal</button>
+                    <button type="submit" class="btn-primary">Update Hari Libur</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @push('scripts')
+    <script>
+        function openEditHolidayModal(id, nama, mulai, selesai, ket) {
+            document.getElementById('editHolidayForm').action = '/holidays/' + id;
+            document.getElementById('edit_nama_libur').value = nama;
+            document.getElementById('edit_tanggal_mulai').value = mulai;
+            document.getElementById('edit_tanggal_selesai').value = selesai;
+            document.getElementById('edit_keterangan').value = ket;
+            document.getElementById('editHolidayModal').classList.remove('hidden');
+        }
+
+        function closeEditHolidayModal() {
+            document.getElementById('editHolidayModal').classList.add('hidden');
+        }
+    </script>
+    @endpush
 </x-app-layout>
