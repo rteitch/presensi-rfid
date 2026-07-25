@@ -153,21 +153,21 @@
             margin-bottom: 0.5rem;
         }
         .banner-chip {
-            display: inline-flex; align-items: center; gap: 0.35rem;
-            padding: 0.3rem 0.75rem; border-radius: 9999px;
-            font-size: 0.72rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em;
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.35rem 0.85rem; border-radius: 9999px;
+            font-size: 0.85rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em;
         }
         .gold .banner-chip   { background: #f59e0b; color: #1c0a00; box-shadow: 0 2px 10px rgba(245,158,11,0.4); }
         .silver .banner-chip { background: #94a3b8; color: #0f172a; box-shadow: 0 2px 10px rgba(148,163,184,0.3); }
         .bronze .banner-chip { background: #b45309; color: #ffffff; box-shadow: 0 2px 10px rgba(180,83,9,0.3); }
 
         .late-badge {
-            display: inline-flex; align-items: center; gap: 0.3rem;
-            padding: 0.3rem 0.75rem; border-radius: 0.55rem;
-            background: rgba(2,6,23,0.85); border: 1px solid rgba(245,158,11,0.35);
-            font-size: 0.95rem; font-weight: 900; color: #f59e0b;
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            padding: 0.35rem 0.85rem; border-radius: 0.6rem;
+            background: rgba(2,6,23,0.85); border: 1.5px solid rgba(245,158,11,0.4);
+            font-size: 1.05rem; font-weight: 900; color: #f59e0b;
         }
-        .late-badge span { font-size: 0.58rem; color: #cbd5e1; font-weight: 800; text-transform: uppercase; }
+        .late-badge span { font-size: 0.6rem; color: #cbd5e1; font-weight: 800; text-transform: uppercase; }
 
         /* Dedicated Photo Container (Framed, High Precision Cropped) */
         .photo-frame {
@@ -208,7 +208,7 @@
         .silver .card-class { background: rgba(148,163,184,0.25); color: #f1f5f9; border: 1px solid rgba(148,163,184,0.35); }
         .bronze .card-class { background: rgba(180,83,9,0.25); color: #fed7aa; border: 1px solid rgba(180,83,9,0.35); }
 
-        /* ── RANK 4–10 GRID (Wide Horizontal Cards - Clear Names & Classes) ── */
+        /* ── RANK 4–10 GRID (Wide Horizontal Cards - High Visibility Rank & Info) ── */
         .rank-grid-horizontal {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -222,7 +222,7 @@
             border: 1.5px solid rgba(255,255,255,0.1);
             border-radius: 0.85rem;
             padding: 0.5rem 0.75rem;
-            display: flex; align-items: center; gap: 0.75rem;
+            display: flex; align-items: center; gap: 0.65rem;
             transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
         }
         .h-card:hover {
@@ -231,10 +231,22 @@
             background: rgba(30, 41, 59, 0.9);
         }
 
+        /* Large Prominent Rank Box */
+        .h-rank-box {
+            width: 38px; height: 38px; border-radius: 0.6rem;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(180, 83, 9, 0.15) 100%);
+            border: 1.5px solid rgba(245, 158, 11, 0.4);
+            color: #fde68a;
+            font-size: 1.05rem; font-weight: 900;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
         /* Avatar Photo Frame */
         .h-avatar {
-            width: 48px; height: 48px; border-radius: 0.65rem;
-            overflow: hidden; shrink-0: 0;
+            width: 46px; height: 46px; border-radius: 0.65rem;
+            overflow: hidden;
             border: 1.5px solid rgba(255,255,255,0.15);
             background: #0f172a; flex-shrink: 0;
         }
@@ -266,13 +278,11 @@
             display: flex; flex-direction: column; align-items: flex-end; justify-content: center;
             flex-shrink: 0;
         }
-        .h-rank {
-            font-size: 0.65rem; font-weight: 900; color: #94a3b8;
-            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
-            padding: 0.1rem 0.4rem; border-radius: 0.35rem; margin-bottom: 0.15rem;
-        }
         .h-late {
-            font-size: 0.95rem; font-weight: 900; color: #f59e0b; line-height: 1;
+            font-size: 1.05rem; font-weight: 900; color: #f59e0b; line-height: 1;
+        }
+        .h-late-sub {
+            font-size: 0.52rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-top: 2px;
         }
 
         /* Footer */
@@ -358,7 +368,7 @@
     <main>
         @if($students->isNotEmpty())
 
-        {{-- ══ PODIUM TOP 3 (Precision Framed Cards with High-Contrast Typography) ══ --}}
+        {{-- ══ PODIUM TOP 3 (Precision Framed Cards with High-Contrast Typography & Prominent Rank Banners) ══ --}}
         <div class="podium-row">
 
             {{-- Rank #2 (Silver - Left) --}}
@@ -412,12 +422,13 @@
 
         </div>
 
-        {{-- ══ RANK 4–10 GRID (Wide Horizontal Cards: Clear Names & Classes) ══ --}}
+        {{-- ══ RANK 4–10 GRID (Wide Horizontal Cards: Big Prominent Rank Box + Clear Info) ══ --}}
         @if($students->count() > 3)
         <div class="rank-grid-horizontal">
             @foreach($students->slice(3) as $index => $s)
             @php $rankNum = $index + 4; @endphp
             <div class="h-card">
+                <div class="h-rank-box">#{{ $rankNum }}</div>
                 <div class="h-avatar">
                     <img src="{{ $s->foto_url }}" alt="{{ $s->nama }}">
                 </div>
@@ -426,8 +437,8 @@
                     <span class="h-class">{{ $s->schoolClass->nama_kelas ?? '—' }}</span>
                 </div>
                 <div class="h-stats">
-                    <span class="h-rank">#{{ $rankNum }}</span>
                     <span class="h-late">{{ $s->total_terlambat }}×</span>
+                    <span class="h-late-sub">Telat</span>
                 </div>
             </div>
             @endforeach
