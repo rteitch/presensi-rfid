@@ -207,4 +207,65 @@ class ComprehensiveIstqbCoverageTest extends TestCase
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['class_id']);
     }
+
+    /** 9. Kiosk Page Renders */
+    public function test_kiosk_page_renders_successfully(): void
+    {
+        $response = $this->get('/kiosk');
+        $response->assertStatus(200)
+            ->assertSee('PRESENSI RTH NEXUS');
+    }
+
+    /** 10. Dashboard Stats & Guru Scoping Access */
+    public function test_dashboard_access_for_admin_and_guru(): void
+    {
+        $adminRes = $this->actingAs($this->admin)->get('/dashboard');
+        $adminRes->assertStatus(200);
+
+        $guruRes = $this->actingAs($this->guru)->get('/dashboard');
+        $guruRes->assertStatus(200);
+    }
+
+    /** 11. Holiday Non-Admin Protection */
+    public function test_non_admin_cannot_create_holiday(): void
+    {
+        $response = $this->actingAs($this->guru)->post(route('holidays.store'), [
+            'nama_libur' => 'Libur Unauthorized',
+            'tanggal_mulai' => '2026-10-01',
+            'tanggal_selesai' => '2026-10-02',
+        ]);
+
+        $response->assertStatus(403);
+    }
+
+    /** 12. School Settings Update */
+    public function test_admin_can_update_school_settings(): void
+    {
+        $response = $this->actingAs($this->admin)->post(route('settings.school.update'), [
+            'app_name' => 'PRESENSI NEXUS TEST',
+            'school_name' => 'SMK Negeri 1 Test',
+            'kiosk_bg_type' => 'gradient',
+            'rate_limit_api' => 120,
+        ]);
+
+        $response->assertRedirect();
+        $this->assertEquals('PRESENSI NEXUS TEST', \App\Models\SchoolSetting::get('app_name'));
+        $this->assertEquals(120, (int) \App\Models\SchoolSetting::get('rate_limit_api'));
+    }
+
+    /** 13. Class Delete Guard when class has active students */
+    public function test_class_deletion_guard_when_students_exist(): void
+    {
+        Student::create([
+            'class_id' => $this->class->id,
+            'nis' => '12344321',
+            'nama' => 'Siswa Di Kelas',
+            'status' => 'aktif',
+        ]);
+
+        $response = $this->actingAs($this->admin)->delete(route('classes.destroy', $this->class));
+        $response->assertRedirect();
+        $response->assertSessionHas('error');
+        $this->assertDatabaseHas('classes', ['id' => $this->class->id]);
+    }
 }
