@@ -12,9 +12,9 @@ echo -e "\033[36m🚀 Starting Production Deployment RTH NEXUS Presensi RFID...\
 echo -e "\033[33m🛑 Stopping old containers...\033[0m"
 docker-compose down || true
 
-# 2. Build & Start Docker Stack
-echo -e "\033[32m🏗️ Building & starting production Docker stack...\033[0m"
-docker-compose up -d --build
+# 2. Start Docker Stack
+echo -e "\033[32m🏗️ Starting Docker stack (Live Code Sync active)...\033[0m"
+docker-compose up -d
 
 # 3. Wait for MySQL
 echo -e "\033[33m⏳ Waiting 15s for MySQL Database to initialize...\033[0m"

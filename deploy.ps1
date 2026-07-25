@@ -15,9 +15,9 @@ if (-not (Get-Command docker -ErrorAction SilentlyContinue)) {
 Write-Host "🛑 Stopping old containers if running..." -ForegroundColor Yellow
 docker-compose down
 
-# 2. Build & Start Docker Stack
-Write-Host "🏗️ Building and starting production Docker containers..." -ForegroundColor Green
-docker-compose up -d --build
+# 2. Start Docker Stack (Live Volume Synced)
+Write-Host "🏗️ Starting Docker containers (Live Code Sync active)..." -ForegroundColor Green
+docker-compose up -d
 
 # 3. Wait for MySQL to be ready
 Write-Host "⏳ Waiting 15 seconds for MySQL Database initialization..." -ForegroundColor Yellow

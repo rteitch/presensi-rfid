@@ -25,6 +25,9 @@ services:
       REDIS_PORT: 6379
       SESSION_DRIVER: database
     volumes:
+      - .:/var/www/html
+      - /var/www/html/vendor
+      - /var/www/html/node_modules
       - ./storage/app/public:/var/www/html/storage/app/public
     depends_on:
       - db
