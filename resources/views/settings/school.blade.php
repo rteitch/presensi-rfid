@@ -51,6 +51,13 @@
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                 <span>Security & Rate Limit</span>
             </button>
+
+            <button type="button" @click="activeTab = 'leaderboard'; window.location.hash = 'leaderboard'"
+                    :class="activeTab === 'leaderboard' ? 'bg-indigo-600 text-white shadow-sm font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold'"
+                    class="px-4 py-2.5 rounded-xl text-xs transition flex items-center gap-2 shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                <span>Mode Leaderboard TV</span>
+            </button>
         </div>
 
         <form method="POST" action="{{ route('settings.school.update') }}" enctype="multipart/form-data" class="space-y-6">
@@ -356,6 +363,79 @@
                             <br><span class="text-emerald-600 font-semibold">• Pemindaian Kiosk RFID Sekolah dijamin 100% bebas hambatan (unlimited) tanpa terpengaruh batas ini.</span>
                         </p>
                         @error('rate_limit_api') <p class="text-xs text-rose-500 mt-1">{{ $message }}</p> @enderror
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 5: Mode Leaderboard TV -->
+            <div x-show="activeTab === 'leaderboard'" x-transition class="page-card">
+                <div class="px-6 py-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                        <h3 class="font-extrabold text-slate-800 text-sm uppercase tracking-wider">Mode Konfigurasi Layar Leaderboard TV</h3>
+                    </div>
+                </div>
+                <div class="p-6 space-y-6">
+                    <!-- Mode Nuansa Judul Banner -->
+                    <div>
+                        <label class="form-label font-bold text-slate-800">Nuansa Judul & Bahasa Banner Layar Leaderboard</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+                            <label class="relative cursor-pointer">
+                                <input type="radio" name="leaderboard_title_mode" value="monitoring" class="sr-only peer"
+                                       {{ old('leaderboard_title_mode', \App\Models\SchoolSetting::get('leaderboard_title_mode', 'monitoring')) === 'monitoring' ? 'checked' : '' }}>
+                                <div class="flex flex-col gap-1 p-4 rounded-xl border-2 border-slate-200 peer-checked:border-indigo-600 peer-checked:bg-indigo-50/50 hover:border-slate-300 transition shadow-sm h-full">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm font-bold text-slate-900">📋 Mode Monitoring Kedisiplinan (Rekomendasi)</span>
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-emerald-100 text-emerald-700">Resmi / Public</span>
+                                    </div>
+                                    <span class="text-xs text-slate-500 leading-relaxed mt-1">
+                                        Bahasa resmi & edukatif: <strong>"Papan Monitoring Kehadiran & Kedisiplinan Siswa"</strong>. Cocok dipasang di TV Lobby / Selasar Sekolah.
+                                    </span>
+                                </div>
+                            </label>
+
+                            <label class="relative cursor-pointer">
+                                <input type="radio" name="leaderboard_title_mode" value="shame" class="sr-only peer"
+                                       {{ old('leaderboard_title_mode', \App\Models\SchoolSetting::get('leaderboard_title_mode', 'monitoring')) === 'shame' ? 'checked' : '' }}>
+                                <div class="flex flex-col gap-1 p-4 rounded-xl border-2 border-slate-200 peer-checked:border-indigo-600 peer-checked:bg-indigo-50/50 hover:border-slate-300 transition shadow-sm h-full">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm font-bold text-slate-900">🔥 Mode Hall of Shame (Kompetitif)</span>
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-amber-100 text-amber-800">Kompetitif</span>
+                                    </div>
+                                    <span class="text-xs text-slate-500 leading-relaxed mt-1">
+                                        Bahasa tegas & kompetitif: <strong>"Hall of Shame — Siswa Paling Sering Terlambat"</strong>. Cocok untuk internal Ruang Guru / BK.
+                                    </span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Mode Privasi Nama Siswa -->
+                    <div>
+                        <label class="form-label font-bold text-slate-800">Mode Privasi Nama Siswa di Layar TV</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+                            <label class="relative cursor-pointer">
+                                <input type="radio" name="leaderboard_privacy_mode" value="full" class="sr-only peer"
+                                       {{ old('leaderboard_privacy_mode', \App\Models\SchoolSetting::get('leaderboard_privacy_mode', 'full')) === 'full' ? 'checked' : '' }}>
+                                <div class="flex flex-col gap-1 p-4 rounded-xl border-2 border-slate-200 peer-checked:border-indigo-600 peer-checked:bg-indigo-50/50 hover:border-slate-300 transition shadow-sm h-full">
+                                    <span class="text-sm font-bold text-slate-900">👤 Tampilkan Nama Lengkap (AHMAD FAUZAN)</span>
+                                    <span class="text-xs text-slate-500 leading-relaxed mt-1">
+                                        Nama lengkap siswa ditampilkan utuh tanpa sensor. Efektif memberikan efek jera & pembentukan karakter disiplin.
+                                    </span>
+                                </div>
+                            </label>
+
+                            <label class="relative cursor-pointer">
+                                <input type="radio" name="leaderboard_privacy_mode" value="privacy" class="sr-only peer"
+                                       {{ old('leaderboard_privacy_mode', \App\Models\SchoolSetting::get('leaderboard_privacy_mode', 'full')) === 'privacy' ? 'checked' : '' }}>
+                                <div class="flex flex-col gap-1 p-4 rounded-xl border-2 border-slate-200 peer-checked:border-indigo-600 peer-checked:bg-indigo-50/50 hover:border-slate-300 transition shadow-sm h-full">
+                                    <span class="text-sm font-bold text-slate-900">🔒 Mode Inisial Nama (AHMAD F.)</span>
+                                    <span class="text-xs text-slate-500 leading-relaxed mt-1">
+                                        Menjaga privasi siswa dengan otomatis menyingkat nama belakang (contoh: <em>AHMAD F.</em>).
+                                    </span>
+                                </div>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>

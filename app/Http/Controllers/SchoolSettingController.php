@@ -33,6 +33,8 @@ class SchoolSettingController extends Controller
             'kiosk_title' => 'nullable|string|max:255',
             'kiosk_subtitle' => 'nullable|string|max:255',
             'rate_limit_api' => 'required|integer|min:10|max:1000',
+            'leaderboard_title_mode' => 'required|in:monitoring,shame',
+            'leaderboard_privacy_mode' => 'required|in:full,privacy',
             'hari_efektif' => 'nullable|array',
             'hari_efektif.*' => 'in:Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday',
         ]);
@@ -42,6 +44,7 @@ class SchoolSettingController extends Controller
             'school_phone', 'school_email', 'footer_text',
             'kiosk_bg_type', 'kiosk_bg_color',
             'kiosk_title', 'kiosk_subtitle', 'rate_limit_api',
+            'leaderboard_title_mode', 'leaderboard_privacy_mode',
         ];
 
         foreach ($textFields as $field) {

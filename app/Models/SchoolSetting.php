@@ -106,6 +106,8 @@ class SchoolSetting extends Model
             'kiosk_subtitle' => 'Tempelkan Kartu RFID pada Reader',
             'rate_limit_api' => 60,
             'hari_efektif' => json_encode(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']),
+            'leaderboard_title_mode' => 'monitoring',
+            'leaderboard_privacy_mode' => 'full',
         ];
     }
 }

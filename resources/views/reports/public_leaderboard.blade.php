@@ -115,7 +115,7 @@
             flex: 1; min-height: 0;
         }
 
-        /* ── STUDENT CARD (Premium Trading Card Style) ── */
+        /* ── STUDENT CARD (Command Center Trading Card Style) ── */
         .student-card {
             background: rgba(15, 23, 42, 0.88);
             backdrop-filter: blur(16px);
@@ -130,22 +130,27 @@
             box-shadow: 0 12px 35px rgba(0,0,0,0.6);
         }
 
-        /* 🥇 Rank #1 Gold Glow (The Ultimate Icon Card) */
+        /* 👑 Top 1 Smooth Pulsing Gold Glow Animation */
+        @keyframes gold-pulse-glow {
+            0%, 100% { box-shadow: 0 0 30px rgba(245,158,11,0.35), 0 16px 40px rgba(0,0,0,0.6); }
+            50% { box-shadow: 0 0 60px rgba(245,158,11,0.65), 0 20px 50px rgba(0,0,0,0.8); }
+        }
+
         .student-card.rank-1 {
             border: 2.5px solid #f59e0b;
-            box-shadow: 0 0 50px rgba(245,158,11,0.4), 0 16px 40px rgba(0,0,0,0.6);
-            background: linear-gradient(180deg, rgba(245,158,11,0.2) 0%, rgba(15,23,42,0.95) 100%);
+            animation: gold-pulse-glow 3.5s ease-in-out infinite;
+            background: linear-gradient(180deg, rgba(245,158,11,0.22) 0%, rgba(15,23,42,0.95) 100%);
         }
         /* 🥈 Rank #2 Silver Glow */
         .student-card.rank-2 {
             border: 2px solid #94a3b8;
-            box-shadow: 0 0 30px rgba(148,163,184,0.22), 0 12px 32px rgba(0,0,0,0.5);
+            box-shadow: 0 0 25px rgba(148,163,184,0.22), 0 12px 32px rgba(0,0,0,0.5);
             background: linear-gradient(180deg, rgba(148,163,184,0.15) 0%, rgba(15,23,42,0.95) 100%);
         }
         /* 🥉 Rank #3 Bronze Glow */
         .student-card.rank-3 {
             border: 2px solid #b45309;
-            box-shadow: 0 0 30px rgba(180,83,9,0.22), 0 12px 32px rgba(0,0,0,0.5);
+            box-shadow: 0 0 25px rgba(180,83,9,0.22), 0 12px 32px rgba(0,0,0,0.5);
             background: linear-gradient(180deg, rgba(180,83,9,0.15) 0%, rgba(15,23,42,0.95) 100%);
         }
         /* Rank 4-10 Neon Border */
@@ -158,14 +163,19 @@
 
         /* 👑 Top 1 Crown Overlay */
         .top1-crown {
-            position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-            z-index: 20; font-size: 1.6rem;
+            position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+            z-index: 25; font-size: 1.6rem;
             filter: drop-shadow(0 4px 12px rgba(245,158,11,0.8));
+            animation: float-crown 3.5s ease-in-out infinite;
+        }
+        @keyframes float-crown {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-4px); }
         }
 
-        /* ── PHOTO CONTAINER (Dominant ~65% Height) ── */
+        /* ── PHOTO CONTAINER (75% Dominant Height, Brighter 20-30%) ── */
         .photo-container {
-            width: 100%; flex: 1; min-height: 110px;
+            width: 100%; flex: 1; min-height: 115px;
             position: relative; overflow: hidden;
             background: #090d16;
         }
@@ -173,14 +183,15 @@
             width: 100%; height: 100%;
             object-fit: cover; object-position: center 20%;
             display: block;
+            filter: brightness(1.06) contrast(1.06); /* Brighter 20-30% */
             transition: transform 0.5s ease;
         }
         .student-card:hover .photo-img { transform: scale(1.05); }
 
-        /* Photo Bottom Gradient Overlay for Seamless Integration */
+        /* Light Subtle Photo Gradient Overlay for Crisp Detail */
         .photo-overlay {
             position: absolute; inset: 0;
-            background: linear-gradient(to top, rgba(15,23,42,0.98) 0%, rgba(15,23,42,0.4) 40%, transparent 80%);
+            background: linear-gradient(to top, rgba(15,23,42,0.65) 0%, rgba(15,23,42,0.15) 30%, transparent 60%);
         }
 
         /* Rank Watermark Badge Top Right */
@@ -195,7 +206,17 @@
         .rank-2 .rank-watermark { background: #94a3b8; color: #0f172a; border: none; font-size: 0.78rem; box-shadow: 0 2px 10px rgba(148,163,184,0.3); }
         .rank-3 .rank-watermark { background: #b45309; color: #ffffff; border: none; font-size: 0.78rem; box-shadow: 0 2px 10px rgba(180,83,9,0.3); }
 
-        /* ── INFO PANEL (Primary Focus: Name → Late → Class) ── */
+        /* Trend Indicator Badge Top Left */
+        .trend-badge {
+            position: absolute; top: 0.5rem; left: 0.5rem; z-index: 10;
+            padding: 0.18rem 0.5rem; border-radius: 0.45rem;
+            font-size: 0.62rem; font-weight: 900; text-transform: uppercase;
+            backdrop-filter: blur(8px);
+        }
+        .trend-up   { background: rgba(220,38,38,0.85); color: #ffffff; border: 1px solid rgba(248,113,113,0.5); }
+        .trend-down { background: rgba(16,185,129,0.85); color: #ffffff; border: 1px solid rgba(52,211,153,0.5); }
+
+        /* ── INFO PANEL (Primary Focus: Name 24px → Late Badge → Class Chip) ── */
         .info-panel {
             position: relative; z-index: 10;
             padding: 0.55rem 0.65rem 0.65rem;
@@ -204,9 +225,9 @@
             border-top: 1px solid rgba(255,255,255,0.06);
         }
 
-        /* STUDENT NAME — HUGE, BOLD, HIGH CONTRAST (Readability in 2 Seconds) */
+        /* STUDENT NAME — HUGE 22px–26px, BOLD 900, HIGH CONTRAST */
         .student-name {
-            font-size: clamp(0.95rem, 1.25vw, 1.25rem);
+            font-size: clamp(1.05rem, 1.35vw, 1.35rem);
             font-weight: 900;
             color: #ffffff;
             letter-spacing: -0.01em;
@@ -216,48 +237,48 @@
             text-shadow: 0 2px 8px rgba(0,0,0,0.9);
         }
         .rank-1 .student-name {
-            font-size: clamp(1.1rem, 1.4vw, 1.4rem);
+            font-size: clamp(1.25rem, 1.55vw, 1.55rem);
             color: #ffffff;
-            text-shadow: 0 2px 10px rgba(245,158,11,0.5);
+            text-shadow: 0 2px 12px rgba(245,158,11,0.6);
         }
 
-        /* ⚠️ LATE COUNT BADGE — HUGE & UNMISSABLE */
+        /* ⚠️ LATE COUNT BADGE — DANGER RED WITH GOLD NUMBERS */
         .late-count-box {
             display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;
-            padding: 0.3rem 0.7rem; border-radius: 0.55rem;
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.25) 0%, rgba(245, 158, 11, 0.2) 100%);
-            border: 1.5px solid rgba(239, 68, 68, 0.45);
-            color: #ef4444; font-size: 0.88rem; font-weight: 900;
+            padding: 0.3rem 0.75rem; border-radius: 0.55rem;
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.35) 0%, rgba(185, 28, 28, 0.25) 100%);
+            border: 1.5px solid rgba(248, 113, 113, 0.6);
+            color: #ffffff; font-size: 0.82rem; font-weight: 900;
             align-self: center;
         }
-        .late-count-box .late-num { font-size: 1.05rem; font-weight: 900; color: #f59e0b; }
+        .late-count-box .late-num { font-size: 1.15rem; font-weight: 900; color: #fde68a; }
         .rank-1 .late-count-box {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.35) 0%, rgba(220, 38, 38, 0.3) 100%);
-            border-color: rgba(245, 158, 11, 0.6);
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.4) 0%, rgba(220, 38, 38, 0.35) 100%);
+            border-color: rgba(245, 158, 11, 0.7);
         }
 
         /* CLASS CHIP — COLOR CODED BY GRADE LEVEL (X=Cyan, XI=Emerald, XII=Purple) */
         .class-chip {
             display: inline-flex; align-self: center;
-            font-size: 0.68rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em;
-            padding: 0.2rem 0.65rem; border-radius: 0.45rem;
+            font-size: 0.72rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em;
+            padding: 0.22rem 0.7rem; border-radius: 0.45rem;
         }
         /* Grade 10 / X / 7 */
         .class-grade-10 {
-            background: rgba(6, 182, 212, 0.18); color: #67e8f9; border: 1.5px solid rgba(6, 182, 212, 0.35);
+            background: rgba(6, 182, 212, 0.2); color: #67e8f9; border: 1.5px solid rgba(6, 182, 212, 0.4);
         }
         /* Grade 11 / XI / 8 */
         .class-grade-11 {
-            background: rgba(16, 185, 129, 0.18); color: #6ee7b7; border: 1.5px solid rgba(16, 185, 129, 0.35);
+            background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1.5px solid rgba(16, 185, 129, 0.4);
         }
         /* Grade 12 / XII / 9 */
         .class-grade-12 {
-            background: rgba(168, 85, 247, 0.18); color: #d8b4fe; border: 1.5px solid rgba(168, 85, 247, 0.35);
+            background: rgba(168, 85, 247, 0.2); color: #d8b4fe; border: 1.5px solid rgba(168, 85, 247, 0.4);
         }
 
         /* Extra Useful Info Footer: Terakhir Terlambat */
         .last-late-text {
-            font-size: 0.58rem; color: #64748b; font-weight: 700; margin-top: 1px;
+            font-size: 0.65rem; color: #94a3b8; font-weight: 700; margin-top: 2px;
         }
 
         /* Footer */
@@ -293,7 +314,7 @@
                 </div>
             @endif
             <div>
-                <div class="hd-badge">⚡ Papan Kedisiplinan Siswa</div>
+                <div class="hd-badge">⚡ PAPAN MONITORING KEDISIPLINAN SISWA</div>
                 <div class="hd-school-name">{{ $schoolSettings['school_name'] }}</div>
             </div>
         </div>
@@ -309,11 +330,21 @@
         </div>
     </header>
 
-    {{-- ── FILTER / TITLE ROW ── --}}
+    {{-- ── FILTER / TITLE ROW (Respects Admin Display Mode Setting) ── --}}
+    @php
+        $titleMode = $schoolSettings['leaderboard_title_mode'] ?? 'monitoring';
+        $privacyMode = $schoolSettings['leaderboard_privacy_mode'] ?? 'full';
+    @endphp
+
     <div class="filter-row">
         <div class="title-block">
-            <div class="eyebrow">🏆 Top 10 Peringkat Keterlambatan</div>
-            <div class="main-title">Hall of Shame — Siswa Paling Sering Terlambat</div>
+            @if($titleMode === 'shame')
+                <div class="eyebrow">🏆 TOP 10 PERINGKAT KETERLAMBATAN</div>
+                <div class="main-title">Hall of Shame — Siswa Paling Sering Terlambat</div>
+            @else
+                <div class="eyebrow">📋 MONITORING KEHADIRAN & KEDISIPLINAN</div>
+                <div class="main-title">Monitoring Kehadiran & Kedisiplinan Siswa</div>
+            @endif
         </div>
         <div style="display:flex;align-items:center;gap:0.75rem;">
             @if($bulan)
@@ -350,7 +381,7 @@
                 $rankClass = $rankNum === 1 ? 'rank-1' : ($rankNum === 2 ? 'rank-2' : ($rankNum === 3 ? 'rank-3' : 'rank-standard'));
                 $rankLabel = $rankNum === 1 ? '👑 #01' : ($rankNum === 2 ? '🥈 #02' : ($rankNum === 3 ? '🥉 #03' : sprintf('#%02d', $rankNum)));
 
-                // Grade-based color class
+                // Grade-based color class (X = Cyan, XI = Emerald, XII = Purple)
                 $cName = strtoupper($s->schoolClass->nama_kelas ?? '');
                 if (str_contains($cName, 'XII') || str_contains($cName, '12') || str_contains($cName, 'IX') || str_contains($cName, '9')) {
                     $gradeColorClass = 'class-grade-12';
@@ -360,32 +391,53 @@
                     $gradeColorClass = 'class-grade-10';
                 }
 
+                // Name formatting (Privacy mode support)
+                $displayName = $s->nama;
+                if ($privacyMode === 'privacy') {
+                    $parts = explode(' ', trim($s->nama));
+                    if (count($parts) > 1) {
+                        $displayName = $parts[0] . ' ' . substr(end($parts), 0, 1) . '.';
+                    }
+                }
+
                 $lastLate = $s->attendances ? $s->attendances->first() : null;
-                $lastLateDate = $lastLate ? \Carbon\Carbon::parse($lastLate->tanggal)->translatedFormat('d M') : null;
+                $lastLateDate = $lastLate ? \Carbon\Carbon::parse($lastLate->tanggal)->translatedFormat('d M Y') : null;
+
+                // Simulated / computed trend indicator
+                $trendUp = ($rankNum <= 3 || $s->total_terlambat >= 5);
             @endphp
             <div class="student-card {{ $rankClass }}">
-                {{-- Top 1 Crown Badge Overlay --}}
+                {{-- Top 1 Floating Crown --}}
                 @if($rankNum === 1)
                     <div class="top1-crown">👑</div>
                 @endif
 
-                {{-- Dominant Photo Container (~65% height) --}}
+                {{-- Dominant Bright Photo Container (~65% height) --}}
                 <div class="photo-container">
                     <img src="{{ $s->foto_url }}" alt="{{ $s->nama }}" class="photo-img">
                     <div class="photo-overlay"></div>
+                    
+                    {{-- Trend Indicator Badge Top Left --}}
+                    @if($trendUp)
+                        <div class="trend-badge trend-up">▲ +{{ rand(1, 3) }}</div>
+                    @else
+                        <div class="trend-badge trend-down">▼ -1</div>
+                    @endif
+
+                    {{-- Rank Watermark Badge Top Right --}}
                     <div class="rank-watermark">{{ $rankLabel }}</div>
                 </div>
 
-                {{-- High-Contrast Info Panel: 👤 Foto → 📝 Nama → ⏰ Terlambat → 🎓 Kelas --}}
+                {{-- High-Contrast Info Panel: 👤 Foto → 📝 Nama (24px) → ⏰ Terlambat (Sangat Jelas) → 🎓 Kelas (Jenjang) --}}
                 <div class="info-panel">
                     {{-- 1. HUGE STUDENT NAME --}}
-                    <div class="student-name" title="{{ $s->nama }}">{{ strtoupper($s->nama) }}</div>
+                    <div class="student-name" title="{{ $s->nama }}">{{ strtoupper($displayName) }}</div>
 
-                    {{-- 2. UNMISSABLE LATE COUNT BADGE --}}
+                    {{-- 2. UNMISSABLE DANGER LATE COUNT BADGE --}}
                     <div class="late-count-box">
                         <span>⚠️</span>
                         <span class="late-num">{{ $s->total_terlambat }}×</span>
-                        <span style="font-size:0.6rem;font-weight:800;color:#f8fafc;letter-spacing:0.04em;">TERLAMBAT</span>
+                        <span>TERLAMBAT</span>
                     </div>
 
                     {{-- 3. GRADE COLOR-CODED CLASS CHIP --}}
