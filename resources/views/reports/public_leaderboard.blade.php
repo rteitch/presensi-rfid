@@ -61,6 +61,7 @@
         .hd-center-title { text-align: center; flex: 1; }
         .hd-center-title .eyebrow {
             font-size: 0.62rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.15em; color: #f59e0b;
+            display: flex; align-items: center; justify-content: center; gap: 0.35rem;
         }
         .hd-center-title .main-title {
             font-size: clamp(1.2rem, 1.8vw, 1.5rem); font-weight: 900; letter-spacing: -0.02em; color: #ffffff; margin-top: 1px;
@@ -97,6 +98,7 @@
         }
         .insight-pill.hadir { border-color: rgba(16,185,129,0.3); color: #34d399; }
         .insight-pill.terlambat { border-color: rgba(239,68,68,0.3); color: #f87171; }
+        .dot-indicator { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
 
         .period-chip {
             display: inline-flex; align-items: center; gap: 0.4rem;
@@ -161,11 +163,13 @@
             background: linear-gradient(180deg, rgba(180,83,9,0.12) 0%, rgba(15,23,42,0.95) 100%);
         }
 
-        /* 👑 Top 1 Crown Badge */
+        /* Top 1 SVG Crown Badge */
         .top1-crown {
             position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
-            z-index: 25; font-size: 1.5rem;
-            filter: drop-shadow(0 4px 10px rgba(245,158,11,0.8));
+            z-index: 25; width: 32px; height: 32px;
+            display: flex; align-items: center; justify-content: center;
+            background: #f59e0b; border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(245,158,11,0.6);
         }
 
         /* ── PHOTO CONTAINER (Full Card Background Frame) ── */
@@ -206,6 +210,7 @@
             font-size: 0.72rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.06em;
             backdrop-filter: blur(8px);
             background: rgba(2,6,23,0.8); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1;
+            display: inline-flex; align-items: center; gap: 0.3rem;
         }
         .rank-1 .rank-watermark { background: #f59e0b; color: #1c0a00; border: none; font-size: 0.78rem; box-shadow: 0 2px 10px rgba(245,158,11,0.4); }
         .rank-2 .rank-watermark { background: #94a3b8; color: #0f172a; border: none; font-size: 0.75rem; box-shadow: 0 2px 10px rgba(148,163,184,0.3); }
@@ -216,7 +221,7 @@
             position: absolute; top: 0.5rem; left: 0.5rem; z-index: 10;
             padding: 0.18rem 0.5rem; border-radius: 0.45rem;
             font-size: 0.62rem; font-weight: 900; text-transform: uppercase;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px); display: inline-flex; align-items: center; gap: 0.2rem;
         }
         .trend-up   { background: rgba(220,38,38,0.85); color: #ffffff; border: 1px solid rgba(248,113,113,0.5); }
         .trend-down { background: rgba(16,185,129,0.85); color: #ffffff; border: 1px solid rgba(52,211,153,0.5); }
@@ -256,9 +261,9 @@
             display: flex; align-items: center; justify-content: center; gap: 0.35rem; flex-wrap: wrap; width: 100%;
         }
 
-        /* ⚠️ LATE COUNT BADGE */
+        /* LATE COUNT BADGE */
         .late-count-box {
-            display: inline-flex; align-items: center; justify-content: center; gap: 0.25rem;
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem;
             padding: 0.18rem 0.5rem; border-radius: 0.45rem;
             background: linear-gradient(135deg, rgba(220, 38, 38, 0.45) 0%, rgba(185, 28, 28, 0.3) 100%);
             border: 1.5px solid rgba(248, 113, 113, 0.6);
@@ -338,10 +343,16 @@
         {{-- Center: Main Title --}}
         <div class="hd-center-title">
             @if($titleMode === 'shame')
-                <div class="eyebrow">🏆 TOP 10 PERINGKAT KETERLAMBATAN</div>
+                <div class="eyebrow">
+                    <svg class="w-3.5 h-3.5 text-amber-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                    <span>TOP 10 PERINGKAT KETERLAMBATAN</span>
+                </div>
                 <h1 class="main-title">Hall of Shame — Siswa Paling Sering Terlambat</h1>
             @else
-                <div class="eyebrow">⚡ PAPAN MONITORING KEDISIPLINAN SEKOLAH</div>
+                <div class="eyebrow">
+                    <svg class="w-3.5 h-3.5 text-amber-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    <span>PAPAN MONITORING KEDISIPLINAN SEKOLAH</span>
+                </div>
                 <h1 class="main-title">Monitoring Kehadiran & Kedisiplinan Siswa</h1>
             @endif
         </div>
@@ -361,20 +372,36 @@
     <div class="filter-row">
         {{-- Executive Insights Bar --}}
         <div class="insights-bar">
-            <div class="insight-pill hadir">🟢 {{ $todayStats['hadir'] ?? 0 }} Hadir</div>
-            <div class="insight-pill terlambat">🔴 {{ $todayStats['terlambat'] ?? 0 }} Terlambat</div>
-            <div class="insight-pill">🟡 {{ $todayStats['izin'] ?? 0 }} Izin</div>
-            <div class="insight-pill">⚪ {{ $todayStats['alpha'] ?? 0 }} Alpha</div>
+            <div class="insight-pill hadir">
+                <span class="dot-indicator bg-emerald-400"></span>
+                <span>{{ $todayStats['hadir'] ?? 0 }} Hadir</span>
+            </div>
+            <div class="insight-pill terlambat">
+                <span class="dot-indicator bg-rose-500"></span>
+                <span>{{ $todayStats['terlambat'] ?? 0 }} Terlambat</span>
+            </div>
+            <div class="insight-pill">
+                <span class="dot-indicator bg-amber-400"></span>
+                <span>{{ $todayStats['izin'] ?? 0 }} Izin</span>
+            </div>
+            <div class="insight-pill">
+                <span class="dot-indicator bg-slate-400"></span>
+                <span>{{ $todayStats['alpha'] ?? 0 }} Alpha</span>
+            </div>
         </div>
 
         {{-- Filter Controls --}}
         <div style="display:flex;align-items:center;gap:0.6rem;">
             @if($bulan)
                 <div class="period-chip">
-                    📅 {{ \Carbon\Carbon::parse($bulan.'-01')->translatedFormat('F Y') }}
+                    <svg class="w-3.5 h-3.5 text-amber-500 shrink-0 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    <span>{{ \Carbon\Carbon::parse($bulan.'-01')->translatedFormat('F Y') }}</span>
                 </div>
             @else
-                <div class="period-chip">🕒 Semua Waktu</div>
+                <div class="period-chip">
+                    <svg class="w-3.5 h-3.5 text-amber-500 shrink-0 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <span>Semua Waktu</span>
+                </div>
             @endif
             <form method="GET" action="{{ route('public.leaderboard') }}" class="filter-controls">
                 <input type="month" name="bulan" value="{{ $bulan }}" class="fi">
@@ -401,7 +428,7 @@
             @php
                 $rankNum = $index + 1;
                 $rankClass = $rankNum === 1 ? 'rank-1' : ($rankNum === 2 ? 'rank-2' : ($rankNum === 3 ? 'rank-3' : 'rank-standard'));
-                $rankLabel = $rankNum === 1 ? '👑 Rank #1' : ($rankNum === 2 ? '🥈 Rank #2' : ($rankNum === 3 ? '🥉 Rank #3' : sprintf('#%02d', $rankNum)));
+                $rankLabel = sprintf('#%02d', $rankNum);
 
                 // Grade-based color class (X = Cyan, XI = Emerald, XII = Purple)
                 $cName = strtoupper($s->schoolClass->nama_kelas ?? '');
@@ -428,9 +455,11 @@
                 $trendUp = ($rankNum <= 3 || $s->total_terlambat >= 5);
             @endphp
             <div class="student-card {{ $rankClass }}">
-                {{-- Top 1 Crown Overlay --}}
+                {{-- Top 1 SVG Crown Badge --}}
                 @if($rankNum === 1)
-                    <div class="top1-crown">👑</div>
+                    <div class="top1-crown">
+                        <svg class="w-5 h-5 text-amber-950" fill="currentColor" viewBox="0 0 24 24"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/></svg>
+                    </div>
                 @endif
 
                 {{-- Full Background Photo Container --}}
@@ -443,13 +472,28 @@
                     
                     {{-- Trend Indicator Badge Top Left --}}
                     @if($trendUp)
-                        <div class="trend-badge trend-up">▲ +{{ rand(1, 2) }}</div>
+                        <div class="trend-badge trend-up">
+                            <svg class="w-3 h-3 text-white inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/></svg>
+                            <span>+{{ rand(1, 2) }}</span>
+                        </div>
                     @else
-                        <div class="trend-badge trend-down">▼ -1</div>
+                        <div class="trend-badge trend-down">
+                            <svg class="w-3 h-3 text-white inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+                            <span>-1</span>
+                        </div>
                     @endif
 
                     {{-- Rank Watermark Badge Top Right --}}
-                    <div class="rank-watermark">{{ $rankLabel }}</div>
+                    <div class="rank-watermark">
+                        @if($rankNum === 1)
+                            <svg class="w-3.5 h-3.5 text-amber-950 shrink-0 inline" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2L12 16.5 5.7 21l2.3-7.2-6-4.4h7.6z"/></svg>
+                        @elseif($rankNum === 2)
+                            <svg class="w-3.5 h-3.5 text-slate-800 shrink-0 inline" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2L12 16.5 5.7 21l2.3-7.2-6-4.4h7.6z"/></svg>
+                        @elseif($rankNum === 3)
+                            <svg class="w-3.5 h-3.5 text-amber-100 shrink-0 inline" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2L12 16.5 5.7 21l2.3-7.2-6-4.4h7.6z"/></svg>
+                        @endif
+                        <span>RANK {{ $rankLabel }}</span>
+                    </div>
                 </div>
 
                 {{-- Mac OS Frosted Glass Info Panel Floating at Bottom --}}
@@ -460,7 +504,7 @@
                     {{-- 2. META ROW: LATE BADGE & CLASS CHIP --}}
                     <div class="meta-row">
                         <div class="late-count-box">
-                            <span>⚠️</span>
+                            <svg class="w-3 h-3 text-amber-300 shrink-0 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             <span class="late-num">{{ $s->total_terlambat }}×</span>
                         </div>
                         <div class="class-chip {{ $gradeColorClass }}">
@@ -480,7 +524,9 @@
         @else
         {{-- Empty state --}}
         <div class="empty-state">
-            <div style="font-size:4.5rem;">🎉</div>
+            <div class="w-20 h-20 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
             <div style="font-size:1.4rem;font-weight:900;color:#fff;">Tidak Ada Keterlambatan!</div>
             <div style="font-size:0.85rem;color:#475569;">Semua siswa hadir tepat waktu pada periode ini.</div>
         </div>
