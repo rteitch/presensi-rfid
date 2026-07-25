@@ -1,10 +1,13 @@
-# 🚀 Grafana k6 Load Testing — RTH NEXUS Presensi RFID
+## ⚡ 1. Mengapa Menggunakan Docker Stack (Nginx + PHP-FPM)?
 
-Direktori ini berisi skrip pengujian beban (*load testing*) menggunakan **Grafana k6** untuk menguji performa, batas kapasitas (*throughput*), serta ketahanan sistem **Presensi RFID RTH NEXUS** pada jam-jam sibuk.
+> ⚠️ **Catatan Penting Performa**:
+> `php artisan serve` menggunakan web server bawaan PHP yang bersifat **single-threaded**. Saat diuji beban menggunakan `k6` (misal 50–500 siswa bersamaan), proses single-thread tersebut akan *choked/choking* (gagal melayani koneksi lain), sehingga halaman browser tidak bisa diakses.
+>
+> **Solusi**: Gunakan **Docker Stack (Nginx + PHP-FPM + Redis + MySQL)** via `./deploy.ps1` atau `./deploy.sh` agar aplikasi mampu menangani **ribuan request per detik (RPS)** tanpa memblokir web browser.
 
 ---
 
-## 🛠️ 1. Cara Instalasi Grafana k6
+## 🛠️ 2. Cara Instalasi Grafana k6
 
 ### Windows (via winget / choco / scoop):
 ```powershell
