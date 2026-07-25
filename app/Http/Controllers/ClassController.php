@@ -90,6 +90,13 @@ class ClassController extends Controller
 
     public function exportExcel(Request $request, SchoolClass $class)
     {
+        $user = $request->user();
+        if ($user && $user->hasRole('guru') && !$user->hasRole('admin')) {
+            if (!in_array($class->id, $user->managed_class_ids ?: [])) {
+                abort(403, 'Anda hanya dapat mengunduh data kelas binaan Anda.');
+            }
+        }
+
         $bulan = $request->input('bulan', now()->format('Y-m'));
         $year  = substr($bulan, 0, 4);
         $month = substr($bulan, 5, 2);
@@ -150,6 +157,13 @@ class ClassController extends Controller
 
     public function exportPdf(Request $request, SchoolClass $class)
     {
+        $user = $request->user();
+        if ($user && $user->hasRole('guru') && !$user->hasRole('admin')) {
+            if (!in_array($class->id, $user->managed_class_ids ?: [])) {
+                abort(403, 'Anda hanya dapat mengunduh data kelas binaan Anda.');
+            }
+        }
+
         $bulan = $request->input('bulan', now()->format('Y-m'));
         $year  = substr($bulan, 0, 4);
         $month = substr($bulan, 5, 2);

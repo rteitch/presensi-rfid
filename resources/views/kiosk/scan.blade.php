@@ -198,10 +198,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         let activeToken = urlParams.get('token') || localStorage.getItem('kiosk_device_token') || '';
 
-        if (!activeToken && activeDevices.length > 0) {
-            activeToken = activeDevices[0].token_device;
-            localStorage.setItem('kiosk_device_token', activeToken);
-        } else if (urlParams.get('token')) {
+        if (urlParams.get('token')) {
             localStorage.setItem('kiosk_device_token', urlParams.get('token'));
         }
 
@@ -224,14 +221,18 @@
             subMessage.innerText = "UID: " + uid;
             studentInfo.classList.add('hidden');
 
+            const reqHeaders = {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            };
+            if (activeToken) {
+                reqHeaders['X-Device-Token'] = activeToken;
+            }
+
             fetch('/api/rfid/scan', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'X-Device-Token': activeToken
-                },
+                headers: reqHeaders,
                 body: JSON.stringify({ rfid_uid: uid })
             })
             .then(res => res.json())

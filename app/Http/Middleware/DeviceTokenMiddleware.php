@@ -14,6 +14,15 @@ class DeviceTokenMiddleware
         $token = $request->header('X-Device-Token') ?? $request->input('device_token') ?? $request->query('token');
 
         if (! $token) {
+            if (auth('web')->check()) {
+                $device = Device::where('is_active', true)->first();
+                if ($device) {
+                    $request->attributes->set('device', $device);
+
+                    return $next($request);
+                }
+            }
+
             return response()->json([
                 'status' => 'error',
                 'message' => 'Maaf, token device RFID tidak disertakan.',

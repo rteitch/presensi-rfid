@@ -47,11 +47,11 @@ class LoginRequest extends FormRequest
         $this->ensureIsNotRateLimited();
 
         $expectedCaptcha = session('captcha_answer');
-        if ($expectedCaptcha !== null && (int) $this->input('captcha_answer') !== (int) $expectedCaptcha) {
+        if ($expectedCaptcha === null || (int) $this->input('captcha_answer') !== (int) $expectedCaptcha) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'captcha_answer' => 'Jawaban Captcha Matematika salah. Silakan coba lagi.',
+                'captcha_answer' => 'Jawaban Captcha Matematika salah atau sesi telah kedaluwarsa. Silakan muat ulang halaman.',
             ]);
         }
 

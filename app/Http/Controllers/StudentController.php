@@ -143,6 +143,13 @@ class StudentController extends Controller
 
     public function exportAttendance(Request $request, Student $student)
     {
+        $user = $request->user();
+        if ($user && $user->hasRole('guru') && !$user->hasRole('admin')) {
+            if (!in_array($student->class_id, $user->managed_class_ids ?: [])) {
+                abort(403, 'Anda hanya dapat mengunduh data presensi siswa dari kelas binaan Anda.');
+            }
+        }
+
         $bulan = $request->input('bulan', now()->format('Y-m'));
         $year  = substr($bulan, 0, 4);
         $month = substr($bulan, 5, 2);
