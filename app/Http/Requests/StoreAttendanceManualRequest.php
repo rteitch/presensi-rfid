@@ -14,10 +14,11 @@ class StoreAttendanceManualRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'student_id' => ['required', 'exists:students,id'],
-            'tanggal' => ['required', 'date'],
-            'status' => ['required', 'in:izin,sakit,alpha,hadir,terlambat'],
-            'keterangan' => ['nullable', 'string'],
+            'student_id'   => ['required', 'array', 'min:1'],
+            'student_id.*' => ['required', 'integer', 'exists:students,id'],
+            'tanggal'      => ['required', 'date'],
+            'status'       => ['required', 'in:izin,sakit,alpha,hadir,terlambat'],
+            'keterangan'   => ['nullable', 'string'],
         ];
     }
 }

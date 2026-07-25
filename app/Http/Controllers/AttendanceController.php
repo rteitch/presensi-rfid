@@ -61,26 +61,29 @@ class AttendanceController extends Controller
     {
         $data = $request->validated();
         $user = $request->user();
+        $isGuru = $user->hasRole('guru') && !$user->hasRole('admin');
+        $managedIds = $isGuru ? ($user->managed_class_ids ?: []) : null;
 
-        if ($user->hasRole('guru') && ! $user->hasRole('admin')) {
-            $student = Student::findOrFail($data['student_id']);
-            $managedIds = $user->managed_class_ids ?: [];
-            if (! in_array($student->class_id, $managedIds)) {
-                abort(403, 'Anda tidak berhak memasukkan presensi untuk siswa di luar kelas binaan Anda.');
+        $count = 0;
+        foreach ($data['student_id'] as $sid) {
+            if ($isGuru) {
+                $student = Student::findOrFail($sid);
+                if (!in_array($student->class_id, $managedIds)) {
+                    continue; // skip siswa di luar kelas binaan guru
+                }
             }
+
+            Attendance::updateOrCreate(
+                ['student_id' => $sid, 'tanggal' => $data['tanggal']],
+                ['status' => $data['status'], 'keterangan' => $data['keterangan'] ?? null]
+            );
+            $count++;
         }
 
-        Attendance::updateOrCreate(
-            [
-                'student_id' => $data['student_id'],
-                'tanggal' => $data['tanggal'],
-            ],
-            [
-                'status' => $data['status'],
-                'keterangan' => $data['keterangan'] ?? null,
-            ]
-        );
+        $msg = $count > 1
+            ? "Presensi manual untuk {$count} siswa telah berhasil disimpan."
+            : 'Data presensi manual telah berhasil disimpan.';
 
-        return back()->with('success', 'Data presensi manual telah berhasil disimpan.');
+        return back()->with('success', $msg);
     }
 }

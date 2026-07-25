@@ -286,7 +286,7 @@ class ComprehensiveIstqbCoverageTest extends TestCase
         ]);
 
         $response = $this->actingAs($this->admin)->post(route('attendances.manual'), [
-            'student_id' => $student->id,
+            'student_id' => [$student->id],
             'tanggal' => '2026-07-25',
             'status' => 'izin',
             'keterangan' => 'Izin via surat dokter',

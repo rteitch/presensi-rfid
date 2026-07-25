@@ -129,60 +129,43 @@
 
             <!-- Input Manual -->
             <div>
-                <div class="page-card overflow-visible" x-data="{
-                    selectedClass: '',
-                    searchQuery: '',
-                    selectedStudent: '',
-                    students: @js($students->map(function($st) {
-                        return [
-                            'id' => $st->id,
-                            'nama' => $st->nama,
-                            'class_id' => $st->class_id,
-                            'class_name' => $st->schoolClass->nama_kelas ?? '-'
-                        ];
-                    })),
-                    get filteredStudents() {
-                        return this.students.filter(st => {
-                            const matchesClass = this.selectedClass === '' || st.class_id.toString() === this.selectedClass;
-                            const matchesSearch = st.nama.toLowerCase().includes(this.searchQuery.toLowerCase());
-                            return matchesClass && matchesSearch;
-                        });
-                    }
-                }">
+                <div class="page-card">
                     <div class="px-5 py-4 border-b border-slate-100 bg-slate-50/50">
                         <h3 class="font-bold text-slate-800 text-sm">Input Presensi Manual & Izin</h3>
-                        <p class="text-xs text-slate-500 mt-0.5">Untuk siswa Izin, Sakit, atau Alpha, serta Izin Pulang Cepat di tengah hari tanpa scan RFID.</p>
+                        <p class="text-xs text-slate-500 mt-0.5">Untuk siswa Izin, Sakit, Dispensasi, atau Alpha. Bisa pilih lebih dari 1 siswa sekaligus.</p>
                     </div>
                     <div class="p-5">
                         <form method="POST" action="{{ route('attendances.manual') }}" class="space-y-4">
                             @csrf
-                            <!-- Filter Kelas untuk Siswa -->
+
+                            <!-- Select2 Multi-select Siswa -->
                             <div>
-                                <label class="form-label text-xs">Filter Kelas</label>
-                                <select x-model="selectedClass" @change="selectedStudent = ''" class="form-input text-sm">
-                                    <option value="">Semua Kelas</option>
+                                <label class="form-label font-bold text-slate-800">
+                                    Pilih Siswa
+                                    <span class="text-rose-500">*</span>
+                                    <span class="text-xs font-normal text-indigo-600 ml-1">(bisa pilih lebih dari 1)</span>
+                                </label>
+                                <select name="student_id[]" id="select-students" multiple required class="w-full" style="width:100%">
                                     @foreach($classes as $c)
-                                        <option value="{{ $c->id }}">{{ $c->nama_kelas }}</option>
+                                        @php $classStudents = $students->where('class_id', $c->id); @endphp
+                                        @if($classStudents->isNotEmpty())
+                                            <optgroup label="{{ $c->nama_kelas }}">
+                                                @foreach($classStudents as $st)
+                                                    <option value="{{ $st->id }}">{{ $st->nama }} — {{ $st->nis ?? 'NIS -' }}</option>
+                                                @endforeach
+                                            </optgroup>
+                                        @endif
                                     @endforeach
+                                    @php $noClassStudents = $students->whereNull('class_id'); @endphp
+                                    @if($noClassStudents->isNotEmpty())
+                                        <optgroup label="— Tanpa Kelas —">
+                                            @foreach($noClassStudents as $st)
+                                                <option value="{{ $st->id }}">{{ $st->nama }} — {{ $st->nis ?? 'NIS -' }}</option>
+                                            @endforeach
+                                        </optgroup>
+                                    @endif
                                 </select>
-                            </div>
-
-                            <!-- Cari Nama Siswa -->
-                            <div>
-                                <label class="form-label text-xs">Cari Nama Siswa</label>
-                                <input type="text" x-model="searchQuery" @input="selectedStudent = ''" placeholder="Ketik nama siswa..." class="form-input text-sm">
-                            </div>
-
-                            <!-- Pilih Siswa dari Hasil Filter -->
-                            <div>
-                                <label class="form-label font-bold text-slate-800">Pilih Siswa <span class="text-rose-500">*</span></label>
-                                <select name="student_id" x-model="selectedStudent" required class="form-input text-sm font-semibold">
-                                    <option value="">— Pilih Siswa ( <span x-text="filteredStudents.length"></span> siswa ) —</option>
-                                    <template x-for="st in filteredStudents" :key="st.id">
-                                        <option :value="st.id" x-text="st.nama + ' (' + st.class_name + ')'"></option>
-                                    </template>
-                                </select>
-                                <p x-show="filteredStudents.length === 0" class="text-xs text-rose-500 mt-1 font-medium">Tidak ada siswa ditemukan dari filter tersebut.</p>
+                                <p class="text-[11px] text-slate-400 mt-1.5">Ketik nama/NIS untuk mencari. Klik+Ctrl untuk pilih banyak, atau gunakan kotak pencarian Select2.</p>
                             </div>
 
                             <div>
@@ -192,7 +175,7 @@
                             <div>
                                 <label class="form-label font-bold text-slate-800">Status Presensi <span class="text-rose-500">*</span></label>
                                 <select name="status" required class="form-input text-sm font-semibold">
-                                    <option value="izin">Izin / Pulang Cepat</option>
+                                    <option value="izin">Izin / Pulang Cepat / Dispensasi</option>
                                     <option value="sakit">Sakit</option>
                                     <option value="alpha">Alpha (Tanpa Keterangan)</option>
                                     <option value="hadir">Hadir (Manual)</option>
@@ -201,8 +184,8 @@
                             </div>
                             <div>
                                 <label class="form-label font-bold text-slate-800">Keterangan / Alasan</label>
-                                <textarea name="keterangan" rows="3" placeholder="Contoh: Izin keluar jam 10:00 karena sakit, atau ada keperluan keluarga..." class="form-input text-sm resize-none"></textarea>
-                                <p class="text-[11px] text-slate-400 mt-1">Catatan: Mengisi presensi manual akan menimpa/memperbarui data presensi siswa hari tersebut.</p>
+                                <textarea name="keterangan" rows="3" placeholder="Contoh: Dispensasi lomba matematika tingkat kota, atau Izin pulang jam 10:00..." class="form-input text-sm resize-none"></textarea>
+                                <p class="text-[11px] text-slate-400 mt-1">Catatan: Data presensi siswa terpilih di tanggal tersebut akan diperbarui.</p>
                             </div>
                             <button type="submit" class="btn-primary w-full justify-center shadow-sm">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
@@ -214,4 +197,73 @@
             </div>
         </div>
     </div>
+
+    {{-- Select2 --}}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <style>
+        .select2-container { width: 100% !important; }
+        .select2-container--default .select2-selection--multiple {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            min-height: 42px;
+            background: white;
+            font-size: 0.875rem;
+        }
+        .select2-container--default.select2-container--focus .select2-selection--multiple {
+            border-color: #6366f1;
+            outline: none;
+            box-shadow: 0 0 0 3px rgb(99 102 241 / 0.15);
+        }
+        .select2-dropdown {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 30px rgb(0 0 0 / 0.1);
+            font-size: 0.875rem;
+        }
+        .select2-container--default .select2-results__option--highlighted[aria-selected] {
+            background-color: #6366f1;
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background-color: #6366f1;
+            border: none;
+            color: white;
+            border-radius: 0.375rem;
+            padding: 1px 8px;
+            font-size: 0.75rem;
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+            color: rgba(255,255,255,0.8);
+            margin-right: 4px;
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover { color: white; }
+        .select2-search--dropdown .select2-search__field {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.375rem;
+            padding: 0.4rem 0.6rem;
+        }
+        .select2-results__group {
+            color: #64748b;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            padding: 6px 12px 3px;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            $('#select-students').select2({
+                placeholder: '🔍 Ketik nama atau NIS siswa...',
+                allowClear: true,
+                width: '100%',
+                language: {
+                    noResults: function() { return "Siswa tidak ditemukan"; },
+                    searching: function() { return "Mencari..."; },
+                    inputTooShort: function() { return ""; },
+                }
+            });
+        });
+    </script>
 </x-app-layout>
