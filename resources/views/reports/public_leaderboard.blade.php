@@ -7,7 +7,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html, body {
@@ -18,20 +18,21 @@
             overflow: hidden; /* Full-screen TV mode: no scrollbar */
         }
 
-        /* ── Enterprise Dark Background (Vercel / Linear Aesthetic) ── */
+        /* ── Cosmic Dark Background ── */
         .bg-cosmos {
             position: fixed; inset: 0; z-index: 0;
             background:
-                radial-gradient(ellipse 120% 50% at 50% -10%, rgba(99,102,241,0.2) 0%, transparent 60%),
-                radial-gradient(ellipse 50% 40% at 100% 100%, rgba(245,158,11,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse 130% 60% at 50% -10%, rgba(99,102,241,0.3) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 85% 90%,  rgba(245,158,11,0.15) 0%, transparent 55%),
+                radial-gradient(ellipse 60% 50% at 15% 90%,  rgba(139,92,246,0.15) 0%, transparent 55%),
                 #020617;
         }
         .bg-grid {
             position: fixed; inset: 0; z-index: 0;
             background-image:
-                linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
-            background-size: 50px 50px;
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
         }
 
         /* ── Page Layout ── */
@@ -40,80 +41,82 @@
         /* ── Top Header ── */
         header {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0.55rem 1.75rem;
-            border-bottom: 1px solid rgba(255,255,255,0.07);
+            padding: 0.6rem 1.75rem;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
             background: rgba(2,6,23,0.85);
             backdrop-filter: blur(20px);
             flex-shrink: 0;
         }
         .hd-left { display: flex; align-items: center; gap: 0.85rem; }
-        .hd-logo { height: 2.5rem; width: auto; object-fit: contain; }
+        .hd-logo { height: 2.6rem; width: auto; object-fit: contain; }
         .hd-logo-placeholder {
-            width: 40px; height: 40px; border-radius: 0.75rem;
+            width: 42px; height: 42px; border-radius: 0.75rem;
             background: linear-gradient(135deg,#6366f1,#8b5cf6);
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 16px rgba(99,102,241,0.3);
+            box-shadow: 0 4px 20px rgba(99,102,241,0.4);
         }
-        .hd-school-name { font-size: 1rem; font-weight: 800; letter-spacing: -0.01em; color: #ffffff; }
-        .hd-badge { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.12em; color: #f59e0b; font-weight: 900; }
+        .hd-school-name { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.01em; color: #ffffff; }
+        .hd-badge { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.12em; color: #f59e0b; font-weight: 900; }
 
         .live-pill {
             display: inline-flex; align-items: center; gap: 0.4rem;
-            padding: 0.28rem 0.75rem; border-radius: 9999px;
-            background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.25);
-            color: #34d399; font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;
+            padding: 0.3rem 0.8rem; border-radius: 9999px;
+            background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3);
+            color: #34d399; font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em;
         }
-        .live-dot { width: 6px; height: 6px; border-radius: 50%; background: #34d399; animation: blink 1.4s ease-in-out infinite; }
+        .live-dot { width: 7px; height: 7px; border-radius: 50%; background: #34d399; animation: blink 1.4s ease-in-out infinite; }
         @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 
         .clock-wrap { text-align: right; }
-        .clock-time { font-size: 1.5rem; font-weight: 900; letter-spacing: 0.04em; color: #f59e0b; line-height: 1; font-family: monospace; }
-        .clock-date { font-size: 0.62rem; color: #64748b; font-weight: 600; margin-top: 2px; }
+        .clock-time { font-size: 1.55rem; font-weight: 900; letter-spacing: 0.04em; color: #f59e0b; line-height: 1; font-family: monospace; }
+        .clock-date { font-size: 0.65rem; color: #94a3b8; font-weight: 600; margin-top: 2px; }
 
-        /* ── Sub Header / Filter & Insights Bar ── */
+        /* ── Sub Header / Filter Row ── */
         .filter-row {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0.5rem 1.75rem; flex-shrink: 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            background: rgba(15,23,42,0.35);
+            padding: 0.55rem 1.75rem; flex-shrink: 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            background: rgba(15,23,42,0.4);
         }
-        .title-block .eyebrow { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.15em; color: #f59e0b; font-weight: 900; }
+        .title-block .eyebrow { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.15em; color: #f59e0b; font-weight: 900; }
         .title-block .main-title {
-            font-size: clamp(1.15rem, 2.1vw, 1.5rem); font-weight: 900; letter-spacing: -0.03em;
-            color: #ffffff; line-height: 1.1;
+            font-size: clamp(1.2rem, 2.2vw, 1.55rem); font-weight: 900; letter-spacing: -0.03em;
+            background: linear-gradient(90deg, #fff 30%, #fde68a 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            line-height: 1.1;
         }
 
-        /* Today Insights Pills (Executive Briefing) */
+        /* Executive Insights Bar */
         .insights-bar {
-            display: flex; align-items: center; gap: 0.6rem;
+            display: flex; align-items: center; gap: 0.5rem;
         }
         .insight-pill {
             display: inline-flex; align-items: center; gap: 0.35rem;
-            padding: 0.22rem 0.6rem; border-radius: 0.45rem;
-            font-size: 0.65rem; font-weight: 800; background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.08); color: #cbd5e1;
+            padding: 0.25rem 0.65rem; border-radius: 0.5rem;
+            font-size: 0.68rem; font-weight: 800; background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1;
         }
         .insight-pill.hadir { border-color: rgba(16,185,129,0.3); color: #34d399; }
         .insight-pill.terlambat { border-color: rgba(239,68,68,0.3); color: #f87171; }
 
         .period-chip {
             display: inline-flex; align-items: center; gap: 0.4rem;
-            padding: 0.28rem 0.75rem; border-radius: 9999px;
-            background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2);
-            color: #f59e0b; font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em;
+            padding: 0.3rem 0.8rem; border-radius: 9999px;
+            background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.25);
+            color: #f59e0b; font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em;
         }
-        .filter-controls { display: flex; align-items: center; gap: 0.4rem; }
-        .fi { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #f1f5f9; font-size: 0.68rem; font-weight: 600; border-radius: 0.45rem; padding: 0.3rem 0.65rem; font-family: inherit; outline: none; }
+        .filter-controls { display: flex; align-items: center; gap: 0.5rem; }
+        .fi { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #f1f5f9; font-size: 0.72rem; font-weight: 600; border-radius: 0.5rem; padding: 0.35rem 0.75rem; font-family: inherit; outline: none; }
         .fi:focus { border-color: #f59e0b; }
         .fi option { background: #1e293b; }
-        .fb { background: #f59e0b; color: #1c0a00; font-size: 0.68rem; font-weight: 900; padding: 0.3rem 0.8rem; border-radius: 0.45rem; border: none; cursor: pointer; font-family: inherit; }
+        .fb { background: #f59e0b; color: #1c0a00; font-size: 0.72rem; font-weight: 900; padding: 0.35rem 0.9rem; border-radius: 0.5rem; border: none; cursor: pointer; font-family: inherit; }
         .fb:hover { background: #fbbf24; }
-        .rb { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; font-size: 0.68rem; font-weight: 700; padding: 0.3rem 0.65rem; border-radius: 0.45rem; text-decoration: none; font-family: inherit; }
+        .rb { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; font-size: 0.72rem; font-weight: 700; padding: 0.35rem 0.75rem; border-radius: 0.5rem; text-decoration: none; font-family: inherit; }
 
         /* ── Main Area ── */
         main {
             flex: 1; display: flex; flex-direction: column;
-            gap: 0.75rem; padding: 0.65rem 1.75rem 0.75rem;
+            gap: 0.75rem; padding: 0.75rem 1.75rem 0.85rem;
             min-height: 0; overflow: hidden;
         }
 
@@ -122,143 +125,157 @@
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             grid-template-rows: repeat(2, 1fr);
-            gap: 0.75rem;
+            gap: 0.85rem;
             flex: 1; min-height: 0;
         }
 
-        /* ── ENTERPRISE STUDENT CARD (Linear / Vercel Data-First Aesthetic) ── */
+        /* ── STUDENT CARD (High Precision Trading Card Proportion) ── */
         .student-card {
-            background: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(12px);
-            border-radius: 0.85rem;
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(16px);
+            border-radius: 1rem;
             display: flex; flex-direction: column;
             position: relative; overflow: hidden;
-            transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), border-color 0.25s ease, box-shadow 0.25s ease;
-            border: 1px solid rgba(255,255,255,0.07);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+            border: 1.5px solid rgba(255,255,255,0.1);
         }
         .student-card:hover {
             transform: translateY(-3px);
-            border-color: rgba(255,255,255,0.18);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.45);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+            border-color: rgba(245,158,11,0.5);
         }
 
-        /* Top Rank Highlights (Restrained & Elegant) */
+        /* Top Rank Highlights */
         .student-card.rank-1 {
-            border: 1.5px solid rgba(245,158,11,0.5);
-            background: linear-gradient(180deg, rgba(245,158,11,0.1) 0%, rgba(15,23,42,0.85) 100%);
-            animation: top1-glow-pulse 4s ease-in-out infinite;
+            border: 2.5px solid #f59e0b;
+            box-shadow: 0 0 35px rgba(245,158,11,0.3), 0 12px 30px rgba(0,0,0,0.5);
+            background: linear-gradient(180deg, rgba(245,158,11,0.18) 0%, rgba(15,23,42,0.95) 100%);
         }
-        @keyframes top1-glow-pulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(245,158,11,0.2), 0 8px 25px rgba(0,0,0,0.5); }
-            50% { box-shadow: 0 0 35px rgba(245,158,11,0.4), 0 10px 30px rgba(0,0,0,0.6); }
-        }
-
         .student-card.rank-2 {
-            border: 1.5px solid rgba(148,163,184,0.35);
-            background: linear-gradient(180deg, rgba(148,163,184,0.06) 0%, rgba(15,23,42,0.85) 100%);
+            border: 2px solid #94a3b8;
+            box-shadow: 0 0 25px rgba(148,163,184,0.18), 0 10px 25px rgba(0,0,0,0.4);
+            background: linear-gradient(180deg, rgba(148,163,184,0.12) 0%, rgba(15,23,42,0.95) 100%);
         }
         .student-card.rank-3 {
-            border: 1.5px solid rgba(180,83,9,0.35);
-            background: linear-gradient(180deg, rgba(180,83,9,0.06) 0%, rgba(15,23,42,0.85) 100%);
+            border: 2px solid #b45309;
+            box-shadow: 0 0 25px rgba(180,83,9,0.18), 0 10px 25px rgba(0,0,0,0.4);
+            background: linear-gradient(180deg, rgba(180,83,9,0.12) 0%, rgba(15,23,42,0.95) 100%);
         }
 
-        /* Top Header inside Card (Rank + Trend Indicator) */
-        .card-top-bar {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 0.4rem 0.6rem 0.35rem; z-index: 10;
+        /* 👑 Top 1 Crown Badge */
+        .top1-crown {
+            position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+            z-index: 25; font-size: 1.5rem;
+            filter: drop-shadow(0 4px 10px rgba(245,158,11,0.8));
         }
 
-        .rank-pill {
-            display: inline-flex; align-items: center; gap: 0.3rem;
-            padding: 0.15rem 0.5rem; border-radius: 0.4rem;
-            font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em;
-            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #cbd5e1;
-        }
-        .rank-1 .rank-pill { background: #f59e0b; color: #1c0a00; border: none; font-weight: 900; }
-        .rank-2 .rank-pill { background: rgba(148,163,184,0.25); color: #f1f5f9; border: 1px solid rgba(148,163,184,0.4); }
-        .rank-3 .rank-pill { background: rgba(180,83,9,0.25); color: #fed7aa; border: 1px solid rgba(180,83,9,0.4); }
-
-        .trend-chip {
-            font-size: 0.58rem; font-weight: 800; padding: 0.12rem 0.4rem; border-radius: 0.35rem;
-        }
-        .trend-up   { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
-        .trend-down { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
-
-        /* ── PHOTO CONTAINER (~45% Card Height — Data-First Whitespace Balance) ── */
+        /* ── PHOTO CONTAINER (Proper 60-65% Height - Face Fully Visible!) ── */
         .photo-container {
-            width: 100%; height: 125px;
+            width: 100%; flex: 1.8; min-height: 180px;
             position: relative; overflow: hidden;
             background: #090d16;
-            margin: 0.2rem 0.5rem 0; width: calc(100% - 1rem);
-            border-radius: 0.65rem; border: 1px solid rgba(255,255,255,0.08);
-            flex-shrink: 0;
         }
         .photo-img {
             width: 100%; height: 100%;
-            object-fit: cover; object-position: center 20%;
+            object-fit: cover; object-position: center 15%;
             display: block;
-            filter: brightness(1.05) contrast(1.05); /* Realistic Natural Lighting */
-            transition: transform 0.4s ease;
+            filter: brightness(1.05) contrast(1.05);
+            transition: transform 0.5s ease;
         }
-        .student-card:hover .photo-img { transform: scale(1.03); }
+        .student-card:hover .photo-img { transform: scale(1.04); }
 
+        /* Light Bottom Gradient Overlay */
         .photo-overlay {
             position: absolute; inset: 0;
-            background: linear-gradient(to top, rgba(15,23,42,0.5) 0%, transparent 60%);
+            background: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.3) 30%, transparent 60%);
         }
 
-        /* ── DATA PANEL (Clean Data-First Hierarchy) ── */
-        .data-panel {
-            padding: 0.55rem 0.6rem 0.55rem;
-            display: flex; flex-direction: column; justify-content: space-between;
-            flex: 1; text-align: center; gap: 0.3rem;
+        /* Rank Watermark Badge Top Right */
+        .rank-watermark {
+            position: absolute; top: 0.5rem; right: 0.5rem; z-index: 10;
+            padding: 0.2rem 0.6rem; border-radius: 9999px;
+            font-size: 0.72rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.06em;
+            backdrop-filter: blur(8px);
+            background: rgba(2,6,23,0.75); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1;
+        }
+        .rank-1 .rank-watermark { background: #f59e0b; color: #1c0a00; border: none; font-size: 0.78rem; box-shadow: 0 2px 10px rgba(245,158,11,0.4); }
+        .rank-2 .rank-watermark { background: #94a3b8; color: #0f172a; border: none; font-size: 0.75rem; box-shadow: 0 2px 10px rgba(148,163,184,0.3); }
+        .rank-3 .rank-watermark { background: #b45309; color: #ffffff; border: none; font-size: 0.75rem; box-shadow: 0 2px 10px rgba(180,83,9,0.3); }
+
+        /* Trend Indicator Badge Top Left */
+        .trend-badge {
+            position: absolute; top: 0.5rem; left: 0.5rem; z-index: 10;
+            padding: 0.18rem 0.5rem; border-radius: 0.45rem;
+            font-size: 0.62rem; font-weight: 900; text-transform: uppercase;
+            backdrop-filter: blur(8px);
+        }
+        .trend-up   { background: rgba(220,38,38,0.85); color: #ffffff; border: 1px solid rgba(248,113,113,0.5); }
+        .trend-down { background: rgba(16,185,129,0.85); color: #ffffff; border: 1px solid rgba(52,211,153,0.5); }
+
+        /* ── INFO PANEL (Compact & High-Contrast - No Giant Void Gaps) ── */
+        .info-panel {
+            position: relative; z-index: 10;
+            padding: 0.55rem 0.65rem 0.6rem;
+            text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0.3rem;
+            background: rgba(15, 23, 42, 0.95);
+            border-top: 1px solid rgba(255,255,255,0.06);
+            flex: 1;
         }
 
-        /* STUDENT NAME — CLEAN, BOLD 800, HIGH LEGIBILITY */
+        /* STUDENT NAME — BOLD, CLEAR, HIGH CONTRAST */
         .student-name {
-            font-size: clamp(0.88rem, 1.1vw, 1.15rem);
+            font-size: clamp(0.9rem, 1.1vw, 1.15rem);
             font-weight: 900;
             color: #ffffff;
             letter-spacing: -0.01em;
             line-height: 1.2;
             text-transform: uppercase;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            width: 100%;
+        }
+        .rank-1 .student-name {
+            font-size: clamp(1rem, 1.2vw, 1.25rem);
+            color: #ffffff;
+            text-shadow: 0 2px 8px rgba(245,158,11,0.5);
         }
 
-        /* LATE STAT BADGE — ENTERPRISE ALERT STYLING */
-        .late-stat-row {
-            display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+        /* META ROW: LATE BADGE & CLASS CHIP */
+        .meta-row {
+            display: flex; align-items: center; justify-content: center; gap: 0.4rem; flex-wrap: wrap; width: 100%;
         }
-        .late-badge {
-            display: inline-flex; align-items: center; gap: 0.3rem;
-            padding: 0.22rem 0.65rem; border-radius: 0.45rem;
-            background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35);
-            color: #f87171; font-size: 0.72rem; font-weight: 800;
+
+        /* ⚠️ LATE COUNT BADGE */
+        .late-count-box {
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.25rem;
+            padding: 0.2rem 0.55rem; border-radius: 0.45rem;
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.35) 0%, rgba(185, 28, 28, 0.25) 100%);
+            border: 1.5px solid rgba(248, 113, 113, 0.5);
+            color: #ffffff; font-size: 0.72rem; font-weight: 900;
         }
-        .late-badge .num { font-size: 0.95rem; font-weight: 900; color: #fde68a; }
+        .late-count-box .late-num { font-size: 0.95rem; font-weight: 900; color: #fde68a; }
 
         /* GRADE COLOR-CODED CLASS CHIP (X=Cyan, XI=Emerald, XII=Purple) */
         .class-chip {
             display: inline-flex; align-self: center;
-            font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
-            padding: 0.15rem 0.55rem; border-radius: 0.35rem;
+            font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.06em;
+            padding: 0.18rem 0.55rem; border-radius: 0.4rem;
         }
         /* Grade 10 / X / 7 */
         .class-grade-10 {
-            background: rgba(6, 182, 212, 0.15); color: #67e8f9; border: 1px solid rgba(6, 182, 212, 0.3);
+            background: rgba(6, 182, 212, 0.2); color: #67e8f9; border: 1.5px solid rgba(6, 182, 212, 0.4);
         }
         /* Grade 11 / XI / 8 */
         .class-grade-11 {
-            background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3);
+            background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1.5px solid rgba(16, 185, 129, 0.4);
         }
         /* Grade 12 / XII / 9 */
         .class-grade-12 {
-            background: rgba(168, 85, 247, 0.15); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.3);
+            background: rgba(168, 85, 247, 0.2); color: #d8b4fe; border: 1.5px solid rgba(168, 85, 247, 0.4);
         }
 
-        /* Human Touch: Terakhir Terlambat */
-        .last-late-date {
-            font-size: 0.6rem; color: #64748b; font-weight: 600;
+        /* Extra Useful Info Footer: Terakhir Terlambat */
+        .last-late-text {
+            font-size: 0.6rem; color: #64748b; font-weight: 700; margin-top: 1px;
         }
 
         /* Footer */
@@ -294,7 +311,7 @@
                 </div>
             @endif
             <div>
-                <div class="hd-badge">⚡ MONITORING KEDISIPLINAN SEKOAH</div>
+                <div class="hd-badge">⚡ MONITORING KEDISIPLINAN SEKOLAH</div>
                 <div class="hd-school-name">{{ $schoolSettings['school_name'] }}</div>
             </div>
         </div>
@@ -395,44 +412,46 @@
                 $trendUp = ($rankNum <= 3 || $s->total_terlambat >= 5);
             @endphp
             <div class="student-card {{ $rankClass }}">
-                {{-- Card Top Bar --}}
-                <div class="card-top-bar">
-                    <span class="rank-pill">{{ $rankLabel }}</span>
-                    @if($trendUp)
-                        <span class="trend-chip trend-up">▲ +{{ rand(1, 2) }}</span>
-                    @else
-                        <span class="trend-chip trend-down">▼ -1</span>
-                    @endif
-                </div>
+                {{-- Top 1 Crown Overlay --}}
+                @if($rankNum === 1)
+                    <div class="top1-crown">👑</div>
+                @endif
 
-                {{-- Photo Container (~45% height - Whitespace Data Balance) --}}
+                {{-- Full Portrait Photo Container (~65% height - Face 100% Fully Visible!) --}}
                 <div class="photo-container">
                     <img src="{{ $s->foto_url }}" alt="{{ $s->nama }}" class="photo-img">
                     <div class="photo-overlay"></div>
+                    
+                    {{-- Trend Indicator Badge Top Left --}}
+                    @if($trendUp)
+                        <div class="trend-badge trend-up">▲ +{{ rand(1, 2) }}</div>
+                    @else
+                        <div class="trend-badge trend-down">▼ -1</div>
+                    @endif
+
+                    {{-- Rank Watermark Badge Top Right --}}
+                    <div class="rank-watermark">{{ $rankLabel }}</div>
                 </div>
 
-                {{-- Clean Data Panel --}}
-                <div class="data-panel">
-                    {{-- 1. Student Name --}}
+                {{-- Compact Info Panel: No Giant Gaps --}}
+                <div class="info-panel">
+                    {{-- 1. STUDENT NAME --}}
                     <div class="student-name" title="{{ $s->nama }}">{{ strtoupper($displayName) }}</div>
 
-                    {{-- 2. Late Stat Badge --}}
-                    <div class="late-stat-row">
-                        <div class="late-badge">
+                    {{-- 2. META ROW: LATE COUNT BADGE & CLASS CHIP --}}
+                    <div class="meta-row">
+                        <div class="late-count-box">
                             <span>⚠️</span>
-                            <span class="num">{{ $s->total_terlambat }}×</span>
-                            <span style="font-size:0.55rem;font-weight:800;">TERLAMBAT</span>
+                            <span class="late-num">{{ $s->total_terlambat }}×</span>
+                        </div>
+                        <div class="class-chip {{ $gradeColorClass }}">
+                            {{ $s->schoolClass->nama_kelas ?? '—' }}
                         </div>
                     </div>
 
-                    {{-- 3. Grade Color Chip --}}
-                    <div class="class-chip {{ $gradeColorClass }}">
-                        {{ $s->schoolClass->nama_kelas ?? '—' }}
-                    </div>
-
-                    {{-- 4. Human Touch: Terakhir Terlambat --}}
+                    {{-- 3. TERAKHIR TERLAMBAT --}}
                     @if($lastLateDate)
-                        <div class="last-late-date">Terakhir: {{ $lastLateDate }}</div>
+                        <div class="last-late-text">Terakhir: {{ $lastLateDate }}</div>
                     @endif
                 </div>
             </div>
