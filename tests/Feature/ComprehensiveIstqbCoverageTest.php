@@ -429,4 +429,53 @@ class ComprehensiveIstqbCoverageTest extends TestCase
         $deleteRes->assertRedirect(route('devices.index'));
         $this->assertDatabaseMissing('devices', ['id' => $device->id]);
     }
+
+    /** 21. Concurrent RFID Scan Lock Race Condition */
+    public function test_concurrent_rfid_scan_race_condition(): void
+    {
+        $student = Student::create([
+            'class_id' => $this->class->id,
+            'nis' => '77889900',
+            'nama' => 'Concurrent Tap Student',
+            'rfid_uid' => '04LOCK123',
+            'status' => 'aktif',
+        ]);
+
+        $device = Device::create([
+            'nama_device' => 'Lock Device',
+            'token_device' => 'lock-token-99',
+            'tipe_device' => 'kiosk',
+            'is_active' => true,
+        ]);
+
+        // Lock cache key for 5 seconds to simulate concurrent active scan
+        $lockKey = "scan_lock_{$student->id}_" . date('Y-m-d');
+        \Illuminate\Support\Facades\Cache::lock($lockKey, 5)->get();
+
+        $response = $this->withHeader('X-Device-Token', 'lock-token-99')
+            ->postJson('/api/rfid/scan', ['rfid_uid' => '04LOCK123']);
+
+        $response->assertStatus(200)
+            ->assertJson(['success' => false, 'message' => 'Mohon tunggu sejenak sebelum melakukan tap kembali.']);
+    }
+
+    /** 22. External API Rate Limiting Enforcement */
+    public function test_external_api_rate_limiting_enforcement(): void
+    {
+        \App\Models\SchoolSetting::set('rate_limit_api', 2);
+
+        $integration = \App\Models\ApiIntegration::create([
+            'nama_aplikasi' => 'Rate Limit Test App',
+            'api_key' => 'rate-limit-key-777',
+            'is_active' => true,
+        ]);
+
+        // Request 1 & 2 succeed
+        $this->withHeader('X-API-Key', 'rate-limit-key-777')->getJson('/api/v1/attendances/rekap')->assertStatus(200);
+        $this->withHeader('X-API-Key', 'rate-limit-key-777')->getJson('/api/v1/attendances/rekap')->assertStatus(200);
+
+        // Request 3 is rate limited (429 Too Many Requests)
+        $res3 = $this->withHeader('X-API-Key', 'rate-limit-key-777')->getJson('/api/v1/attendances/rekap');
+        $res3->assertStatus(429);
+    }
 }
