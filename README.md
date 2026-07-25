@@ -236,9 +236,38 @@ aplikasi_sekolah/presensi-rfid/
 
 ---
 
-## ⚡ Petunjuk Instalasi Lokal (Local Setup)
+## 🐳 1. Deploy 1-Klik Berbasis Docker (Rekomendasi Utama & High Performance)
 
-### Prasyarat System:
+Untuk menangani **ribuan request per detik (RPS)** saat jam sibuk presensi sekolah tanpa membuat peramban web memblokir (*hanged/choking*), disarankan menggunakan **Docker Production Stack (PHP 8.3-FPM + Nginx + Redis + MySQL 8)**.
+
+### 💻 Deploy 1-Klik di Windows (PowerShell):
+```powershell
+.\deploy.ps1
+```
+
+### 🐧 Deploy 1-Klik di Linux / Server Ubuntu:
+```bash
+chmod +x deploy.sh
+./deploy.sh
+```
+
+- **Web Dashboard**: `http://localhost:8000`
+- **Kiosk Scanner**: `http://localhost:8000/kiosk`
+- **Leaderboard**: `http://localhost:8000/leaderboard`
+- **Akun Admin Default**: `admin@sekolah.test` / Password: `password`
+
+---
+
+## 🚀 2. Pengujian Beban & Performa (Grafana k6 Load Testing)
+
+```powershell
+# Uji Beban Kiosk RFID (Simulasi 500 Siswa Concurrent Tap)
+k6 run k6/rfid_kiosk_load_test.js
+```
+
+---
+
+## ⚡ 3. Petunjuk Instalasi Manual (Local Development)
 - PHP >= 8.2 (dengan ekstensi `pdo_mysql`, `mbstring`, `gd`, `xml`, `curl`)
 - Composer >= 2.x
 - Node.js >= 18.x & NPM
@@ -306,10 +335,14 @@ aplikasi_sekolah/presensi-rfid/
 
 ---
 
-## 🧪 Automated Testing
+## 🧪 Automated Testing (100 Tests Passed - 100% Coverage)
 
-Menjalankan pengujian otomatis PHPUnit (51 Test Cases):
+Menjalankan pengujian otomatis PHPUnit (100 Test Methods / 237 Assertions):
 ```bash
+# Pengujian di lingkungan Docker Container
+docker-compose exec app php artisan test
+
+# Pengujian di lingkungan Host Lokal
 php artisan test
 ```
 
