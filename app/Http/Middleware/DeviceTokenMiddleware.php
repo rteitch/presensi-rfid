@@ -15,7 +15,15 @@ class DeviceTokenMiddleware
 
         if (! $token) {
             if (auth('web')->check()) {
-                $device = Device::where('is_active', true)->first();
+                $deviceId = session('selected_device_id');
+                $device = $deviceId 
+                    ? Device::where('id', $deviceId)->where('is_active', true)->first()
+                    : Device::where('tipe_device', 'kiosk_browser')->where('is_active', true)->first();
+
+                if (! $device) {
+                    $device = Device::where('is_active', true)->first();
+                }
+
                 if ($device) {
                     $request->attributes->set('device', $device);
 
