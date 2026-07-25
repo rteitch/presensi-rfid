@@ -40,9 +40,9 @@
 
 ### 5. ⚙️ Enterprise Security, Audit Trail, Auto-Alpha & Monitoring
 - **Authentication Header**: Endpoint API `/api/rfid/scan` dilindungi middleware `device.token` (`X-Device-Token`). Pemindaian Kiosk dijamin **100% bebas hambatan** saat jam sibuk pagi hari.
-- **Konfigurasi UI Rate Limit (`/settings/school`)**: Admin dapat mengatur batas *Rate Limit API Pihak Ketiga* secara langsung dari halaman antarmuka Admin tanpa menyentuh kodingan.
+- **Konfigurasi UI Hari Sekolah Efektif & Rate Limit (`/settings/school`)**: Admin dapat mengatur hari-hari sekolah efektif secara universal via multi-checkbox (misal **5 Hari Kerja**, **6 Hari Kerja**, maupun **Pesantren / Sekolah Islam yang Libur di Hari Jumat**). Selain itu, Admin dapat mengatur batas *Rate Limit API Pihak Ketiga* langsung dari antarmuka Admin.
 - **Audit Trail / Activity Log (`/activity-logs`)**: Mencatat setiap jejak digital pembuatan, perubahan, dan penghapusan data (Model Siswa, Guru, Kelas, User, Pengaturan) lengkap dengan perbandingan data lama vs baru, alamat IP, dan User Agent.
-- **Auto-Mark Alpha (`php artisan attendance:auto-alpha`)**: Perintah scheduler harian (setiap jam 17:00 / setelah jam pulang) yang secara otomatis menandai siswa aktif tanpa presensi sebagai *Alpha* pada hari sekolah efektif (skip akhir pekan & kalender libur).
+- **Auto-Mark Alpha (`php artisan attendance:auto-alpha`)**: Perintah scheduler harian (setiap jam 17:00 / setelah jam pulang) yang secara otomatis menandai siswa aktif tanpa presensi sebagai *Alpha* pada hari sekolah efektif (skip otomatis pada hari libur rutin sekolah & kalender libur).
 - **Kalender Libur Sekolah (`/holidays`)**: Pengelolaan agenda libur nasional & sekolah lengkap dengan form Tambah & **Modal Edit Agenda**. Pemindaian RFID pada hari libur otomatis ditolak dengan pesan *"Hari Libur Sekolah"*.
 - **Health Check Endpoint (`/api/health`)**: Endpoint JSON real-time untuk memantau konektivitas Database MySQL, operasional Cache, dan status environment aplikasi.
 - **Soft Deletes & Anti-Cascade Wipeout**: Menghapus data siswa/guru melindungi riwayat presensi masa lalu agar tidak musnah terhapus.

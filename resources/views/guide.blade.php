@@ -169,8 +169,8 @@
                         <p class="text-slate-500 leading-relaxed">Mencatat riwayat pengubahan, pembuatan, dan penghapusan data secara detail termasuk perbandingan data lama vs baru, IP address, dan User Agent.</p>
                     </div>
                     <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-1">
-                        <span class="font-bold text-indigo-600 block">🗓️ Kalender Libur Sekolah (`/holidays`)</span>
-                        <p class="text-slate-500 leading-relaxed">Kelola agenda libur sekolah dengan fitur Tambah & Modal Edit. Pemindaian RFID pada hari libur akan ditolak otomatis.</p>
+                        <span class="font-bold text-indigo-600 block">🗓️ Kalender Libur Sekolah (`/holidays`) & Hari Efektif</span>
+                        <p class="text-slate-500 leading-relaxed">Kelola agenda libur sekolah & centang Hari Sekolah Efektif (Sekolah Umum 5/6 hari & Pesantren Jumat Libur). Scan RFID & Auto-Alpha otomatis libur pada hari non-efektif.</p>
                     </div>
                     <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-1">
                         <span class="font-bold text-indigo-600 block">🤖 Auto-Mark Alpha (`attendance:auto-alpha`)</span>
@@ -185,8 +185,8 @@
                         <p class="text-slate-500 leading-relaxed">Endpoint JSON real-time untuk memantau kesehatan koneksi database MySQL, operasional Cache, dan versi aplikasi.</p>
                     </div>
                     <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-1">
-                        <span class="font-bold text-indigo-600 block">⚡ Form Konfigurasi Rate Limit UI (`/settings/school`)</span>
-                        <p class="text-slate-500 leading-relaxed">Admin dapat mengatur batas request rate limit API pihak ketiga langsung via antarmuka web, sementara Kiosk RFID disetel bebas hambatan.</p>
+                        <span class="font-bold text-indigo-600 block">⚡ Form Konfigurasi Multi-Hari & Rate Limit (`/settings/school`)</span>
+                        <p class="text-slate-500 leading-relaxed">Admin dapat memilih multi-checkbox Hari Efektif Sekolah & mengatur batas request rate limit API pihak ketiga langsung via antarmuka web.</p>
                     </div>
                 </div>
             </div>
