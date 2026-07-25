@@ -66,7 +66,16 @@
             font-size: clamp(1.2rem, 1.8vw, 1.5rem); font-weight: 900; letter-spacing: -0.02em; color: #ffffff; margin-top: 1px;
         }
 
+        /* Clock & Integrated Live Indicator */
         .clock-wrap { text-align: right; width: 250px; }
+        .live-status-chip {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            font-size: 0.58rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em;
+            color: #34d399; margin-bottom: 2px;
+        }
+        .live-dot { width: 6px; height: 6px; border-radius: 50%; background: #34d399; animation: blink 1.4s ease-in-out infinite; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
         .clock-time { font-size: 1.55rem; font-weight: 900; letter-spacing: 0.04em; color: #f59e0b; line-height: 1; font-family: monospace; }
         .clock-date { font-size: 0.65rem; color: #94a3b8; font-weight: 600; margin-top: 2px; }
 
@@ -282,21 +291,15 @@
             font-size: 0.58rem; color: #cbd5e1; font-weight: 700; margin-top: 1px;
         }
 
-        /* ── Footer Area (With Centered Live Auto Refresh Pill) ── */
+        /* ── Clean Footer Area ── */
         footer {
             display: flex; align-items: center; justify-content: space-between;
             padding: 0.45rem 1.75rem; border-top: 1px solid rgba(255,255,255,0.06);
-            background: rgba(2,6,23,0.8);
-            flex-shrink: 0; font-size: 0.6rem; color: #475569; font-weight: 600;
+            background: rgba(2,6,23,0.85);
+            flex-shrink: 0; font-size: 0.62rem; color: #64748b; font-weight: 600;
         }
-        footer a { color: #64748b; text-decoration: none; font-weight: 700; }
-        footer a:hover { color: #94a3b8; }
-        .footer-center-live {
-            display: inline-flex; align-items: center; gap: 0.4rem;
-            padding: 0.22rem 0.75rem; border-radius: 9999px;
-            background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.25);
-            color: #34d399; font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;
-        }
+        footer a { color: #94a3b8; text-decoration: none; font-weight: 700; }
+        footer a:hover { color: #f8fafc; }
 
         /* Empty state */
         .empty-state {
@@ -343,8 +346,12 @@
             @endif
         </div>
 
-        {{-- Right: Live Clock --}}
+        {{-- Right: Integrated Live Clock & Status --}}
         <div class="clock-wrap">
+            <div class="live-status-chip">
+                <span class="live-dot"></span>
+                <span>Live · Auto Refresh (30s)</span>
+            </div>
             <div class="clock-time" id="live-clock">00:00:00</div>
             <div class="clock-date" id="live-date">—</div>
         </div>
@@ -480,15 +487,9 @@
         @endif
     </main>
 
-    {{-- ── FOOTER (With Centered Live Auto Refresh Pill) ── --}}
+    {{-- ── CLEAN FOOTER AREA ── --}}
     <footer>
         <span>© {{ date('Y') }} {{ $schoolSettings['school_name'] }}</span>
-        
-        <div class="footer-center-live">
-            <span class="live-dot"></span>
-            LIVE · AUTO REFRESH (30 Detik)
-        </div>
-
         <a href="{{ route('kiosk.scan') }}">↗ Buka Kiosk Scan · Powered by {{ $schoolSettings['app_name'] }}</a>
     </footer>
 
