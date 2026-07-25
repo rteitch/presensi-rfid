@@ -335,12 +335,12 @@ k6 run k6/rfid_kiosk_load_test.js
 
 ---
 
-## 🧪 Automated Testing (100 Tests Passed - 100% Coverage)
+## 🧪 4. Automated Testing (101 Tests Passed - 100% Coverage)
 
-Menjalankan pengujian otomatis PHPUnit (100 Test Methods / 237 Assertions):
+Menjalankan pengujian otomatis PHPUnit (101 Test Methods / 240 Assertions):
 ```bash
-# Pengujian di lingkungan Docker Container
-docker-compose exec app php artisan test
+# Pengujian di lingkungan Docker Container (Menggunakan In-Memory Session Array)
+docker-compose exec -T -e SESSION_DRIVER=array -e CACHE_STORE=array app php artisan test
 
 # Pengujian di lingkungan Host Lokal
 php artisan test
