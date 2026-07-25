@@ -190,6 +190,55 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Card Petunjuk Hardware RFID (USB Reader & IoT Microcontroller) -->
+            <div class="page-card p-6 space-y-4 border-l-4 border-l-indigo-600">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div>
+                        <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                            <span>🔌 Panduan Integrasi Alat Pemindai RFID (Hardware Guide)</span>
+                        </h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Petunjuk pemasangan alat reader RFID USB maupun mikrokontroler IoT mandiri.</p>
+                    </div>
+                    <span class="px-2.5 py-1 bg-indigo-50 text-indigo-700 text-[11px] font-bold rounded-lg border border-indigo-100">Dual Mode Architecture</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
+                    <!-- Option A: USB RFID Reader -->
+                    <div class="p-4 bg-indigo-50/50 rounded-xl border border-indigo-100 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-extrabold text-indigo-950 text-sm">Mode A: USB Desktop Reader (Plug & Play)</span>
+                            <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold rounded text-[10px]">Paling Mudah</span>
+                        </div>
+                        <p class="text-slate-600 leading-relaxed">
+                            Gunakan USB Reader RFID 125kHz (EM4100) atau 13.56MHz (Mifare) tipe <strong>USB HID Emulation Keyboard</strong>.
+                        </p>
+                        <ul class="list-disc list-inside text-slate-600 space-y-1 pt-1 font-medium">
+                            <li>Tanpa perlu driver khusus, langsung colok ke port USB Mini PC / Laptop Kiosk.</li>
+                            <li>Buka browser Kiosk di <code class="bg-white px-1.5 py-0.5 rounded text-indigo-700 font-bold border border-indigo-200">/kiosk</code> (mode full screen F11).</li>
+                            <li>Setiap tap kartu otomatis memicu suara audio chime dan popup visual kehadiran.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Option B: IoT Microcontroller -->
+                    <div class="p-4 bg-amber-50/50 rounded-xl border border-amber-100 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-extrabold text-amber-950 text-sm">Mode B: IoT Microcontroller (ESP32 / NodeMCU)</span>
+                            <span class="px-2 py-0.5 bg-amber-100 text-amber-800 font-bold rounded text-[10px]">Stand-Alone IoT</span>
+                        </div>
+                        <p class="text-slate-600 leading-relaxed">
+                            Gunakan ESP32 / ESP8266 + modul RFID RC522 / RDM6300 yang mengirim data via jaringan WiFi/Ethernet.
+                        </p>
+                        <div class="bg-slate-900 text-amber-300 font-mono text-[11px] p-2.5 rounded-lg overflow-x-auto space-y-1">
+                            <div>POST http://[IP_SERVER]:8000/api/rfid/scan</div>
+                            <div>Header: X-Device-Token: [TOKEN_DEVICE]</div>
+                            <div>Header: Content-Type: application/json</div>
+                            <div class="text-slate-400">Body: {"rfid_uid": "04A1B2C3", "device_id": "1"}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Content Tab 2: Guru / Wali Kelas -->

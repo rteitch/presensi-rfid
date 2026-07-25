@@ -269,6 +269,30 @@ Panel admin → **Pengguna** → **Tambah User**
 3. Salin **Device Token** yang dihasilkan
 4. Konfigurasi firmware Arduino/ESP32 dengan token tersebut
 
+#### 🔌 Panduan Arsitektur Hardware RFID
+Sistem mendukung 2 opsi arsitektur alat reader RFID:
+
+- **Mode A: USB Desktop Reader (Plug & Play - Mode Kiosk)**
+  - Tipe Reader: USB HID Emulation Keyboard (125kHz EM4100 atau 13.56MHz Mifare)
+  - Pemasangan: Colok langsung ke port USB PC / Mini PC Kiosk.
+  - Cara Kerja: Buka halaman `http://[server]:8000/kiosk`. Saat siswa tap kartu, reader otomatis mengetikkan UID dan memicu suara chime audio serta rekaman presensi.
+
+- **Mode B: IoT Microcontroller Standalone (ESP32 / NodeMCU / Arduino)**
+  - Modul RFID: RC522 (13.56MHz) atau RDM6300 (125kHz) via SPI/UART.
+  - Koneksi: WiFi / Ethernet Shield W5500.
+  - Payload POST:
+    ```http
+    POST /api/rfid/scan HTTP/1.1
+    Host: [IP_SERVER]:8000
+    X-Device-Token: [TOKEN_DEVICE_DARI_PANEL_ADMIN]
+    Content-Type: application/json
+
+    {
+      "rfid_uid": "04A1B2C3",
+      "device_id": "1"
+    }
+    ```
+
 ### 3. Mendaftarkan Siswa
 **Cara 1 — Manual:**
 - Buka **Siswa** → **Tambah Siswa**
