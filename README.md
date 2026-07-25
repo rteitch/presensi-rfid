@@ -293,6 +293,13 @@ Sistem mendukung 2 opsi arsitektur alat reader RFID:
     }
     ```
 
+#### 📍 Arsitektur Presensi Multi-Titik (Multi-Location & Multi-Kiosk)
+Sistem ini dirancang untuk mendukung pencatatan presensi di **banyak lokasi secara bersamaan** (contoh: Gerbang Utama, Gerbang Barat, Lobby Gedung B, Perpustakaan, Lab Komputer):
+1. **Pendaftaran Perangkat Per Titik**: Buat entri perangkat baru di menu **Devices** (`/devices`) untuk setiap titik fisik (misal: "Kiosk Gerbang Depan", "ESP32 Lobby Utama").
+2. **Token Unik Per Titik**: Setiap perangkat menerima `token_device` yang unik. Hal ini memungkinkan sistem mengidentifikasi lokasi spesifik di mana siswa melakukan tap.
+3. **Audit Trail Log Scan (`rfid_logs`)**: Semua aktivitas tap dari seluruh titik terekam secara terpusat di tabel `rfid_logs` beserta ID perangkat, waktu presensi, UID kartu, dan status respons API.
+4. **Proteksi Double-Tap Cross-Device**: Dilengkapi *Atomic Cache Lock* (5 detik) sehingga jika siswa mencoba melakukan tap di dua titik berbeda secara bersamaan, sistem hanya memproses tap pertama dan mencegah duplikasi presensi.
+
 ### 3. Mendaftarkan Siswa
 **Cara 1 — Manual:**
 - Buka **Siswa** → **Tambah Siswa**
