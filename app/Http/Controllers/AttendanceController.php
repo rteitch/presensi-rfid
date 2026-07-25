@@ -18,6 +18,7 @@ class AttendanceController extends Controller
 
         $tanggal = $request->input('tanggal', now()->toDateString());
         $classId = $request->input('class_id');
+        $search = $request->input('search');
 
         if ($isGuru) {
             $classes = SchoolClass::whereIn('id', $managedIds ?: [-1])->get();
@@ -38,6 +39,12 @@ class AttendanceController extends Controller
                     $q->where('class_id', $classId);
                 });
             })
+            ->when($search, function ($query, $search) {
+                $query->whereHas('student', function ($q) use ($search) {
+                    $q->where('nama', 'like', "%{$search}%")
+                      ->orWhere('nis', 'like', "%{$search}%");
+                });
+            })
             ->latest()
             ->paginate(20)
             ->withQueryString();
@@ -47,7 +54,7 @@ class AttendanceController extends Controller
             ->with('schoolClass')
             ->get();
 
-        return view('attendances.index', compact('attendances', 'tanggal', 'classes', 'classId', 'students'));
+        return view('attendances.index', compact('attendances', 'tanggal', 'classes', 'classId', 'students', 'search'));
     }
 
     public function storeManual(StoreAttendanceManualRequest $request)

@@ -28,25 +28,36 @@
                 <div class="page-card">
                     <!-- Filter Bar -->
                     <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50">
-                        <form method="GET" action="{{ route('attendances.index') }}" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <form method="GET" action="{{ route('attendances.index') }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3" id="attendance-filter-form">
                             <div>
                                 <label class="form-label">Tanggal</label>
-                                <input type="date" name="tanggal" value="{{ $tanggal }}" class="form-input" onchange="window.performAjaxSearch(this.form)">
+                                <input type="date" name="tanggal" value="{{ $tanggal }}" class="form-input" onchange="this.form.submit()">
                             </div>
                             <div>
                                 <label class="form-label">Kelas</label>
-                                <select name="class_id" class="form-input" onchange="window.performAjaxSearch(this.form)">
+                                <select name="class_id" class="form-input" onchange="this.form.submit()">
                                     <option value="">Semua Kelas</option>
                                     @foreach($classes as $c)
                                         <option value="{{ $c->id }}" {{ $classId == $c->id ? 'selected' : '' }}>{{ $c->nama_kelas }}</option>
                                     @endforeach
                                 </select>
                             </div>
+                            <div>
+                                <label class="form-label">Cari Siswa</label>
+                                <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Nama atau NIS..." class="form-input" oninput="clearTimeout(window._searchTimer); window._searchTimer = setTimeout(() => this.form.submit(), 500)">
+                            </div>
                             <div class="flex items-end">
-                                <button type="submit" class="btn-primary w-full justify-center" id="filter-btn">
-                                    Filter
-                                </button>
-                                <script>document.getElementById('filter-btn').style.display = 'none';</script>
+                                @if($search || $classId)
+                                    <a href="{{ route('attendances.index', ['tanggal' => $tanggal]) }}" class="btn-secondary w-full justify-center text-sm">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                        Reset Filter
+                                    </a>
+                                @else
+                                    <button type="submit" class="btn-primary w-full justify-center text-sm">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
+                                        Filter
+                                    </button>
+                                @endif
                             </div>
                         </form>
                     </div>
