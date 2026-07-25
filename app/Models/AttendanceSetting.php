@@ -33,8 +33,15 @@ class AttendanceSetting extends Model
             return null;
         }
 
-        return \Illuminate\Support\Facades\Cache::remember('active_attendance_setting_' . $year->id, 86400, function () use ($year) {
+        $setting = \Illuminate\Support\Facades\Cache::remember('active_attendance_setting_' . $year->id, 86400, function () use ($year) {
             return static::where('academic_year_id', $year->id)->first();
         });
+
+        if ($setting && !($setting instanceof self)) {
+            \Illuminate\Support\Facades\Cache::forget('active_attendance_setting_' . $year->id);
+            return static::where('academic_year_id', $year->id)->first();
+        }
+
+        return $setting;
     }
 }
