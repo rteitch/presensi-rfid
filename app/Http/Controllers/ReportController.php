@@ -142,7 +142,9 @@ class ReportController extends Controller
         $limit = 10;
         $classes = SchoolClass::all();
 
-        $students = Student::with(['schoolClass'])
+        $students = Student::with(['schoolClass', 'attendances' => function($q) {
+                $q->where('status', 'terlambat')->orderByDesc('tanggal')->orderByDesc('jam_masuk');
+            }])
             ->where('status', 'aktif')
             ->when($classId, fn ($q) => $q->where('class_id', $classId))
             ->withCount([
