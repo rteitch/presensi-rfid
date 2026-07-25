@@ -16,7 +16,10 @@ class ReportApiController extends Controller
      */
     public function rekap(Request $request): JsonResponse
     {
-        $request->validate(['bulan' => 'nullable|date_format:Y-m']);
+        $request->validate([
+            'bulan' => 'nullable|date_format:Y-m',
+            'class_id' => 'nullable|integer|exists:classes,id',
+        ]);
 
         $bulan = $request->input('bulan', now()->format('Y-m'));
         $classId = $request->input('class_id');

@@ -44,9 +44,32 @@ class UserManagementTest extends TestCase
 
         $response->assertRedirect(route('users.index'));
         $this->assertDatabaseHas('users', ['email' => 'newadmin@school.id']);
-        
+
         $newUser = User::where('email', 'newadmin@school.id')->first();
         $this->assertTrue($newUser->hasRole('admin'));
+
+        // Test login with created password (verifies no double hashing bug)
+        $this->post('/logout');
+        session(['captcha_answer' => 10]);
+        $loginResponse = $this->post('/login', [
+            'email' => 'newadmin@school.id',
+            'password' => 'password123',
+            'captcha_answer' => 10,
+        ]);
+        $this->assertAuthenticatedAs($newUser);
+    }
+
+    public function test_last_admin_cannot_delete_their_account(): void
+    {
+        $lastAdmin = User::factory()->create(['password' => bcrypt('password123')]);
+        $lastAdmin->assignRole('admin');
+
+        $response = $this->actingAs($lastAdmin)->delete(route('profile.destroy'), [
+            'password' => 'password123',
+        ]);
+
+        $response->assertSessionHasErrors('password', null, 'userDeletion');
+        $this->assertDatabaseHas('users', ['id' => $lastAdmin->id]);
     }
 
     public function test_non_admin_cannot_access_user_management(): void

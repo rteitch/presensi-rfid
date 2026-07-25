@@ -47,7 +47,7 @@ class UserController extends Controller
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+            'password' => $data['password'],
         ]);
 
         $user->assignRole($data['role']);
@@ -72,7 +72,7 @@ class UserController extends Controller
         ];
 
         if (! empty($data['password'])) {
-            $updateData['password'] = bcrypt($data['password']);
+            $updateData['password'] = $data['password'];
         }
 
         $user->update($updateData);
