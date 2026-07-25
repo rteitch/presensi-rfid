@@ -3,12 +3,13 @@
 > **Sistem Manajemen Presensi Sekolah Berbasis RFID**
 > Platform modern untuk pencatatan kehadiran siswa & guru menggunakan teknologi kartu RFID, dilengkapi dashboard analytics, kiosk layar sentuh, dan TV leaderboard command center.
 
-![Laravel](https://img.shields.io/badge/Laravel-13.x-red?logo=laravel) ![PHP](https://img.shields.io/badge/PHP-8.3+-purple?logo=php) ![Docker](https://img.shields.io/badge/Docker-Ready-blue?logo=docker) ![Tests](https://img.shields.io/badge/Tests-101%20Passed-brightgreen?logo=phpunit) ![License](https://img.shields.io/badge/License-MIT-green)
+![Laravel](https://img.shields.io/badge/Laravel-13.x-red?logo=laravel) ![PHP](https://img.shields.io/badge/PHP-8.3+-purple?logo=php) ![Docker](https://img.shields.io/badge/Docker-Ready-blue?logo=docker) ![Tests](https://img.shields.io/badge/Tests-104%20Passed-brightgreen?logo=phpunit) ![License](https://img.shields.io/badge/License-MIT-green)
 
 ---
 
 ## 📋 Daftar Isi
 
+- [Visualisasi & Diagram Arsitektur](#-visualisasi--diagram-arsitektur)
 - [Fitur Utama](#-fitur-utama)
 - [Tech Stack](#-tech-stack)
 - [Persyaratan Sistem](#-persyaratan-sistem)
@@ -21,6 +22,122 @@
 - [Deployment Produksi](#-deployment-produksi)
 - [Testing](#-testing)
 - [Arsitektur Database](#-arsitektur-database)
+
+---
+
+## 📊 Visualisasi & Diagram Arsitektur
+
+### 1. 🏗️ Diagram Arsitektur Sistem (System Architecture)
+
+```mermaid
+graph TD
+    subgraph HARDWARE["🔌 Layer Hardware & Readers"]
+        A1["Mode A: USB Desktop Reader (PC / Laptop)"]
+        A2["Mode B: Standalone IoT ESP32 / NodeMCU"]
+        A3["Mode C: Mobile Tablet / HP (USB OTG)"]
+    end
+
+    subgraph NETWORK["🌐 Layer Jaringan (Online / Offline LAN)"]
+        N1["HTTPS Cloud VPS / Domain (Online)"]
+        N2["Local Intranet LAN Server (Offline)"]
+    end
+
+    subgraph ENGINE["⚡ Core Engine Presensi (Laravel 13)"]
+        E1["Middleware Auth & X-Device-Token"]
+        E2["Atomic Cache Lock (5 Detik)"]
+        E3["Validasi Hari Efektif & Kalender Libur"]
+        E4["Attendance Rules Engine (Hadir / Terlambat)"]
+        E5["Auto-Alpha Scheduler (17:00)"]
+    end
+
+    subgraph DATA["🗄️ Layer Data & Cache"]
+        D1[("MySQL 8.0 Database")]
+        D2[("Redis 7 Cache & Queue")]
+    end
+
+    subgraph UI["🖥️ Layer Presentasi & Interaksi"]
+        U1["Kiosk Scanner Layar Sentuh (Audio Chime)"]
+        U2["TV Leaderboard Command Center (Auto-Refresh 30s)"]
+        U3["Dashboard Admin & Guru Wali Kelas"]
+        U4["Laporan PDF & Rekap Excel"]
+        U5["Notifikasi WhatsApp Orang Tua"]
+    end
+
+    A1 -->|Tap UID| N1
+    A2 -->|HTTP POST JSON| N1
+    A3 -->|Tap UID| N2
+    N1 --> E1
+    N2 --> E1
+    E1 --> E2
+    E2 --> E3
+    E3 --> E4
+    E4 --> D1
+    E4 --> D2
+    E5 --> D1
+    D1 --> U1
+    D1 --> U2
+    D1 --> U3
+    D1 --> U4
+    D1 --> U5
+```
+
+---
+
+### 2. 🔄 Flowchart Alur Proses Tap Presensi RFID (RFID Attendance Flowchart)
+
+```mermaid
+flowchart TD
+    Start(["Siswa Tap Kartu RFID pada Reader"]) --> CheckDevice{"Apakah Device Token Valid?"}
+    
+    CheckDevice -- Tidak --> ErrDevice["Return HTTP 401 Unauthorized / Token Invalid"]
+    CheckDevice -- Ya --> CheckLock{"Apakah Ada Cache Lock (5s)?"}
+    
+    CheckLock -- Ya (Double Tap) --> ErrLock["Return Warning: Mohon tunggu sejenak"]
+    CheckLock -- Tidak --> CheckRegistered{"Apakah Kartu RFID Terdaftar di Database?"}
+    
+    CheckRegistered -- Tidak --> LogUnregistered["Log Scan Unregistered (rfid_logs)"] --> RespUnregistered["Kiosk UI: Kartu Belum Terdaftar (Red Sound)"]
+    
+    CheckRegistered -- Ya --> CheckHoliday{"Apakah Hari Libur Sekolah?"}
+    
+    CheckHoliday -- Ya --> RespHoliday["Kiosk UI: Hari Libur Sekolah"]
+    CheckHoliday -- Tidak --> CheckAttendanceExists{"Apakah Sudah Pernah Tap Masuk Hari Ini?"}
+    
+    CheckAttendanceExists -- Belum --> CalcTime{"Bandingkan Jam Tap dengan Jam Batas Masuk"}
+    CalcTime -->|Kurang dari Jam Batas| StatusHadir["Status: HADIR (Tepat Waktu)"]
+    CalcTime -->|Lebih dari Jam Batas| StatusLate["Status: TERLAMBAT"]
+    
+    StatusHadir --> SaveAttendance["Simpan Kehadiran ke MySQL & Redis Cache"]
+    StatusLate --> SaveAttendance
+    
+    CheckAttendanceExists -- Sudah (Tap Kedua) --> TapPulang["Catat Jam Pulang (Exit Time)"] --> SaveAttendance
+    
+    SaveAttendance --> LogSuccess["Log Activity (rfid_logs & activity_logs)"]
+    LogSuccess --> KioskFeedback["Kiosk Display: Foto + Nama + Status + Audio Chime"]
+    KioskFeedback --> TVUpdate["Live TV Leaderboard Broadcast Auto-Update"]
+    
+    ErrDevice --> End(["Selesai"])
+    ErrLock --> End
+    RespUnregistered --> End
+    RespHoliday --> End
+    TVUpdate --> End
+```
+
+---
+
+### 3. 👥 Flowchart Hak Akses & Role System (RBAC Flowchart)
+
+```mermaid
+flowchart LR
+    User(["Pengguna Login"]) --> RoleCheck{"Cek Role Pengguna"}
+    
+    RoleCheck -->|Role: Admin| AdminView["👑 Dashboard Administrator"]
+    RoleCheck -->|Role: Guru| GuruView["👨‍🏫 Dashboard Guru Wali Kelas"]
+    RoleCheck -->|Role: Kepala Sekolah| KepsekView["👔 Dashboard Kepala Sekolah"]
+    
+    AdminView --> A_Func["Akses Penuh: CRUD Siswa/Guru/Kelas, Import/Export, Device Token, Settings, User Management"]
+    GuruView --> G_Func["Akses Scoped: Hanya Data Kelas Binaan, Input Presensi Manual, Export Rekap Kelas, Kirim WA Ortu"]
+    KepsekView --> K_Func["Akses Read-Only: Pantau Statistik Seluruh Kelas, Laporan Rekapitulasi, & Leaderboard Sekolah"]
+```
 
 ---
 
