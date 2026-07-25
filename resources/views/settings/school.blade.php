@@ -8,12 +8,12 @@
             </div>
             <div>
                 <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Konfigurasi Aplikasi & Sekolah</h1>
-                <p class="text-xs text-slate-500 mt-0.5 font-medium">Kelola identitas aplikasi, nama sekolah, logo, dan wallpaper kiosk scanner.</p>
+                <p class="text-xs text-slate-500 mt-0.5 font-medium">Kelola identitas aplikasi, nama sekolah, wallpaper kiosk, hari sekolah efektif, dan rate limit.</p>
             </div>
         </div>
     </x-slot>
 
-    <div class="space-y-6">
+    <div class="space-y-6" x-data="{ activeTab: window.location.hash ? window.location.hash.replace('#', '') : 'identitas' }">
 
         @if(session('success'))
             <div class="alert-success">
@@ -22,15 +22,46 @@
             </div>
         @endif
 
+        <!-- Tab Switcher Navigation -->
+        <div class="flex items-center gap-2 border-b border-slate-200 pb-2 overflow-x-auto">
+            <button type="button" @click="activeTab = 'identitas'; window.location.hash = 'identitas'"
+                    :class="activeTab === 'identitas' ? 'bg-indigo-600 text-white shadow-sm font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold'"
+                    class="px-4 py-2.5 rounded-xl text-xs transition flex items-center gap-2 shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                <span>🏫 Identitas Sekolah & Logo</span>
+            </button>
+
+            <button type="button" @click="activeTab = 'kiosk'; window.location.hash = 'kiosk'"
+                    :class="activeTab === 'kiosk' ? 'bg-indigo-600 text-white shadow-sm font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold'"
+                    class="px-4 py-2.5 rounded-xl text-xs transition flex items-center gap-2 shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                <span>📺 Tampilan Kiosk Scanner</span>
+            </button>
+
+            <button type="button" @click="activeTab = 'hari-efektif'; window.location.hash = 'hari-efektif'"
+                    :class="activeTab === 'hari-efektif' ? 'bg-indigo-600 text-white shadow-sm font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold'"
+                    class="px-4 py-2.5 rounded-xl text-xs transition flex items-center gap-2 shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span>🗓️ Hari Sekolah Efektif</span>
+            </button>
+
+            <button type="button" @click="activeTab = 'security'; window.location.hash = 'security'"
+                    :class="activeTab === 'security' ? 'bg-indigo-600 text-white shadow-sm font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold'"
+                    class="px-4 py-2.5 rounded-xl text-xs transition flex items-center gap-2 shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                <span>⚡ Security & Rate Limit</span>
+            </button>
+        </div>
+
         <form method="POST" action="{{ route('settings.school.update') }}" enctype="multipart/form-data" class="space-y-6">
             @csrf
 
-            <!-- Identitas Aplikasi & Sekolah -->
-            <div class="page-card">
+            <!-- Tab 1: Identitas Aplikasi & Sekolah -->
+            <div x-show="activeTab === 'identitas'" x-transition class="page-card">
                 <div class="px-6 py-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
                     <div class="flex items-center gap-2">
                         <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                        <h3 class="font-extrabold text-slate-800 text-sm uppercase tracking-wider">Identitas Utama</h3>
+                        <h3 class="font-extrabold text-slate-800 text-sm uppercase tracking-wider">Identitas Utama Sekolah & Aplikasi</h3>
                     </div>
                 </div>
                 <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -49,7 +80,6 @@
                     <div class="md:col-span-2">
                         <label class="form-label">Logo Aplikasi / Sekolah</label>
                         <div class="flex items-center gap-5 p-4 rounded-2xl bg-slate-50 border border-slate-200">
-                            <!-- Preview Logo -->
                             <div id="logo-preview-wrapper" class="w-20 h-20 rounded-xl border border-slate-300 flex items-center justify-center bg-white overflow-hidden shrink-0 shadow-sm">
                                 @if($schoolSettings['logo_url'])
                                     <img id="logo-preview" src="{{ $schoolSettings['logo_url'] }}" alt="Logo" class="object-contain p-1.5" style="max-height:72px; max-width:72px;">
@@ -61,7 +91,6 @@
                                     <img id="logo-preview" class="object-contain p-1.5 hidden" style="max-height:72px; max-width:72px;">
                                 @endif
                             </div>
-                            <!-- Upload -->
                             <div class="flex-1 space-y-2">
                                 <label for="school_logo" class="btn-secondary text-xs cursor-pointer inline-flex">
                                     <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
@@ -82,7 +111,6 @@
                                 $faviconPath = \App\Models\SchoolSetting::get('school_favicon');
                                 $faviconUrl = $faviconPath ? asset('storage/' . $faviconPath) : null;
                             @endphp
-                            <!-- Preview Favicon -->
                             <div id="favicon-preview-wrapper" class="w-12 h-12 rounded-xl border border-slate-300 flex items-center justify-center bg-white overflow-hidden shrink-0 shadow-sm">
                                 @if($faviconUrl)
                                     <img id="favicon-preview" src="{{ $faviconUrl }}" alt="Favicon" class="object-contain p-1" style="max-height:32px; max-width:32px;">
@@ -93,7 +121,6 @@
                                     <img id="favicon-preview" class="object-contain p-1 hidden" style="max-height:32px; max-width:32px;">
                                 @endif
                             </div>
-                            <!-- Upload -->
                             <div class="flex-1 space-y-2">
                                 <label for="school_favicon" class="btn-secondary text-xs cursor-pointer inline-flex">
                                     <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
@@ -157,12 +184,12 @@
                 </div>
             </div>
 
-            <!-- Tampilan Kiosk Scanner -->
-            <div class="page-card">
+            <!-- Tab 2: Tampilan Kiosk Scanner -->
+            <div x-show="activeTab === 'kiosk'" x-transition class="page-card">
                 <div class="px-6 py-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
                     <div class="flex items-center gap-2">
                         <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                        <h3 class="font-extrabold text-slate-800 text-sm uppercase tracking-wider">Tampilan Kiosk Scanner</h3>
+                        <h3 class="font-extrabold text-slate-800 text-sm uppercase tracking-wider">Tampilan Layar Kiosk Scanner</h3>
                     </div>
                 </div>
                 <div class="p-6 space-y-6">
@@ -261,60 +288,83 @@
                                 </div>
                             </div>
                         </div>
-                    <!-- API Rate Limiting Configuration -->
-                    <div class="border-t border-slate-100 pt-6 mt-6">
-                        <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-3 flex items-center gap-2">
-                            <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                            <span>Konfigurasi Performa & Security Rate Limit</span>
-                        </h3>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="form-label">Hari Sekolah Efektif <span class="text-rose-500">*</span></label>
-                                @php
-                                    $rawSetting = \App\Models\SchoolSetting::get('hari_efektif');
-                                    $selectedDays = old('hari_efektif', $rawSetting ? json_decode($rawSetting, true) : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']);
-                                    $allDays = [
-                                        'Monday' => 'Senin',
-                                        'Tuesday' => 'Selasa',
-                                        'Wednesday' => 'Rabu',
-                                        'Thursday' => 'Kamis',
-                                        'Friday' => 'Jumat',
-                                        'Saturday' => 'Sabtu',
-                                        'Sunday' => 'Minggu',
-                                    ];
-                                @endphp
-                                <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2.5 mt-1.5">
-                                    @foreach($allDays as $enDay => $idDay)
-                                        <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-slate-100/80 cursor-pointer transition">
-                                            <input type="checkbox" name="hari_efektif[]" value="{{ $enDay }}"
-                                                   {{ in_array($enDay, (array)$selectedDays) ? 'checked' : '' }}
-                                                   class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 w-4 h-4">
-                                            <span class="text-xs font-bold text-slate-700">{{ $idDay }}</span>
-                                        </label>
-                                    @endforeach
-                                </div>
-                                <p class="text-xs text-slate-400 mt-2">Centang hari-hari sekolah efektif. Sangat fleksibel untuk Sekolah Umum (Senin–Jumat / Senin–Sabtu) maupun Pesantren/Sekolah Islam (Jumat Libur).</p>
-                                @error('hari_efektif') <p class="text-xs text-rose-500 mt-1">{{ $message }}</p> @enderror
-                            </div>
-
-                            <div class="max-w-md">
-                                <label for="rate_limit_api" class="form-label">Batas Rate Limit API Eksternal (Req/Menit)</label>
-                                <input type="number" min="10" max="1000" name="rate_limit_api" id="rate_limit_api"
-                                       value="{{ old('rate_limit_api', \App\Models\SchoolSetting::get('rate_limit_api', 60)) }}"
-                                       class="form-input text-sm" required>
-                                <p class="text-xs text-slate-400 mt-1">Batas request per menit untuk API pihak ketiga. Pemindaian RFID Kiosk dijamin 100% bebas hambatan saat jam sibuk.</p>
-                                @error('rate_limit_api') <p class="text-xs text-rose-500 mt-1">{{ $message }}</p> @enderror
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Submit Buttons -->
+            <!-- Tab 3: Hari Sekolah Efektif -->
+            <div x-show="activeTab === 'hari-efektif'" x-transition class="page-card">
+                <div class="px-6 py-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        <h3 class="font-extrabold text-slate-800 text-sm uppercase tracking-wider">Konfigurasi Hari Sekolah Efektif</h3>
+                    </div>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div>
+                        <label class="form-label text-sm font-bold text-slate-900 mb-1">Centang Hari Sekolah Efektif <span class="text-rose-500">*</span></label>
+                        @php
+                            $rawSetting = \App\Models\SchoolSetting::get('hari_efektif');
+                            $selectedDays = old('hari_efektif', $rawSetting ? json_decode($rawSetting, true) : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']);
+                            $allDays = [
+                                'Monday' => 'Senin',
+                                'Tuesday' => 'Selasa',
+                                'Wednesday' => 'Rabu',
+                                'Thursday' => 'Kamis',
+                                'Friday' => 'Jumat',
+                                'Saturday' => 'Sabtu',
+                                'Sunday' => 'Minggu',
+                            ];
+                        @endphp
+                        <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-3 mt-3">
+                            @foreach($allDays as $enDay => $idDay)
+                                <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-indigo-50/50 hover:border-indigo-300 cursor-pointer transition shadow-sm">
+                                    <input type="checkbox" name="hari_efektif[]" value="{{ $enDay }}"
+                                           {{ in_array($enDay, (array)$selectedDays) ? 'checked' : '' }}
+                                           class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 w-4 h-4">
+                                    <span class="text-xs font-bold text-slate-800">{{ $idDay }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+                        <div class="mt-4 p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1">
+                            <span class="font-bold text-slate-900 block">💡 Pengaruh Sistem Hari Sekolah Efektif:</span>
+                            <p>• <strong>Kiosk RFID Scanner</strong>: Pemindaian kartu pada hari non-efektif (yang tidak dicentang) akan otomatis ditolak dengan pesan <em>"Hari ini adalah hari libur rutin sekolah."</em></p>
+                            <p>• <strong>Scheduler Auto-Alpha</strong>: Perintah otomatis <code>php artisan attendance:auto-alpha</code> akan membatalkan penandaan Alpha pada hari non-efektif.</p>
+                            <p>• <strong>Universal</strong>: Sangat cocok untuk **Sekolah Umum 5 Hari** (Senin–Jumat), **Sekolah 6 Hari** (Senin–Sabtu), maupun **Pesantren / Sekolah Islam** (Sabtu–Kamis, Jumat Libur).</p>
+                        </div>
+                        @error('hari_efektif') <p class="text-xs text-rose-500 mt-2">{{ $message }}</p> @enderror
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 4: Security & Rate Limit -->
+            <div x-show="activeTab === 'security'" x-transition class="page-card">
+                <div class="px-6 py-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        <h3 class="font-extrabold text-slate-800 text-sm uppercase tracking-wider">Performa & Security Rate Limit API</h3>
+                    </div>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div class="max-w-xl space-y-2">
+                        <label for="rate_limit_api" class="form-label font-bold text-slate-800">Batas Rate Limit API Eksternal (Request / Menit) <span class="text-rose-500">*</span></label>
+                        <input type="number" min="10" max="1000" name="rate_limit_api" id="rate_limit_api"
+                               value="{{ old('rate_limit_api', \App\Models\SchoolSetting::get('rate_limit_api', 60)) }}"
+                               class="form-input text-sm font-semibold max-w-xs" required>
+                        <p class="text-xs text-slate-500 leading-relaxed mt-1">
+                            Batas maksimal jumlah panggilan request per menit untuk integrasi API pihak ketiga (misal integrasi rekap SIM Sekolah). 
+                            <br><span class="text-emerald-600 font-semibold">• Pemindaian Kiosk RFID Sekolah dijamin 100% bebas hambatan (unlimited) tanpa terpengaruh batas ini.</span>
+                        </p>
+                        @error('rate_limit_api') <p class="text-xs text-rose-500 mt-1">{{ $message }}</p> @enderror
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Submit Buttons -->
             <div class="flex justify-end gap-3 pt-2">
-                <button type="submit" class="btn-primary">
+                <button type="submit" class="btn-primary px-6 py-2.5 text-sm shadow-md">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                    <span>Simpan Konfigurasi</span>
+                    <span>Simpan Seluruh Konfigurasi</span>
                 </button>
             </div>
         </form>

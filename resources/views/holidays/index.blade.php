@@ -8,6 +8,17 @@
         </div>
     </x-slot>
 
+    <!-- Alert Catatan Hari Efektif Sekolah -->
+    <div class="mb-5 p-4 rounded-xl border border-indigo-100 bg-indigo-50/70 flex items-start gap-3 text-xs text-indigo-900 shadow-sm">
+        <svg class="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <div class="space-y-1">
+            <span class="font-extrabold text-indigo-950 block">📌 Catatan Konfigurasi Libur Rutin Mingguan:</span>
+            <p class="leading-relaxed text-indigo-800/90">
+                Pengaturan hari sekolah efektif mingguan (misal **5 Hari Kerja**, **6 Hari Kerja**, maupun **Pesantren / Sekolah Islam yang Libur di Hari Jumat**) dikonfigurasi melalui menu <a href="{{ route('settings.school') }}#hari-efektif" class="font-bold text-indigo-600 underline hover:text-indigo-800">Pengaturan Sekolah &rarr; Tab Hari Efektif</a>. Agenda pada kalender di halaman ini khusus untuk mencatat hari libur nasional atau libur khusus sekolah.
+            </p>
+        </div>
+    </div>
+
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Form Tambah Libur -->
         <div class="page-card p-6 h-fit">
