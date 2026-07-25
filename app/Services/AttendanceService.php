@@ -27,18 +27,6 @@ class AttendanceService
 
         $today = Carbon::today();
 
-        $rawHariEfektif = \App\Models\SchoolSetting::get('hari_efektif');
-        $hariEfektif = $rawHariEfektif ? (json_decode($rawHariEfektif, true) ?: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']) : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-
-        if (! in_array($today->format('l'), $hariEfektif)) {
-            $this->logScan($rfidUid, $deviceId, false, 'Hari ini adalah hari libur rutin sekolah.', $student->id);
-
-            return [
-                'success' => false,
-                'message' => 'Hari ini adalah hari libur rutin sekolah.',
-            ];
-        }
-
         if (\App\Models\Holiday::isHoliday($today->toDateString())) {
             $this->logScan($rfidUid, $deviceId, false, 'Hari ini adalah Hari Libur Sekolah.', $student->id);
 
@@ -46,6 +34,19 @@ class AttendanceService
                 'success' => false,
                 'message' => 'Hari ini adalah Hari Libur Sekolah.',
             ];
+        }
+
+        $rawHariEfektif = \App\Models\SchoolSetting::get('hari_efektif');
+        if ($rawHariEfektif !== null) {
+            $hariEfektif = json_decode($rawHariEfektif, true) ?: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+            if (! in_array($today->format('l'), $hariEfektif)) {
+                $this->logScan($rfidUid, $deviceId, false, 'Hari ini adalah hari libur rutin sekolah.', $student->id);
+
+                return [
+                    'success' => false,
+                    'message' => 'Hari ini adalah hari libur rutin sekolah.',
+                ];
+            }
         }
         
         $lockKey = "scan_lock_{$student->id}_{$today->toDateString()}";

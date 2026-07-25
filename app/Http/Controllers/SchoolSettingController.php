@@ -33,7 +33,7 @@ class SchoolSettingController extends Controller
             'kiosk_title' => 'nullable|string|max:255',
             'kiosk_subtitle' => 'nullable|string|max:255',
             'rate_limit_api' => 'required|integer|min:10|max:1000',
-            'hari_efektif' => 'required|array|min:1',
+            'hari_efektif' => 'nullable|array',
             'hari_efektif.*' => 'in:Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday',
         ]);
 

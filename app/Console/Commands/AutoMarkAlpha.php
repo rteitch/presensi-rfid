@@ -19,12 +19,17 @@ class AutoMarkAlpha extends Command
         $today = Carbon::today();
 
         $rawHariEfektif = \App\Models\SchoolSetting::get('hari_efektif');
-        $hariEfektif = $rawHariEfektif ? (json_decode($rawHariEfektif, true) ?: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']) : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-
-        // 1. Skip jika hari ini bukan hari sekolah efektif (misal Jumat di Pesantren / Sabtu-Minggu di 5 hari kerja)
-        if (! in_array($today->format('l'), $hariEfektif)) {
-            $this->info("Hari ini ({$today->format('Y-m-d')}, {$today->format('l')}) bukan hari sekolah efektif. Auto-Alpha dilewati.");
-            return Command::SUCCESS;
+        if ($rawHariEfektif !== null) {
+            $hariEfektif = json_decode($rawHariEfektif, true) ?: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+            if (! in_array($today->format('l'), $hariEfektif)) {
+                $this->info("Hari ini ({$today->format('Y-m-d')}, {$today->format('l')}) bukan hari sekolah efektif / akhir pekan. Auto-Alpha dilewati.");
+                return Command::SUCCESS;
+            }
+        } else {
+            if ($today->isWeekend()) {
+                $this->info("Hari ini ({$today->format('Y-m-d')}) adalah akhir pekan. Auto-Alpha dilewati.");
+                return Command::SUCCESS;
+            }
         }
 
         // 2. Skip jika terdaftar di Kalender Libur Sekolah
