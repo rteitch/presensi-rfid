@@ -119,7 +119,7 @@
             flex: 1; min-height: 0;
         }
 
-        /* ── STUDENT CARD ── */
+        /* ── STUDENT CARD (With Mac OS Glass Panel at Bottom) ── */
         .student-card {
             background: rgba(15, 23, 42, 0.88);
             backdrop-filter: blur(16px);
@@ -159,9 +159,9 @@
             filter: drop-shadow(0 4px 10px rgba(245,158,11,0.8));
         }
 
-        /* ── PHOTO CONTAINER (100% UNCROPPED GUARANTEED WITH CINEMATIC BACKDROP) ── */
+        /* ── PHOTO CONTAINER (Full Card Background Frame) ── */
         .photo-container {
-            width: 100%; flex: 1.8; min-height: 175px;
+            width: 100%; height: 100%; min-height: 200px;
             position: relative; overflow: hidden;
             background: #090d16;
             display: flex; align-items: center; justify-content: center;
@@ -171,7 +171,7 @@
         .photo-bg-blur {
             position: absolute; inset: -15px;
             width: calc(100% + 30px); height: calc(100% + 30px);
-            object-fit: cover; filter: blur(14px) brightness(0.5);
+            object-fit: cover; filter: blur(14px) brightness(0.45);
             z-index: 1; opacity: 0.65;
             transition: transform 0.5s ease;
         }
@@ -184,17 +184,11 @@
             display: block;
             filter: brightness(1.06) contrast(1.06);
             transition: transform 0.5s ease;
+            padding-bottom: 70px; /* Leave breathing room for Mac OS glass panel at bottom */
         }
 
         .student-card:hover .photo-img-full { transform: scale(1.04); }
         .student-card:hover .photo-bg-blur { transform: scale(1.08); }
-
-        /* Light Bottom Gradient Overlay */
-        .photo-overlay {
-            position: absolute; inset: 0; z-index: 3;
-            background: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.15) 25%, transparent 50%);
-            pointer-events: none;
-        }
 
         /* Rank Watermark Badge Top Right */
         .rank-watermark {
@@ -218,19 +212,21 @@
         .trend-up   { background: rgba(220,38,38,0.85); color: #ffffff; border: 1px solid rgba(248,113,113,0.5); }
         .trend-down { background: rgba(16,185,129,0.85); color: #ffffff; border: 1px solid rgba(52,211,153,0.5); }
 
-        /* ── INFO PANEL ── */
+        /* ── MAC OS FROSTED GLASS INFO PANEL (Bottom Floating Dock) ── */
         .info-panel {
-            position: relative; z-index: 10;
-            padding: 0.55rem 0.65rem 0.6rem;
-            text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0.3rem;
-            background: rgba(15, 23, 42, 0.95);
-            border-top: 1px solid rgba(255,255,255,0.06);
-            flex: 1;
+            position: absolute; bottom: 0; left: 0; right: 0; z-index: 20;
+            padding: 0.5rem 0.65rem 0.55rem;
+            text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0.25rem;
+            background: rgba(15, 23, 42, 0.65); /* Transparent Dark Glass */
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
         }
 
         /* STUDENT NAME — BOLD, CLEAR, HIGH CONTRAST */
         .student-name {
-            font-size: clamp(0.9rem, 1.1vw, 1.15rem);
+            font-size: clamp(0.85rem, 1.05vw, 1.1rem);
             font-weight: 900;
             color: #ffffff;
             letter-spacing: -0.01em;
@@ -238,50 +234,52 @@
             text-transform: uppercase;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
             width: 100%;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.8);
         }
         .rank-1 .student-name {
-            font-size: clamp(1rem, 1.2vw, 1.25rem);
+            font-size: clamp(0.95rem, 1.15vw, 1.2rem);
             color: #ffffff;
             text-shadow: 0 2px 8px rgba(245,158,11,0.5);
         }
 
         /* META ROW: LATE BADGE & CLASS CHIP */
         .meta-row {
-            display: flex; align-items: center; justify-content: center; gap: 0.4rem; flex-wrap: wrap; width: 100%;
+            display: flex; align-items: center; justify-content: center; gap: 0.35rem; flex-wrap: wrap; width: 100%;
         }
 
         /* ⚠️ LATE COUNT BADGE */
         .late-count-box {
             display: inline-flex; align-items: center; justify-content: center; gap: 0.25rem;
-            padding: 0.2rem 0.55rem; border-radius: 0.45rem;
-            background: linear-gradient(135deg, rgba(220, 38, 38, 0.35) 0%, rgba(185, 28, 28, 0.25) 100%);
-            border: 1.5px solid rgba(248, 113, 113, 0.5);
-            color: #ffffff; font-size: 0.72rem; font-weight: 900;
+            padding: 0.18rem 0.5rem; border-radius: 0.45rem;
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.45) 0%, rgba(185, 28, 28, 0.3) 100%);
+            border: 1.5px solid rgba(248, 113, 113, 0.6);
+            color: #ffffff; font-size: 0.7rem; font-weight: 900;
+            box-shadow: 0 2px 8px rgba(220,38,38,0.3);
         }
-        .late-count-box .late-num { font-size: 0.95rem; font-weight: 900; color: #fde68a; }
+        .late-count-box .late-num { font-size: 0.9rem; font-weight: 900; color: #fde68a; }
 
         /* GRADE COLOR-CODED CLASS CHIP (X=Cyan, XI=Emerald, XII=Purple) */
         .class-chip {
             display: inline-flex; align-self: center;
-            font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.06em;
-            padding: 0.18rem 0.55rem; border-radius: 0.4rem;
+            font-size: 0.62rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.06em;
+            padding: 0.16rem 0.5rem; border-radius: 0.4rem;
         }
         /* Grade 10 / X / 7 */
         .class-grade-10 {
-            background: rgba(6, 182, 212, 0.2); color: #67e8f9; border: 1.5px solid rgba(6, 182, 212, 0.4);
+            background: rgba(6, 182, 212, 0.25); color: #67e8f9; border: 1.5px solid rgba(6, 182, 212, 0.5);
         }
         /* Grade 11 / XI / 8 */
         .class-grade-11 {
-            background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1.5px solid rgba(16, 185, 129, 0.4);
+            background: rgba(16, 185, 129, 0.25); color: #6ee7b7; border: 1.5px solid rgba(16, 185, 129, 0.5);
         }
         /* Grade 12 / XII / 9 */
         .class-grade-12 {
-            background: rgba(168, 85, 247, 0.2); color: #d8b4fe; border: 1.5px solid rgba(168, 85, 247, 0.4);
+            background: rgba(168, 85, 247, 0.25); color: #d8b4fe; border: 1.5px solid rgba(168, 85, 247, 0.5);
         }
 
         /* Extra Useful Info Footer: Terakhir Terlambat */
         .last-late-text {
-            font-size: 0.6rem; color: #64748b; font-weight: 700; margin-top: 1px;
+            font-size: 0.58rem; color: #cbd5e1; font-weight: 700; margin-top: 1px;
         }
 
         /* ── Footer Area (With Centered Live Auto Refresh Pill) ── */
@@ -428,15 +426,13 @@
                     <div class="top1-crown">👑</div>
                 @endif
 
-                {{-- 100% Uncropped Photo Container (Cinematic Ambient Backdrop + Uncropped Main Photo) --}}
+                {{-- Full Background Photo Container --}}
                 <div class="photo-container">
                     {{-- Ambient Blurred Backdrop Image --}}
                     <img src="{{ $s->foto_url }}" alt="" class="photo-bg-blur">
                     
                     {{-- 100% Uncropped Main Photo --}}
                     <img src="{{ $s->foto_url }}" alt="{{ $s->nama }}" class="photo-img-full">
-                    
-                    <div class="photo-overlay"></div>
                     
                     {{-- Trend Indicator Badge Top Left --}}
                     @if($trendUp)
@@ -449,7 +445,7 @@
                     <div class="rank-watermark">{{ $rankLabel }}</div>
                 </div>
 
-                {{-- Compact Info Panel: No Giant Gaps --}}
+                {{-- Mac OS Frosted Glass Info Panel Floating at Bottom --}}
                 <div class="info-panel">
                     {{-- 1. STUDENT NAME --}}
                     <div class="student-name" title="{{ $s->nama }}">{{ strtoupper($displayName) }}</div>
