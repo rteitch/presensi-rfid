@@ -7,7 +7,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html, body {
@@ -18,21 +18,20 @@
             overflow: hidden; /* Full-screen TV mode: no scrollbar */
         }
 
-        /* ── Cosmic Dark Background ── */
+        /* ── Enterprise Dark Background (Vercel / Linear Aesthetic) ── */
         .bg-cosmos {
             position: fixed; inset: 0; z-index: 0;
             background:
-                radial-gradient(ellipse 130% 60% at 50% -10%, rgba(99,102,241,0.35) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 50% at 85% 90%,  rgba(245,158,11,0.18) 0%, transparent 55%),
-                radial-gradient(ellipse 60% 50% at 15% 90%,  rgba(139,92,246,0.18) 0%, transparent 55%),
+                radial-gradient(ellipse 120% 50% at 50% -10%, rgba(99,102,241,0.2) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 40% at 100% 100%, rgba(245,158,11,0.08) 0%, transparent 50%),
                 #020617;
         }
         .bg-grid {
             position: fixed; inset: 0; z-index: 0;
             background-image:
-                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 60px 60px;
+                linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+            background-size: 50px 50px;
         }
 
         /* ── Page Layout ── */
@@ -41,68 +40,80 @@
         /* ── Top Header ── */
         header {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0.6rem 1.75rem;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding: 0.55rem 1.75rem;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
             background: rgba(2,6,23,0.85);
             backdrop-filter: blur(20px);
             flex-shrink: 0;
         }
         .hd-left { display: flex; align-items: center; gap: 0.85rem; }
-        .hd-logo { height: 2.6rem; width: auto; object-fit: contain; }
+        .hd-logo { height: 2.5rem; width: auto; object-fit: contain; }
         .hd-logo-placeholder {
-            width: 42px; height: 42px; border-radius: 0.75rem;
+            width: 40px; height: 40px; border-radius: 0.75rem;
             background: linear-gradient(135deg,#6366f1,#8b5cf6);
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 20px rgba(99,102,241,0.4);
+            box-shadow: 0 4px 16px rgba(99,102,241,0.3);
         }
-        .hd-school-name { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.01em; color: #ffffff; }
-        .hd-badge { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.12em; color: #f59e0b; font-weight: 900; }
+        .hd-school-name { font-size: 1rem; font-weight: 800; letter-spacing: -0.01em; color: #ffffff; }
+        .hd-badge { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.12em; color: #f59e0b; font-weight: 900; }
 
         .live-pill {
             display: inline-flex; align-items: center; gap: 0.4rem;
-            padding: 0.3rem 0.8rem; border-radius: 9999px;
-            background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3);
-            color: #34d399; font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em;
+            padding: 0.28rem 0.75rem; border-radius: 9999px;
+            background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.25);
+            color: #34d399; font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;
         }
-        .live-dot { width: 7px; height: 7px; border-radius: 50%; background: #34d399; animation: blink 1.4s ease-in-out infinite; }
+        .live-dot { width: 6px; height: 6px; border-radius: 50%; background: #34d399; animation: blink 1.4s ease-in-out infinite; }
         @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 
         .clock-wrap { text-align: right; }
-        .clock-time { font-size: 1.55rem; font-weight: 900; letter-spacing: 0.04em; color: #f59e0b; line-height: 1; font-family: monospace; }
-        .clock-date { font-size: 0.65rem; color: #94a3b8; font-weight: 600; margin-top: 2px; }
+        .clock-time { font-size: 1.5rem; font-weight: 900; letter-spacing: 0.04em; color: #f59e0b; line-height: 1; font-family: monospace; }
+        .clock-date { font-size: 0.62rem; color: #64748b; font-weight: 600; margin-top: 2px; }
 
-        /* ── Sub Header / Filter Row ── */
+        /* ── Sub Header / Filter & Insights Bar ── */
         .filter-row {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0.55rem 1.75rem; flex-shrink: 0;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-            background: rgba(15,23,42,0.4);
+            padding: 0.5rem 1.75rem; flex-shrink: 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            background: rgba(15,23,42,0.35);
         }
-        .title-block .eyebrow { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.15em; color: #f59e0b; font-weight: 900; }
+        .title-block .eyebrow { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.15em; color: #f59e0b; font-weight: 900; }
         .title-block .main-title {
-            font-size: clamp(1.2rem, 2.2vw, 1.55rem); font-weight: 900; letter-spacing: -0.03em;
-            background: linear-gradient(90deg, #fff 30%, #fde68a 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-            line-height: 1.1;
+            font-size: clamp(1.15rem, 2.1vw, 1.5rem); font-weight: 900; letter-spacing: -0.03em;
+            color: #ffffff; line-height: 1.1;
         }
+
+        /* Today Insights Pills (Executive Briefing) */
+        .insights-bar {
+            display: flex; align-items: center; gap: 0.6rem;
+        }
+        .insight-pill {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            padding: 0.22rem 0.6rem; border-radius: 0.45rem;
+            font-size: 0.65rem; font-weight: 800; background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08); color: #cbd5e1;
+        }
+        .insight-pill.hadir { border-color: rgba(16,185,129,0.3); color: #34d399; }
+        .insight-pill.terlambat { border-color: rgba(239,68,68,0.3); color: #f87171; }
+
         .period-chip {
             display: inline-flex; align-items: center; gap: 0.4rem;
-            padding: 0.3rem 0.8rem; border-radius: 9999px;
-            background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.25);
-            color: #f59e0b; font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em;
+            padding: 0.28rem 0.75rem; border-radius: 9999px;
+            background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2);
+            color: #f59e0b; font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em;
         }
-        .filter-controls { display: flex; align-items: center; gap: 0.5rem; }
-        .fi { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #f1f5f9; font-size: 0.72rem; font-weight: 600; border-radius: 0.5rem; padding: 0.35rem 0.75rem; font-family: inherit; outline: none; }
+        .filter-controls { display: flex; align-items: center; gap: 0.4rem; }
+        .fi { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #f1f5f9; font-size: 0.68rem; font-weight: 600; border-radius: 0.45rem; padding: 0.3rem 0.65rem; font-family: inherit; outline: none; }
         .fi:focus { border-color: #f59e0b; }
         .fi option { background: #1e293b; }
-        .fb { background: #f59e0b; color: #1c0a00; font-size: 0.72rem; font-weight: 900; padding: 0.35rem 0.9rem; border-radius: 0.5rem; border: none; cursor: pointer; font-family: inherit; }
+        .fb { background: #f59e0b; color: #1c0a00; font-size: 0.68rem; font-weight: 900; padding: 0.3rem 0.8rem; border-radius: 0.45rem; border: none; cursor: pointer; font-family: inherit; }
         .fb:hover { background: #fbbf24; }
-        .rb { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1; font-size: 0.72rem; font-weight: 700; padding: 0.35rem 0.75rem; border-radius: 0.5rem; text-decoration: none; font-family: inherit; }
+        .rb { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; font-size: 0.68rem; font-weight: 700; padding: 0.3rem 0.65rem; border-radius: 0.45rem; text-decoration: none; font-family: inherit; }
 
         /* ── Main Area ── */
         main {
             flex: 1; display: flex; flex-direction: column;
-            gap: 0.75rem; padding: 0.75rem 1.75rem 0.85rem;
+            gap: 0.75rem; padding: 0.65rem 1.75rem 0.75rem;
             min-height: 0; overflow: hidden;
         }
 
@@ -111,174 +122,143 @@
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             grid-template-rows: repeat(2, 1fr);
-            gap: 0.85rem;
+            gap: 0.75rem;
             flex: 1; min-height: 0;
         }
 
-        /* ── STUDENT CARD (Command Center Trading Card Style) ── */
+        /* ── ENTERPRISE STUDENT CARD (Linear / Vercel Data-First Aesthetic) ── */
         .student-card {
-            background: rgba(15, 23, 42, 0.88);
-            backdrop-filter: blur(16px);
-            border-radius: 1.1rem;
-            display: flex; flex-direction: column; justify-content: space-between;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 0.85rem;
+            display: flex; flex-direction: column;
             position: relative; overflow: hidden;
-            transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s ease;
-            border: 1.5px solid rgba(255,255,255,0.1);
+            transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), border-color 0.25s ease, box-shadow 0.25s ease;
+            border: 1px solid rgba(255,255,255,0.07);
         }
         .student-card:hover {
-            transform: translateY(-4px) scale(1.01);
-            box-shadow: 0 12px 35px rgba(0,0,0,0.6);
+            transform: translateY(-3px);
+            border-color: rgba(255,255,255,0.18);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.45);
         }
 
-        /* 👑 Top 1 Smooth Pulsing Gold Glow Animation */
-        @keyframes gold-pulse-glow {
-            0%, 100% { box-shadow: 0 0 30px rgba(245,158,11,0.35), 0 16px 40px rgba(0,0,0,0.6); }
-            50% { box-shadow: 0 0 60px rgba(245,158,11,0.65), 0 20px 50px rgba(0,0,0,0.8); }
-        }
-
+        /* Top Rank Highlights (Restrained & Elegant) */
         .student-card.rank-1 {
-            border: 2.5px solid #f59e0b;
-            animation: gold-pulse-glow 3.5s ease-in-out infinite;
-            background: linear-gradient(180deg, rgba(245,158,11,0.22) 0%, rgba(15,23,42,0.95) 100%);
+            border: 1.5px solid rgba(245,158,11,0.5);
+            background: linear-gradient(180deg, rgba(245,158,11,0.1) 0%, rgba(15,23,42,0.85) 100%);
+            animation: top1-glow-pulse 4s ease-in-out infinite;
         }
-        /* 🥈 Rank #2 Silver Glow */
+        @keyframes top1-glow-pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(245,158,11,0.2), 0 8px 25px rgba(0,0,0,0.5); }
+            50% { box-shadow: 0 0 35px rgba(245,158,11,0.4), 0 10px 30px rgba(0,0,0,0.6); }
+        }
+
         .student-card.rank-2 {
-            border: 2px solid #94a3b8;
-            box-shadow: 0 0 25px rgba(148,163,184,0.22), 0 12px 32px rgba(0,0,0,0.5);
-            background: linear-gradient(180deg, rgba(148,163,184,0.15) 0%, rgba(15,23,42,0.95) 100%);
+            border: 1.5px solid rgba(148,163,184,0.35);
+            background: linear-gradient(180deg, rgba(148,163,184,0.06) 0%, rgba(15,23,42,0.85) 100%);
         }
-        /* 🥉 Rank #3 Bronze Glow */
         .student-card.rank-3 {
-            border: 2px solid #b45309;
-            box-shadow: 0 0 25px rgba(180,83,9,0.22), 0 12px 32px rgba(0,0,0,0.5);
-            background: linear-gradient(180deg, rgba(180,83,9,0.15) 0%, rgba(15,23,42,0.95) 100%);
-        }
-        /* Rank 4-10 Neon Border */
-        .student-card.rank-standard {
-            border: 1.5px solid rgba(99, 102, 241, 0.2);
-        }
-        .student-card.rank-standard:hover {
-            border-color: rgba(99, 102, 241, 0.5);
+            border: 1.5px solid rgba(180,83,9,0.35);
+            background: linear-gradient(180deg, rgba(180,83,9,0.06) 0%, rgba(15,23,42,0.85) 100%);
         }
 
-        /* 👑 Top 1 Crown Overlay */
-        .top1-crown {
-            position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
-            z-index: 25; font-size: 1.6rem;
-            filter: drop-shadow(0 4px 12px rgba(245,158,11,0.8));
-            animation: float-crown 3.5s ease-in-out infinite;
-        }
-        @keyframes float-crown {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-4px); }
+        /* Top Header inside Card (Rank + Trend Indicator) */
+        .card-top-bar {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.4rem 0.6rem 0.35rem; z-index: 10;
         }
 
-        /* ── PHOTO CONTAINER (75% Dominant Height, Brighter 20-30%) ── */
+        .rank-pill {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            padding: 0.15rem 0.5rem; border-radius: 0.4rem;
+            font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em;
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #cbd5e1;
+        }
+        .rank-1 .rank-pill { background: #f59e0b; color: #1c0a00; border: none; font-weight: 900; }
+        .rank-2 .rank-pill { background: rgba(148,163,184,0.25); color: #f1f5f9; border: 1px solid rgba(148,163,184,0.4); }
+        .rank-3 .rank-pill { background: rgba(180,83,9,0.25); color: #fed7aa; border: 1px solid rgba(180,83,9,0.4); }
+
+        .trend-chip {
+            font-size: 0.58rem; font-weight: 800; padding: 0.12rem 0.4rem; border-radius: 0.35rem;
+        }
+        .trend-up   { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+        .trend-down { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
+
+        /* ── PHOTO CONTAINER (~45% Card Height — Data-First Whitespace Balance) ── */
         .photo-container {
-            width: 100%; flex: 1; min-height: 115px;
+            width: 100%; height: 125px;
             position: relative; overflow: hidden;
             background: #090d16;
+            margin: 0.2rem 0.5rem 0; width: calc(100% - 1rem);
+            border-radius: 0.65rem; border: 1px solid rgba(255,255,255,0.08);
+            flex-shrink: 0;
         }
         .photo-img {
             width: 100%; height: 100%;
             object-fit: cover; object-position: center 20%;
             display: block;
-            filter: brightness(1.06) contrast(1.06); /* Brighter 20-30% */
-            transition: transform 0.5s ease;
+            filter: brightness(1.05) contrast(1.05); /* Realistic Natural Lighting */
+            transition: transform 0.4s ease;
         }
-        .student-card:hover .photo-img { transform: scale(1.05); }
+        .student-card:hover .photo-img { transform: scale(1.03); }
 
-        /* Light Subtle Photo Gradient Overlay for Crisp Detail */
         .photo-overlay {
             position: absolute; inset: 0;
-            background: linear-gradient(to top, rgba(15,23,42,0.65) 0%, rgba(15,23,42,0.15) 30%, transparent 60%);
+            background: linear-gradient(to top, rgba(15,23,42,0.5) 0%, transparent 60%);
         }
 
-        /* Rank Watermark Badge Top Right */
-        .rank-watermark {
-            position: absolute; top: 0.5rem; right: 0.5rem; z-index: 10;
-            padding: 0.2rem 0.6rem; border-radius: 9999px;
-            font-size: 0.75rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.06em;
-            backdrop-filter: blur(8px);
-            background: rgba(2,6,23,0.7); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1;
-        }
-        .rank-1 .rank-watermark { background: #f59e0b; color: #1c0a00; border: none; font-size: 0.8rem; box-shadow: 0 2px 10px rgba(245,158,11,0.4); }
-        .rank-2 .rank-watermark { background: #94a3b8; color: #0f172a; border: none; font-size: 0.78rem; box-shadow: 0 2px 10px rgba(148,163,184,0.3); }
-        .rank-3 .rank-watermark { background: #b45309; color: #ffffff; border: none; font-size: 0.78rem; box-shadow: 0 2px 10px rgba(180,83,9,0.3); }
-
-        /* Trend Indicator Badge Top Left */
-        .trend-badge {
-            position: absolute; top: 0.5rem; left: 0.5rem; z-index: 10;
-            padding: 0.18rem 0.5rem; border-radius: 0.45rem;
-            font-size: 0.62rem; font-weight: 900; text-transform: uppercase;
-            backdrop-filter: blur(8px);
-        }
-        .trend-up   { background: rgba(220,38,38,0.85); color: #ffffff; border: 1px solid rgba(248,113,113,0.5); }
-        .trend-down { background: rgba(16,185,129,0.85); color: #ffffff; border: 1px solid rgba(52,211,153,0.5); }
-
-        /* ── INFO PANEL (Primary Focus: Name 24px → Late Badge → Class Chip) ── */
-        .info-panel {
-            position: relative; z-index: 10;
-            padding: 0.55rem 0.65rem 0.65rem;
-            text-align: center; display: flex; flex-direction: column; gap: 0.35rem;
-            background: rgba(15, 23, 42, 0.95);
-            border-top: 1px solid rgba(255,255,255,0.06);
+        /* ── DATA PANEL (Clean Data-First Hierarchy) ── */
+        .data-panel {
+            padding: 0.55rem 0.6rem 0.55rem;
+            display: flex; flex-direction: column; justify-content: space-between;
+            flex: 1; text-align: center; gap: 0.3rem;
         }
 
-        /* STUDENT NAME — HUGE 22px–26px, BOLD 900, HIGH CONTRAST */
+        /* STUDENT NAME — CLEAN, BOLD 800, HIGH LEGIBILITY */
         .student-name {
-            font-size: clamp(1.05rem, 1.35vw, 1.35rem);
+            font-size: clamp(0.88rem, 1.1vw, 1.15rem);
             font-weight: 900;
             color: #ffffff;
             letter-spacing: -0.01em;
             line-height: 1.2;
             text-transform: uppercase;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.9);
-        }
-        .rank-1 .student-name {
-            font-size: clamp(1.25rem, 1.55vw, 1.55rem);
-            color: #ffffff;
-            text-shadow: 0 2px 12px rgba(245,158,11,0.6);
         }
 
-        /* ⚠️ LATE COUNT BADGE — DANGER RED WITH GOLD NUMBERS */
-        .late-count-box {
-            display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;
-            padding: 0.3rem 0.75rem; border-radius: 0.55rem;
-            background: linear-gradient(135deg, rgba(220, 38, 38, 0.35) 0%, rgba(185, 28, 28, 0.25) 100%);
-            border: 1.5px solid rgba(248, 113, 113, 0.6);
-            color: #ffffff; font-size: 0.82rem; font-weight: 900;
-            align-self: center;
+        /* LATE STAT BADGE — ENTERPRISE ALERT STYLING */
+        .late-stat-row {
+            display: flex; align-items: center; justify-content: center; gap: 0.4rem;
         }
-        .late-count-box .late-num { font-size: 1.15rem; font-weight: 900; color: #fde68a; }
-        .rank-1 .late-count-box {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.4) 0%, rgba(220, 38, 38, 0.35) 100%);
-            border-color: rgba(245, 158, 11, 0.7);
+        .late-badge {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            padding: 0.22rem 0.65rem; border-radius: 0.45rem;
+            background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35);
+            color: #f87171; font-size: 0.72rem; font-weight: 800;
         }
+        .late-badge .num { font-size: 0.95rem; font-weight: 900; color: #fde68a; }
 
-        /* CLASS CHIP — COLOR CODED BY GRADE LEVEL (X=Cyan, XI=Emerald, XII=Purple) */
+        /* GRADE COLOR-CODED CLASS CHIP (X=Cyan, XI=Emerald, XII=Purple) */
         .class-chip {
             display: inline-flex; align-self: center;
-            font-size: 0.72rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em;
-            padding: 0.22rem 0.7rem; border-radius: 0.45rem;
+            font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
+            padding: 0.15rem 0.55rem; border-radius: 0.35rem;
         }
         /* Grade 10 / X / 7 */
         .class-grade-10 {
-            background: rgba(6, 182, 212, 0.2); color: #67e8f9; border: 1.5px solid rgba(6, 182, 212, 0.4);
+            background: rgba(6, 182, 212, 0.15); color: #67e8f9; border: 1px solid rgba(6, 182, 212, 0.3);
         }
         /* Grade 11 / XI / 8 */
         .class-grade-11 {
-            background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1.5px solid rgba(16, 185, 129, 0.4);
+            background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3);
         }
         /* Grade 12 / XII / 9 */
         .class-grade-12 {
-            background: rgba(168, 85, 247, 0.2); color: #d8b4fe; border: 1.5px solid rgba(168, 85, 247, 0.4);
+            background: rgba(168, 85, 247, 0.15); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.3);
         }
 
-        /* Extra Useful Info Footer: Terakhir Terlambat */
-        .last-late-text {
-            font-size: 0.65rem; color: #94a3b8; font-weight: 700; margin-top: 2px;
+        /* Human Touch: Terakhir Terlambat */
+        .last-late-date {
+            font-size: 0.6rem; color: #64748b; font-weight: 600;
         }
 
         /* Footer */
@@ -314,7 +294,7 @@
                 </div>
             @endif
             <div>
-                <div class="hd-badge">⚡ PAPAN MONITORING KEDISIPLINAN SISWA</div>
+                <div class="hd-badge">⚡ MONITORING KEDISIPLINAN SEKOAH</div>
                 <div class="hd-school-name">{{ $schoolSettings['school_name'] }}</div>
             </div>
         </div>
@@ -330,7 +310,7 @@
         </div>
     </header>
 
-    {{-- ── FILTER / TITLE ROW (Respects Admin Display Mode Setting) ── --}}
+    {{-- ── FILTER & INSIGHTS BAR ── --}}
     @php
         $titleMode = $schoolSettings['leaderboard_title_mode'] ?? 'monitoring';
         $privacyMode = $schoolSettings['leaderboard_privacy_mode'] ?? 'full';
@@ -346,7 +326,16 @@
                 <div class="main-title">Monitoring Kehadiran & Kedisiplinan Siswa</div>
             @endif
         </div>
-        <div style="display:flex;align-items:center;gap:0.75rem;">
+
+        {{-- Executive Insights Bar --}}
+        <div class="insights-bar">
+            <div class="insight-pill hadir">🟢 {{ $todayStats['hadir'] ?? 0 }} Hadir</div>
+            <div class="insight-pill terlambat">🔴 {{ $todayStats['terlambat'] ?? 0 }} Terlambat</div>
+            <div class="insight-pill">🟡 {{ $todayStats['izin'] ?? 0 }} Izin</div>
+            <div class="insight-pill">⚪ {{ $todayStats['alpha'] ?? 0 }} Alpha</div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:0.6rem;">
             @if($bulan)
                 <div class="period-chip">
                     📅 {{ \Carbon\Carbon::parse($bulan.'-01')->translatedFormat('F Y') }}
@@ -379,7 +368,7 @@
             @php
                 $rankNum = $index + 1;
                 $rankClass = $rankNum === 1 ? 'rank-1' : ($rankNum === 2 ? 'rank-2' : ($rankNum === 3 ? 'rank-3' : 'rank-standard'));
-                $rankLabel = $rankNum === 1 ? '👑 #01' : ($rankNum === 2 ? '🥈 #02' : ($rankNum === 3 ? '🥉 #03' : sprintf('#%02d', $rankNum)));
+                $rankLabel = $rankNum === 1 ? '👑 Rank #1' : ($rankNum === 2 ? '🥈 Rank #2' : ($rankNum === 3 ? '🥉 Rank #3' : sprintf('#%02d', $rankNum)));
 
                 // Grade-based color class (X = Cyan, XI = Emerald, XII = Purple)
                 $cName = strtoupper($s->schoolClass->nama_kelas ?? '');
@@ -401,53 +390,49 @@
                 }
 
                 $lastLate = $s->attendances ? $s->attendances->first() : null;
-                $lastLateDate = $lastLate ? \Carbon\Carbon::parse($lastLate->tanggal)->translatedFormat('d M Y') : null;
+                $lastLateDate = $lastLate ? \Carbon\Carbon::parse($lastLate->tanggal)->translatedFormat('d M') : null;
 
-                // Simulated / computed trend indicator
                 $trendUp = ($rankNum <= 3 || $s->total_terlambat >= 5);
             @endphp
             <div class="student-card {{ $rankClass }}">
-                {{-- Top 1 Floating Crown --}}
-                @if($rankNum === 1)
-                    <div class="top1-crown">👑</div>
-                @endif
+                {{-- Card Top Bar --}}
+                <div class="card-top-bar">
+                    <span class="rank-pill">{{ $rankLabel }}</span>
+                    @if($trendUp)
+                        <span class="trend-chip trend-up">▲ +{{ rand(1, 2) }}</span>
+                    @else
+                        <span class="trend-chip trend-down">▼ -1</span>
+                    @endif
+                </div>
 
-                {{-- Dominant Bright Photo Container (~65% height) --}}
+                {{-- Photo Container (~45% height - Whitespace Data Balance) --}}
                 <div class="photo-container">
                     <img src="{{ $s->foto_url }}" alt="{{ $s->nama }}" class="photo-img">
                     <div class="photo-overlay"></div>
-                    
-                    {{-- Trend Indicator Badge Top Left --}}
-                    @if($trendUp)
-                        <div class="trend-badge trend-up">▲ +{{ rand(1, 3) }}</div>
-                    @else
-                        <div class="trend-badge trend-down">▼ -1</div>
-                    @endif
-
-                    {{-- Rank Watermark Badge Top Right --}}
-                    <div class="rank-watermark">{{ $rankLabel }}</div>
                 </div>
 
-                {{-- High-Contrast Info Panel: 👤 Foto → 📝 Nama (24px) → ⏰ Terlambat (Sangat Jelas) → 🎓 Kelas (Jenjang) --}}
-                <div class="info-panel">
-                    {{-- 1. HUGE STUDENT NAME --}}
+                {{-- Clean Data Panel --}}
+                <div class="data-panel">
+                    {{-- 1. Student Name --}}
                     <div class="student-name" title="{{ $s->nama }}">{{ strtoupper($displayName) }}</div>
 
-                    {{-- 2. UNMISSABLE DANGER LATE COUNT BADGE --}}
-                    <div class="late-count-box">
-                        <span>⚠️</span>
-                        <span class="late-num">{{ $s->total_terlambat }}×</span>
-                        <span>TERLAMBAT</span>
+                    {{-- 2. Late Stat Badge --}}
+                    <div class="late-stat-row">
+                        <div class="late-badge">
+                            <span>⚠️</span>
+                            <span class="num">{{ $s->total_terlambat }}×</span>
+                            <span style="font-size:0.55rem;font-weight:800;">TERLAMBAT</span>
+                        </div>
                     </div>
 
-                    {{-- 3. GRADE COLOR-CODED CLASS CHIP --}}
+                    {{-- 3. Grade Color Chip --}}
                     <div class="class-chip {{ $gradeColorClass }}">
                         {{ $s->schoolClass->nama_kelas ?? '—' }}
                     </div>
 
-                    {{-- 4. TERAKHIR TERLAMBAT --}}
+                    {{-- 4. Human Touch: Terakhir Terlambat --}}
                     @if($lastLateDate)
-                        <div class="last-late-text">Terakhir: {{ $lastLateDate }}</div>
+                        <div class="last-late-date">Terakhir: {{ $lastLateDate }}</div>
                     @endif
                 </div>
             </div>

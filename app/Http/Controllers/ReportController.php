@@ -165,7 +165,16 @@ class ReportController extends Controller
             ->limit($limit)
             ->get();
 
-        return view('reports.public_leaderboard', compact('students', 'bulan', 'classes', 'classId'));
+        $today = now()->toDateString();
+        $todayStats = [
+            'total_siswa' => Student::where('status', 'aktif')->count(),
+            'hadir' => Attendance::where('tanggal', $today)->where('status', 'hadir')->count(),
+            'terlambat' => Attendance::where('tanggal', $today)->where('status', 'terlambat')->count(),
+            'izin' => Attendance::where('tanggal', $today)->whereIn('status', ['izin', 'pulang_cepat', 'dispensasi', 'sakit'])->count(),
+            'alpha' => Attendance::where('tanggal', $today)->where('status', 'alpha')->count(),
+        ];
+
+        return view('reports.public_leaderboard', compact('students', 'bulan', 'classes', 'classId', 'todayStats'));
     }
 
     /**
