@@ -11,20 +11,20 @@
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html, body {
-            height: 100%;
+            height: 100%; width: 100%;
             font-family: 'Plus Jakarta Sans', sans-serif;
             background: #020617;
             color: #f8fafc;
-            overflow: hidden; /* Full-screen: no scroll */
+            overflow: hidden; /* TV display: no scrollbar */
         }
 
-        /* ── Animated Background ── */
+        /* ── Cosmic Dark Background ── */
         .bg-cosmos {
             position: fixed; inset: 0; z-index: 0;
             background:
-                radial-gradient(ellipse 140% 70% at 50% -10%, rgba(109,40,217,0.35) 0%, transparent 55%),
-                radial-gradient(ellipse 70% 50% at 95% 90%,  rgba(245,158,11,0.18) 0%, transparent 55%),
-                radial-gradient(ellipse 50% 40% at 5%  90%,  rgba(99,102,241,0.15) 0%, transparent 55%),
+                radial-gradient(ellipse 130% 60% at 50% -10%, rgba(99,102,241,0.3) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 85% 90%,  rgba(245,158,11,0.15) 0%, transparent 55%),
+                radial-gradient(ellipse 60% 50% at 15% 90%,  rgba(139,92,246,0.15) 0%, transparent 55%),
                 #020617;
         }
         .bg-grid {
@@ -32,27 +32,23 @@
             background-image:
                 linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 72px 72px;
-        }
-        .bg-vignette {
-            position: fixed; inset: 0; z-index: 0;
-            background: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 40%, rgba(2,6,23,0.55) 100%);
+            background-size: 60px 60px;
         }
 
-        /* ── Page layout: 100vh, no scroll ── */
+        /* ── Page Layout ── */
         .page { position: relative; z-index: 1; height: 100vh; display: flex; flex-direction: column; }
 
-        /* ── Header ── */
+        /* ── Top Header ── */
         header {
             display: flex; align-items: center; justify-content: space-between;
             padding: 0.6rem 1.75rem;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-            background: rgba(2,6,23,0.65);
-            backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            background: rgba(2,6,23,0.75);
+            backdrop-filter: blur(20px);
             flex-shrink: 0;
         }
-        .hd-left  { display: flex; align-items: center; gap: 0.85rem; }
-        .hd-logo  { height: 2.6rem; width: auto; object-fit: contain; }
+        .hd-left { display: flex; align-items: center; gap: 0.85rem; }
+        .hd-logo { height: 2.6rem; width: auto; object-fit: contain; }
         .hd-logo-placeholder {
             width: 42px; height: 42px; border-radius: 0.75rem;
             background: linear-gradient(135deg,#6366f1,#8b5cf6);
@@ -60,25 +56,22 @@
             box-shadow: 0 4px 20px rgba(99,102,241,0.4);
         }
         .hd-school-name { font-size: 0.95rem; font-weight: 800; letter-spacing: -0.01em; }
-        .hd-badge {
-            font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.12em;
-            color: #f59e0b; font-weight: 700;
-        }
+        .hd-badge { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.12em; color: #f59e0b; font-weight: 800; }
 
         .live-pill {
             display: inline-flex; align-items: center; gap: 0.4rem;
             padding: 0.28rem 0.75rem; border-radius: 9999px;
-            background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2);
+            background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.25);
             color: #34d399; font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;
         }
         .live-dot { width: 6px; height: 6px; border-radius: 50%; background: #34d399; animation: blink 1.4s ease-in-out infinite; }
         @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 
         .clock-wrap { text-align: right; }
-        .clock-time { font-size: 1.4rem; font-weight: 900; letter-spacing: 0.04em; color: #f59e0b; line-height: 1; }
-        .clock-date { font-size: 0.6rem; color: #475569; margin-top: 2px; }
+        .clock-time { font-size: 1.4rem; font-weight: 900; letter-spacing: 0.04em; color: #f59e0b; line-height: 1; font-family: monospace; }
+        .clock-date { font-size: 0.6rem; color: #64748b; margin-top: 2px; }
 
-        /* ── Filter bar ── */
+        /* ── Sub Header / Filter Row ── */
         .filter-row {
             display: flex; align-items: center; justify-content: space-between;
             padding: 0.5rem 1.75rem; flex-shrink: 0;
@@ -86,7 +79,7 @@
         }
         .title-block .eyebrow { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.15em; color: #f59e0b; font-weight: 800; }
         .title-block .main-title {
-            font-size: clamp(1.1rem, 2vw, 1.5rem); font-weight: 900; letter-spacing: -0.03em;
+            font-size: clamp(1.1rem, 2vw, 1.45rem); font-weight: 900; letter-spacing: -0.03em;
             background: linear-gradient(90deg, #fff 30%, #fde68a 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
             line-height: 1.1;
@@ -105,172 +98,184 @@
         .fb:hover { background: #fbbf24; }
         .rb { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; font-size: 0.7rem; font-weight: 700; padding: 0.32rem 0.7rem; border-radius: 0.5rem; text-decoration: none; font-family: inherit; }
 
-        /* ── Main cards area ── */
+        /* ── Main Area ── */
         main {
             flex: 1; display: flex; flex-direction: column;
-            gap: 0.75rem; padding: 0.75rem 1.75rem 0.75rem;
-            overflow: hidden; min-height: 0;
+            gap: 0.75rem; padding: 0.75rem 1.75rem;
+            min-height: 0; overflow: hidden;
         }
 
-        /* ── TOP 3 PODIUM ── */
+        /* ── PODIUM ROW (Top 3 Cards) ── */
         .podium-row {
-            display: grid;
-            grid-template-columns: 1fr 1.22fr 1fr;
-            gap: 0.75rem;
-            flex: 1.6; min-height: 0;
+            display: flex; align-items: flex-end; justify-content: center; gap: 1rem;
+            flex: 1.4; min-height: 0;
         }
 
-        /* ── SPORT CARD (full photo) ── */
-        .sport-card {
-            position: relative; border-radius: 1.1rem; overflow: hidden;
-            display: flex; flex-direction: column; justify-content: flex-end;
-            cursor: default;
-            transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s;
+        .podium-card {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            border-radius: 1.25rem;
+            padding: 1rem;
+            display: flex; flex-direction: column; justify-content: space-between;
+            position: relative; overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .sport-card:hover { transform: translateY(-5px) scale(1.015); }
+        .podium-card:hover { transform: translateY(-4px); }
 
-        /* photo fills entire card */
-        .sport-card .sc-photo {
-            position: absolute; inset: 0;
-            width: 100%; height: 100%;
-            object-fit: cover; object-position: top center;
-            transition: transform 0.6s ease;
-        }
-        .sport-card:hover .sc-photo { transform: scale(1.04); }
-
-        /* gradient overlay bottom */
-        .sport-card .sc-overlay {
-            position: absolute; inset: 0;
-            background: linear-gradient(to top,
-                rgba(2,6,23,0.96) 0%,
-                rgba(2,6,23,0.7)  35%,
-                rgba(2,6,23,0.15) 65%,
-                transparent       100%);
+        /* Rank #1 Gold (Center, Taller) */
+        .podium-card.gold {
+            width: 320px; height: 100%;
+            border: 2px solid #f59e0b;
+            box-shadow: 0 0 35px rgba(245,158,11,0.25), 0 16px 40px rgba(0,0,0,0.5);
+            background: linear-gradient(180deg, rgba(245,158,11,0.12) 0%, rgba(15,23,42,0.85) 100%);
         }
 
-        /* gold glow ring */
-        .sport-card.gold { box-shadow: 0 0 0 2px #f59e0b, 0 0 40px rgba(245,158,11,0.35), 0 16px 48px rgba(0,0,0,0.6); }
-        .sport-card.silver { box-shadow: 0 0 0 1.5px #94a3b8, 0 0 28px rgba(148,163,184,0.2), 0 16px 40px rgba(0,0,0,0.5); }
-        .sport-card.bronze { box-shadow: 0 0 0 1.5px #b45309, 0 0 28px rgba(180,83,9,0.2), 0 16px 40px rgba(0,0,0,0.5); }
+        /* Rank #2 Silver (Left) */
+        .podium-card.silver {
+            width: 280px; height: 92%;
+            border: 1.5px solid #94a3b8;
+            box-shadow: 0 0 25px rgba(148,163,184,0.15), 0 12px 32px rgba(0,0,0,0.4);
+            background: linear-gradient(180deg, rgba(148,163,184,0.1) 0%, rgba(15,23,42,0.85) 100%);
+        }
 
-        /* Top rank badge */
-        .sc-rank-badge {
-            position: absolute; top: 0.75rem; left: 0.75rem; z-index: 10;
-            display: flex; align-items: center; gap: 0.3rem;
-            padding: 0.3rem 0.65rem; border-radius: 9999px;
+        /* Rank #3 Bronze (Right) */
+        .podium-card.bronze {
+            width: 280px; height: 88%;
+            border: 1.5px solid #b45309;
+            box-shadow: 0 0 25px rgba(180,83,9,0.15), 0 12px 32px rgba(0,0,0,0.4);
+            background: linear-gradient(180deg, rgba(180,83,9,0.1) 0%, rgba(15,23,42,0.85) 100%);
+        }
+
+        /* Top Tag Banner */
+        .card-banner {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 0.6rem;
+        }
+        .banner-chip {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            padding: 0.25rem 0.65rem; border-radius: 9999px;
             font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em;
-            backdrop-filter: blur(8px);
         }
-        .gold   .sc-rank-badge { background: rgba(245,158,11,0.9); color: #1c0a00; }
-        .silver .sc-rank-badge { background: rgba(148,163,184,0.85); color: #0f172a; }
-        .bronze .sc-rank-badge { background: rgba(180,83,9,0.9); color: #fff; }
+        .gold .banner-chip   { background: #f59e0b; color: #1c0a00; }
+        .silver .banner-chip { background: #94a3b8; color: #0f172a; }
+        .bronze .banner-chip { background: #b45309; color: #ffffff; }
 
-        /* Count badge top right */
-        .sc-count-badge {
-            position: absolute; top: 0.75rem; right: 0.75rem; z-index: 10;
-            display: flex; flex-direction: column; align-items: center;
-            padding: 0.4rem 0.6rem; border-radius: 0.65rem;
-            backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.12);
-            background: rgba(0,0,0,0.45);
+        .late-badge {
+            display: inline-flex; align-items: center; gap: 0.25rem;
+            padding: 0.25rem 0.6rem; border-radius: 0.5rem;
+            background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.8rem; font-weight: 900; color: #f59e0b;
         }
-        .sc-count-num { font-size: 1.3rem; font-weight: 900; line-height: 1; }
-        .sc-count-label { font-size: 0.48rem; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin-top: 1px; }
-        .gold   .sc-count-num { color: #f59e0b; font-size: 1.6rem; }
-        .silver .sc-count-num { color: #e2e8f0; }
-        .bronze .sc-count-num { color: #d97706; }
+        .late-badge span { font-size: 0.52rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; }
 
-        /* Bottom info */
-        .sc-info {
-            position: relative; z-index: 10;
-            padding: 0.85rem 0.9rem 0.9rem;
+        /* Dedicated Photo Container (Framed, Precision Cropped) */
+        .photo-frame {
+            width: 100%; flex: 1; min-height: 110px;
+            border-radius: 0.85rem; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.12);
+            position: relative; background: #0f172a;
         }
-        .sc-name { font-size: 0.95rem; font-weight: 800; letter-spacing: -0.02em; color: #fff; line-height: 1.2; }
-        .gold .sc-name { font-size: 1.05rem; }
-        .sc-class {
+        .photo-frame img {
+            width: 100%; height: 100%;
+            object-fit: cover; object-position: center 20%;
+            display: block;
+        }
+
+        /* Bottom Info Box */
+        .card-details {
+            margin-top: 0.65rem; text-align: center;
+        }
+        .card-name {
+            font-size: 1rem; font-weight: 800; color: #ffffff;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            letter-spacing: -0.01em; line-height: 1.25;
+        }
+        .gold .card-name { font-size: 1.15rem; }
+
+        .card-class {
             display: inline-block; margin-top: 0.3rem;
-            font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;
-            padding: 0.18rem 0.55rem; border-radius: 0.35rem;
+            font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em;
+            padding: 0.2rem 0.6rem; border-radius: 0.4rem;
         }
-        .gold   .sc-class { background: rgba(245,158,11,0.2); color: #fcd34d; border: 1px solid rgba(245,158,11,0.3); }
-        .silver .sc-class { background: rgba(148,163,184,0.15); color: #94a3b8; border: 1px solid rgba(148,163,184,0.25); }
-        .bronze .sc-class { background: rgba(180,83,9,0.15); color: #d97706; border: 1px solid rgba(180,83,9,0.25); }
+        .gold   .card-class { background: rgba(245,158,11,0.2); color: #fcd34d; border: 1px solid rgba(245,158,11,0.3); }
+        .silver .card-class { background: rgba(148,163,184,0.18); color: #cbd5e1; border: 1px solid rgba(148,163,184,0.25); }
+        .bronze .card-class { background: rgba(180,83,9,0.18); color: #fb923c; border: 1px solid rgba(180,83,9,0.25); }
 
-        /* ── RANK 4-10 ROW ── */
-        .rank-row {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 0.6rem;
+        /* ── RANK 4–10 GRID ── */
+        .rank-grid {
+            display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.65rem;
             flex: 1; min-height: 0;
         }
 
-        /* Small sport card */
         .mini-card {
-            position: relative; border-radius: 0.85rem; overflow: hidden;
-            display: flex; flex-direction: column; justify-content: flex-end;
-            transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.07);
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 0.9rem;
+            padding: 0.55rem;
+            display: flex; flex-direction: column; justify-content: space-between;
+            transition: transform 0.25s ease, border-color 0.25s ease;
         }
-        .mini-card:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 12px 32px rgba(0,0,0,0.5); }
+        .mini-card:hover { transform: translateY(-3px); border-color: rgba(245,158,11,0.4); }
 
-        .mini-card .mc-photo {
-            position: absolute; inset: 0;
-            width: 100%; height: 100%;
-            object-fit: cover; object-position: top center;
-            transition: transform 0.5s ease;
+        .mc-top {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 0.4rem;
         }
-        .mini-card:hover .mc-photo { transform: scale(1.06); }
-
-        .mini-card .mc-overlay {
-            position: absolute; inset: 0;
-            background: linear-gradient(to top, rgba(2,6,23,0.95) 0%, rgba(2,6,23,0.6) 40%, rgba(2,6,23,0.1) 70%, transparent 100%);
-        }
-
-        .mc-rank {
-            position: absolute; top: 0.5rem; left: 0.5rem; z-index: 10;
+        .mc-rank-chip {
             width: 22px; height: 22px; border-radius: 50%;
-            background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15);
-            font-size: 0.58rem; font-weight: 900; color: #94a3b8;
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+            font-size: 0.6rem; font-weight: 900; color: #94a3b8;
             display: flex; align-items: center; justify-content: center;
-            backdrop-filter: blur(4px);
         }
-        .mc-count {
-            position: absolute; top: 0.5rem; right: 0.5rem; z-index: 10;
-            background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 0.4rem; padding: 0.18rem 0.4rem; backdrop-filter: blur(4px);
-            font-size: 0.8rem; font-weight: 900; color: #f59e0b; line-height: 1;
+        .mc-late-count {
+            font-size: 0.75rem; font-weight: 900; color: #f59e0b;
         }
-        .mc-count-label { font-size: 0.4rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.08em; }
 
-        .mc-info { position: relative; z-index: 10; padding: 0.55rem 0.6rem 0.6rem; }
-        .mc-name { font-size: 0.7rem; font-weight: 800; color: #f1f5f9; line-height: 1.2; letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .mc-class { font-size: 0.52rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+        .mc-photo-frame {
+            width: 100%; flex: 1; min-height: 60px;
+            border-radius: 0.6rem; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: #0f172a;
+        }
+        .mc-photo-frame img {
+            width: 100%; height: 100%;
+            object-fit: cover; object-position: center 20%;
+            display: block;
+        }
 
-        /* ── Footer ── */
+        .mc-details {
+            margin-top: 0.4rem; text-align: center;
+        }
+        .mc-name {
+            font-size: 0.68rem; font-weight: 800; color: #f1f5f9;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            line-height: 1.2;
+        }
+        .mc-class {
+            font-size: 0.52rem; font-weight: 700; color: #64748b;
+            text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px;
+        }
+
+        /* Footer */
         footer {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0.4rem 1.75rem;
-            border-top: 1px solid rgba(255,255,255,0.04);
-            flex-shrink: 0; font-size: 0.58rem; color: #1e293b;
+            padding: 0.4rem 1.75rem; border-top: 1px solid rgba(255,255,255,0.04);
+            flex-shrink: 0; font-size: 0.58rem; color: #334155;
         }
-        footer a { color: #334155; text-decoration: none; }
-        footer a:hover { color: #475569; }
+        footer a { color: #475569; text-decoration: none; }
+        footer a:hover { color: #64748b; }
 
-        /* ── Empty state ── */
+        /* Empty state */
         .empty-state {
             flex: 1; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; gap: 0.75rem;
-            text-align: center;
+            align-items: center; justify-content: center; gap: 0.75rem; text-align: center;
         }
-
-        /* Scrollbar (hidden) */
-        ::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
 <div class="bg-cosmos"></div>
 <div class="bg-grid"></div>
-<div class="bg-vignette"></div>
 
 <div class="page">
 
@@ -331,82 +336,79 @@
         </div>
     </div>
 
-    {{-- ── MAIN CONTENT ── --}}
+    {{-- ── MAIN AREA ── --}}
     <main>
-
         @if($students->isNotEmpty())
 
-        {{-- ══ TOP 3 PODIUM — Full Photo Sport Cards ══ --}}
+        {{-- ══ PODIUM TOP 3 (Precision Framed Cards) ══ --}}
         <div class="podium-row">
 
-            {{-- #2 Silver --}}
+            {{-- Rank #2 (Silver - Left) --}}
             @if($students->count() >= 2)
-            <div class="sport-card silver">
-                <img src="{{ $students[1]->foto_url }}" alt="{{ $students[1]->nama }}" class="sc-photo">
-                <div class="sc-overlay"></div>
-                <div class="sc-rank-badge">🥈 Rank #2</div>
-                <div class="sc-count-badge">
-                    <span class="sc-count-num">{{ $students[1]->total_terlambat }}</span>
-                    <span class="sc-count-label">× terlambat</span>
+            <div class="podium-card silver">
+                <div class="card-banner">
+                    <span class="banner-chip">🥈 Rank #2</span>
+                    <div class="late-badge">{{ $students[1]->total_terlambat }} <span>Telat</span></div>
                 </div>
-                <div class="sc-info">
-                    <div class="sc-name">{{ $students[1]->nama }}</div>
-                    <span class="sc-class">{{ $students[1]->schoolClass->nama_kelas ?? '—' }}</span>
+                <div class="photo-frame">
+                    <img src="{{ $students[1]->foto_url }}" alt="{{ $students[1]->nama }}">
+                </div>
+                <div class="card-details">
+                    <div class="card-name" title="{{ $students[1]->nama }}">{{ $students[1]->nama }}</div>
+                    <span class="card-class">{{ $students[1]->schoolClass->nama_kelas ?? '—' }}</span>
                 </div>
             </div>
-            @else <div></div>
             @endif
 
-            {{-- #1 Gold (center) --}}
-            <div class="sport-card gold">
-                <img src="{{ $students[0]->foto_url }}" alt="{{ $students[0]->nama }}" class="sc-photo">
-                <div class="sc-overlay"></div>
-                <div class="sc-rank-badge">👑 Rank #1</div>
-                <div class="sc-count-badge">
-                    <span class="sc-count-num">{{ $students[0]->total_terlambat }}</span>
-                    <span class="sc-count-label">× terlambat</span>
+            {{-- Rank #1 (Gold - Center, Taller) --}}
+            <div class="podium-card gold">
+                <div class="card-banner">
+                    <span class="banner-chip">👑 Rank #1</span>
+                    <div class="late-badge">{{ $students[0]->total_terlambat }} <span>Telat</span></div>
                 </div>
-                <div class="sc-info">
-                    <div class="sc-name">{{ $students[0]->nama }}</div>
-                    <span class="sc-class">{{ $students[0]->schoolClass->nama_kelas ?? '—' }}</span>
+                <div class="photo-frame">
+                    <img src="{{ $students[0]->foto_url }}" alt="{{ $students[0]->nama }}">
+                </div>
+                <div class="card-details">
+                    <div class="card-name" title="{{ $students[0]->nama }}">{{ $students[0]->nama }}</div>
+                    <span class="card-class">{{ $students[0]->schoolClass->nama_kelas ?? '—' }}</span>
                 </div>
             </div>
 
-            {{-- #3 Bronze --}}
+            {{-- Rank #3 (Bronze - Right) --}}
             @if($students->count() >= 3)
-            <div class="sport-card bronze">
-                <img src="{{ $students[2]->foto_url }}" alt="{{ $students[2]->nama }}" class="sc-photo">
-                <div class="sc-overlay"></div>
-                <div class="sc-rank-badge">🥉 Rank #3</div>
-                <div class="sc-count-badge">
-                    <span class="sc-count-num">{{ $students[2]->total_terlambat }}</span>
-                    <span class="sc-count-label">× terlambat</span>
+            <div class="podium-card bronze">
+                <div class="card-banner">
+                    <span class="banner-chip">🥉 Rank #3</span>
+                    <div class="late-badge">{{ $students[2]->total_terlambat }} <span>Telat</span></div>
                 </div>
-                <div class="sc-info">
-                    <div class="sc-name">{{ $students[2]->nama }}</div>
-                    <span class="sc-class">{{ $students[2]->schoolClass->nama_kelas ?? '—' }}</span>
+                <div class="photo-frame">
+                    <img src="{{ $students[2]->foto_url }}" alt="{{ $students[2]->nama }}">
+                </div>
+                <div class="card-details">
+                    <div class="card-name" title="{{ $students[2]->nama }}">{{ $students[2]->nama }}</div>
+                    <span class="card-class">{{ $students[2]->schoolClass->nama_kelas ?? '—' }}</span>
                 </div>
             </div>
-            @else <div></div>
             @endif
 
         </div>
 
-        {{-- ══ RANK 4–10 Mini Cards Row ══ --}}
+        {{-- ══ RANK 4–10 GRID ══ --}}
         @if($students->count() > 3)
-        <div class="rank-row">
+        <div class="rank-grid">
             @foreach($students->slice(3) as $index => $s)
             @php $rankNum = $index + 4; @endphp
             <div class="mini-card">
-                <img src="{{ $s->foto_url }}" alt="{{ $s->nama }}" class="mc-photo">
-                <div class="mc-overlay"></div>
-                <div class="mc-rank">#{{ $rankNum }}</div>
-                <div class="mc-count">
-                    {{ $s->total_terlambat }}×
-                    <div class="mc-count-label">terlambat</div>
+                <div class="mc-top">
+                    <span class="mc-rank-chip">#{{ $rankNum }}</span>
+                    <span class="mc-late-count">{{ $s->total_terlambat }}×</span>
                 </div>
-                <div class="mc-info">
-                    <div class="mc-name">{{ $s->nama }}</div>
+                <div class="mc-photo-frame">
+                    <img src="{{ $s->foto_url }}" alt="{{ $s->nama }}">
+                </div>
+                <div class="mc-details">
+                    <div class="mc-name" title="{{ $s->nama }}">{{ $s->nama }}</div>
                     <div class="mc-class">{{ $s->schoolClass->nama_kelas ?? '—' }}</div>
                 </div>
             </div>
@@ -417,25 +419,23 @@
         @else
         {{-- Empty state --}}
         <div class="empty-state">
-            <div style="font-size:5rem;">🎉</div>
-            <div style="font-size:1.5rem;font-weight:900;color:#fff;">Tidak Ada Keterlambatan!</div>
+            <div style="font-size:4.5rem;">🎉</div>
+            <div style="font-size:1.4rem;font-weight:900;color:#fff;">Tidak Ada Keterlambatan!</div>
             <div style="font-size:0.85rem;color:#475569;">Semua siswa hadir tepat waktu pada periode ini.</div>
         </div>
         @endif
-
     </main>
 
     {{-- ── FOOTER ── --}}
     <footer>
         <span>© {{ date('Y') }} {{ $schoolSettings['school_name'] }}</span>
-        <span style="color:#1e3a5f;font-size:0.55rem;">Auto-refresh setiap 30 detik</span>
+        <span>Auto-refresh setiap 30 detik</span>
         <a href="{{ route('kiosk.scan') }}">↗ Buka Kiosk Scan · Powered by {{ $schoolSettings['app_name'] }}</a>
     </footer>
 
 </div>
 
 <script>
-    // Live clock
     (function tick() {
         const now = new Date();
         const c = document.getElementById('live-clock');
@@ -445,7 +445,6 @@
         setTimeout(tick, 1000);
     })();
 
-    // Auto-refresh 30s for hall-display
     setTimeout(() => location.reload(), 30000);
 </script>
 </body>
