@@ -25,15 +25,17 @@
         <!-- Tab Switcher Navigation -->
         <div class="flex items-center gap-2 border-b border-slate-200 pb-2 overflow-x-auto">
             <a href="{{ route('students.index') }}"
-               class="px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 shrink-0 bg-slate-100 text-slate-600 hover:bg-slate-200">
+               style="background-color: #f1f5f9; color: #475569;"
+               class="px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 shrink-0 hover:bg-slate-200">
                 <svg class="w-4 h-4 text-indigo-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                 <span>Siswa Aktif</span>
             </a>
             <a href="{{ route('students.trashed') }}"
-               class="px-4 py-2.5 rounded-xl text-xs font-extrabold transition flex items-center gap-2 shrink-0 bg-rose-600 text-white shadow-sm">
+               style="background-color: #e11d48 !important; color: #ffffff !important;"
+               class="px-4 py-2.5 rounded-xl text-xs font-extrabold transition flex items-center gap-2 shrink-0 shadow-sm">
                 <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                <span>Tong Sampah / Terhapus</span>
-                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-white text-rose-700 shadow-sm">{{ $trashedCount }}</span>
+                <span style="color: #ffffff !important;">Tong Sampah / Terhapus</span>
+                <span style="background-color: #ffffff !important; color: #be123c !important;" class="px-2 py-0.5 rounded-full text-[10px] font-extrabold shadow-sm">{{ $trashedCount }}</span>
             </a>
         </div>
 
