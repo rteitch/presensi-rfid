@@ -48,6 +48,10 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
+        if ($user->hasRole('admin') && User::role('admin')->count() <= 1) {
+            return back()->withErrors(['password' => 'Tidak dapat menghapus akun. Ini adalah satu-satunya akun Administrator yang tersisa.'], 'userDeletion');
+        }
+
         Auth::logout();
 
         $user->delete();

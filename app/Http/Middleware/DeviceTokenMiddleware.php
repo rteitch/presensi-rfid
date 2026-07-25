@@ -11,7 +11,7 @@ class DeviceTokenMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $token = $request->header('X-Device-Token') ?? $request->input('device_token') ?? $request->query('token');
+        $token = $request->header('X-Device-Token') ?? $request->input('device_token');
 
         if (! $token) {
             if (auth('web')->check()) {
