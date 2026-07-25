@@ -293,6 +293,11 @@ Sistem mendukung 2 opsi arsitektur alat reader RFID:
     }
     ```
 
+- **Mode C: Mobile Tablet / Smartphone Kiosk (USB OTG Portable)**
+  - Konfigurasi: Tablet Android / iPad + Konverter USB OTG (Type-C / Micro USB) + USB RFID Reader.
+  - Penggunaan: Menjadikan tablet/HP sebagai Kiosk Presensi Layar Sentuh Portabel tanpa membutuhkan PC Desktop.
+  - Cara Kerja: Colokkan reader ke tablet via OTG, buka browser Google Chrome ke URL `http://[IP_SERVER]:8000/kiosk`. Setiap tap kartu langsung diproses real-time dengan efek audio chime. Cocok untuk pos presensi di meja piket, kelas, maupun pos gerbang luar.
+
 #### 📍 Arsitektur Presensi Multi-Titik (Multi-Location & Multi-Kiosk)
 Sistem ini dirancang untuk mendukung pencatatan presensi di **banyak lokasi secara bersamaan** (contoh: Gerbang Utama, Gerbang Barat, Lobby Gedung B, Perpustakaan, Lab Komputer):
 1. **Pendaftaran Perangkat Per Titik**: Buat entri perangkat baru di menu **Devices** (`/devices`) untuk setiap titik fisik (misal: "Kiosk Gerbang Depan", "ESP32 Lobby Utama").
