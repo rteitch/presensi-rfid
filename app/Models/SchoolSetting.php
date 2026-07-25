@@ -104,6 +104,8 @@ class SchoolSetting extends Model
             'kiosk_bg_image' => null,
             'kiosk_title' => 'PRESENSI RTH NEXUS',
             'kiosk_subtitle' => 'Tempelkan Kartu RFID pada Reader',
+            'rate_limit_api' => 60,
+            'hari_efektif' => json_encode(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']),
         ];
     }
 }
