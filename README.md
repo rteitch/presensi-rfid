@@ -19,32 +19,33 @@
 - **Hardware Debouncer**: Map debouncer 2 detik mencegah pemindaian ganda dari kartu yang sama secara tidak sengaja.
 - **Tampilan Visual Kiosk**: Card animasi status, countdown reset 4 detik, dan shortcut ke Papan Leaderboard Publik.
 
-### 2. 🛡️ Role-Based Access Control (RBAC) & Class Scoping
-- **Manajemen Role Spatie**: Membedakan akun **ADMINISTRATOR** (Akses Penuh) dan **GURU / WALI KELAS** (Akses Terbatas).
-- **Automated Class Scoping**: Saat Guru Wali Kelas login, Dashboard, Laporan, Presensi Harian, dan Data Siswa **secara otomatis dikunci hanya untuk kelas binaannya sendiri**.
-- **Manajemen Pengguna UI (`/users`)**: Admin dapat menambah akun Admin/Guru baru, mengubah role, dan mengganti password.
+### 2. 🛡️ Role-Based Access Control (RBAC) & Multi-Role System
+- **Tiga Peran Utama (Spatie RBAC)**:
+  - **ADMINISTRATOR**: Akses penuh mengelola Data Master, Pengaturan Sekolah, Device RFID, Audit Log, User, dan Konfigurasi Rate Limit.
+  - **GURU / WALI KELAS**: Akses terbatas yang secara otomatis di-*scope* hanya untuk kelas binaannya sendiri (mencatat presensi manual, melihat rekapitulasi siswa, dan mengekspor Laporan PDF/Excel).
+  - **KEPALA SEKOLAH (Executive Monitoring)**: Akses *view-only* bebas untuk memantau statistik presensi seluruh kelas, laporan rekapitulasi, leaderboard kedisiplinan, profil siswa, dan audit trail tanpa batasan kelas.
+- **Manajemen Pengguna UI (`/users`)**: Admin dapat menambah akun baru untuk Admin, Guru, atau Kepala Sekolah, serta mengubah password.
 - **Custom Artisan Command**: Perintah instan terminal `php artisan make:admin "Nama" email@sekolah.sch.id password` untuk membuat akun Admin baru.
 
-### 3. 👤 Detail Profil Siswa & Rekap Presensi Individual (`/students/{id}`)
-- **Halaman Profil Lengkap**: Foto, NIS, Nama, Kelas, RFID UID, Kontak Ortu, dan Status.
-- **Ringkasan Bulanan**: 5 Kartu Status (Hadir, Terlambat, Izin, Sakit, Alpha) + Progress Bar % Kedisiplinan.
-- **Tabel Riwayat Log Presensi**: Riwayat presensi harian siswa per bulan dengan filter bulan.
+### 3. 👤 Detail Profil Siswa & Profil Guru (`/students/{id}` & `/teachers/{id}`)
+- **Profil Siswa Lengkap**: Foto, NIS, Nama, Kelas, RFID UID, Kontak Ortu, Ringkasan Bulanan (5 Status Presensi), dan Riwayat Log Presensi.
+- **Profil Guru Lengkap**: Detail pengajar, NIP, Mata Pelajaran, Nomor HP/WA, Email Login, serta daftar **Wali Kelas Binaan** yang diampu.
 - **Direct WA Ortu & Excel Export**: Kirim rekap bulanan siswa ke WA ortu atau download file Excel `.xlsx` individual.
 
 ### 4. 🏫 Detail Kelas & Export Rekapitulasi Kelas (`/classes/{id}`)
 - **Dashboard Rekapitulasi Kelas**: Statistik rata-rata kehadiran kelas, total keterlambatan, dan total alpha.
 - **Export Multi-Format**:
-  - **Export Excel (`.xlsx`)**: Rekapitulasi lengkap siswa dalam 1 file spreadsheet dengan catatan otomatis.
+  - **Export Excel (`.xlsx`)**: Rekapitulasi lengkap siswa dalam 1 file spreadsheet via kelas dedicated `ClassRekapExport`.
   - **Export PDF (`.pdf`)**: Cetak rekap bulanan kelas dengan *alert highlighting* (kuning) untuk siswa bermasalah.
 
-### 5. ⚙️ Enterprise Security, Audit Trail & Rate Limiting
+### 5. ⚙️ Enterprise Security, Audit Trail, Auto-Alpha & Monitoring
 - **Authentication Header**: Endpoint API `/api/rfid/scan` dilindungi middleware `device.token` (`X-Device-Token`). Pemindaian Kiosk dijamin **100% bebas hambatan** saat jam sibuk pagi hari.
 - **Konfigurasi UI Rate Limit (`/settings/school`)**: Admin dapat mengatur batas *Rate Limit API Pihak Ketiga* secara langsung dari halaman antarmuka Admin tanpa menyentuh kodingan.
 - **Audit Trail / Activity Log (`/activity-logs`)**: Mencatat setiap jejak digital pembuatan, perubahan, dan penghapusan data (Model Siswa, Guru, Kelas, User, Pengaturan) lengkap dengan perbandingan data lama vs baru, alamat IP, dan User Agent.
+- **Auto-Mark Alpha (`php artisan attendance:auto-alpha`)**: Perintah scheduler harian (setiap jam 17:00 / setelah jam pulang) yang secara otomatis menandai siswa aktif tanpa presensi sebagai *Alpha* pada hari sekolah efektif (skip akhir pekan & kalender libur).
+- **Kalender Libur Sekolah (`/holidays`)**: Pengelolaan agenda libur nasional & sekolah lengkap dengan form Tambah & **Modal Edit Agenda**. Pemindaian RFID pada hari libur otomatis ditolak dengan pesan *"Hari Libur Sekolah"*.
+- **Health Check Endpoint (`/api/health`)**: Endpoint JSON real-time untuk memantau konektivitas Database MySQL, operasional Cache, dan status environment aplikasi.
 - **Soft Deletes & Anti-Cascade Wipeout**: Menghapus data siswa/guru melindungi riwayat presensi masa lalu agar tidak musnah terhapus.
-- **Kalender Libur Sekolah (`/holidays`)**: Pengelolaan agenda libur nasional & sekolah. Pemindaian RFID pada hari libur otomatis ditolak dengan pesan *"Hari Libur Sekolah"*.
-- **Auto-Mark Alpha (`php artisan attendance:auto-alpha`)**: Scheduled Command harian (setiap jam 17:00) yang secara otomatis menandai siswa tanpa presensi sebagai *Alpha* pada hari sekolah efektif.
-- **Health Check Endpoint (`/api/health`)**: Monitoring real-time kesehatan Database MySQL, Cache, dan Status Aplikasi.
 
 ### 6. ⏱️ Aturan Jam Presensi & Toleransi Keterlambatan
 - Fleksibel dalam mengatur **Jam Masuk**, **Jam Pulang**, dan **Toleransi Keterlambatan (menit)**.

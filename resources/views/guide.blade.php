@@ -156,6 +156,40 @@
                 </div>
 
             </div>
+
+            <!-- Fitur Tambahan Enterprise & Keamanan -->
+            <div class="page-card p-6 space-y-4">
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    <span>Fitur Unggulan Enterprise & Otomatisasi Sistem</span>
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-1">
+                        <span class="font-bold text-indigo-600 block">📜 Audit Trail / Activity Log (`/activity-logs`)</span>
+                        <p class="text-slate-500 leading-relaxed">Mencatat riwayat pengubahan, pembuatan, dan penghapusan data secara detail termasuk perbandingan data lama vs baru, IP address, dan User Agent.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-1">
+                        <span class="font-bold text-indigo-600 block">🗓️ Kalender Libur Sekolah (`/holidays`)</span>
+                        <p class="text-slate-500 leading-relaxed">Kelola agenda libur sekolah dengan fitur Tambah & Modal Edit. Pemindaian RFID pada hari libur akan ditolak otomatis.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-1">
+                        <span class="font-bold text-indigo-600 block">🤖 Auto-Mark Alpha (`attendance:auto-alpha`)</span>
+                        <p class="text-slate-500 leading-relaxed">Perintah scheduler otomatis (jam 17:00 / setelah jam pulang) yang secara otomatis menandai siswa aktif tanpa scan sebagai Alpha pada hari sekolah efektif.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-1">
+                        <span class="font-bold text-indigo-600 block">👔 Role Kepala Sekolah (`kepala_sekolah`)</span>
+                        <p class="text-slate-500 leading-relaxed">Akses eksekutif view-only untuk memantau statistik kehadiran seluruh kelas, laporan rekapitulasi, dan leaderboard tanpa batasan wali kelas.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-1">
+                        <span class="font-bold text-indigo-600 block">🏥 Health Check Endpoint (`/api/health`)</span>
+                        <p class="text-slate-500 leading-relaxed">Endpoint JSON real-time untuk memantau kesehatan koneksi database MySQL, operasional Cache, dan versi aplikasi.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-1">
+                        <span class="font-bold text-indigo-600 block">⚡ Form Konfigurasi Rate Limit UI (`/settings/school`)</span>
+                        <p class="text-slate-500 leading-relaxed">Admin dapat mengatur batas request rate limit API pihak ketiga langsung via antarmuka web, sementara Kiosk RFID disetel bebas hambatan.</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Content Tab 2: Guru / Wali Kelas -->
