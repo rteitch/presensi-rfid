@@ -106,13 +106,19 @@ class ComprehensiveIstqbCoverageTest extends TestCase
             'class_id' => $this->class->id,
             'nis' => '77665544',
             'nama' => 'Andi Wijaya',
+            'jenis_kelamin' => 'L',
+            'agama' => 'Islam',
             'rfid_uid' => '04X8Y7Z6',
             'nama_ortu' => 'Bapak Andi',
             'no_hp_ortu' => '081234567890',
             'status' => 'aktif',
         ]);
         $response->assertRedirect(route('students.index'));
-        $this->assertDatabaseHas('students', ['nis' => '77665544']);
+        $this->assertDatabaseHas('students', [
+            'nis' => '77665544',
+            'jenis_kelamin' => 'L',
+            'agama' => 'Islam',
+        ]);
 
         $student = Student::where('nis', '77665544')->first();
 
@@ -121,13 +127,18 @@ class ComprehensiveIstqbCoverageTest extends TestCase
             'class_id' => $this->class->id,
             'nis' => '77665544',
             'nama' => 'Andi Wijaya Updated',
+            'jenis_kelamin' => 'L',
+            'agama' => 'Kristen',
             'rfid_uid' => '04X8Y7Z6',
             'nama_ortu' => 'Bapak Andi',
             'no_hp_ortu' => '081234567890',
             'status' => 'aktif',
         ]);
         $response->assertRedirect(route('students.index'));
-        $this->assertDatabaseHas('students', ['nama' => 'Andi Wijaya Updated']);
+        $this->assertDatabaseHas('students', [
+            'nama' => 'Andi Wijaya Updated',
+            'agama' => 'Kristen',
+        ]);
 
         // Delete (SoftDeletes)
         $response = $this->actingAs($this->admin)->delete(route('students.destroy', $student));

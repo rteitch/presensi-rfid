@@ -52,10 +52,10 @@
 - Tombol Export PDF & Excel langsung dari dashboard
 
 ### ✅ Manajemen Data Lengkap
-- **Siswa**: CRUD lengkap + foto profil, RFID tag, status aktif/non-aktif, soft delete
+- **Siswa**: CRUD lengkap + jenis kelamin (L/P), agama, foto profil, RFID tag, status aktif/non-aktif, soft delete
 - **Guru**: CRUD + foto, RFID tag, multi-kelas wali, soft delete
 - **Kelas**: Manajemen kelas + wali kelas + tahun ajaran
-- **Import/Export Excel**: Template siswa & guru (bulk upload)
+- **Import/Export Excel**: Template siswa (termasuk L/P & agama) & guru (bulk upload)
 - **Device RFID**: Manajemen perangkat reader + token keamanan
 
 ### ✅ Laporan & Export Dokumen
@@ -78,13 +78,12 @@
 - Tampilan full-screen untuk dipasang di **TV Lobby / Ruang Guru**
 - Grid 5×2 (10 kartu siswa terlambat terbanyak)
 - Foto siswa uncropped (100% wajah terlihat, tanpa crop)
-- Frosted glass info panel (Mac OS style) di bawah foto
-- Nama siswa besar & uppercase (mudah terbaca dari jauh)
-- Badge keterlambatan merah-emas yang mencolok
+- **Frosted glass info panel 2-kolom** (Mac OS style) di bawah foto:
+  - Kolom kiri: Badge keterlambatan merah solid (`12× TERLAMBAT`) dengan glow mencolok untuk keterbacaan TV dari jarak jauh
+  - Kolom kanan: Nama siswa uppercase (left-aligned), chip kelas, dan keterangan tanggal `Terlambat terakhir: dd MMM YYYY`
 - Chip kelas color-coded: **X = Cyan**, **XI = Emerald**, **XII = Purple**
 - Trend indicator naik/turun per siswa
 - Crown + glow animasi untuk Rank #1
-- Info terakhir terlambat per kartu
 - Clock real-time + live indicator di header
 - Filter per bulan & kelas
 - Auto-refresh 30 detik
@@ -571,11 +570,11 @@ presensi-rfid/
 │   │   └── Attendance.php            ← 7 status kehadiran
 │   └── Exports/                      ← Excel export classes
 ├── database/
-│   ├── migrations/                   ← 21 migrasi database
+│   ├── migrations/                   ← 22 migrasi database
 │   └── seeders/
 │       ├── DatabaseSeeder.php
 │       ├── RolePermissionSeeder.php  ← 3 peran (admin, guru, kepsek)
-│       └── DemoDataSeeder.php        ← 10 siswa + kelas + absensi demo
+│       └── DemoDataSeeder.php        ← 10 siswa + L/P + agama + kelas + absensi demo
 ├── resources/views/
 │   ├── dashboard.blade.php           ← Dashboard utama
 │   ├── guide.blade.php               ← Panduan pengguna built-in
