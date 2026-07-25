@@ -40,8 +40,9 @@ class StudentController extends Controller
             ->withQueryString();
 
         $managedClassName = $isGuru ? $user->managedClasses()->pluck('nama_kelas')->join(', ') : null;
+        $trashedCount = Student::onlyTrashed()->count();
 
-        return view('students.index', compact('students', 'search', 'isGuru', 'managedClassName'));
+        return view('students.index', compact('students', 'search', 'isGuru', 'managedClassName', 'trashedCount'));
     }
 
     public function create()
@@ -223,11 +224,54 @@ class StudentController extends Controller
 
     public function destroy(Student $student)
     {
+        $nama = $student->nama;
+        $student->delete();
+
+        return redirect()->route('students.index')->with('success', "Data siswa {$nama} berhasil dipindahkan ke Tong Sampah.");
+    }
+
+    public function trashed(Request $request)
+    {
+        $search = $request->input('search');
+        $escaped = $search ? str_replace(['\\', '%', '_'], ['\\\\', '\%', '\_'], $search) : null;
+
+        $students = Student::onlyTrashed()
+            ->with('schoolClass')
+            ->when($escaped, function ($query, $escaped) {
+                $query->where(function ($q) use ($escaped) {
+                    $q->where('nama', 'like', "%{$escaped}%")
+                        ->orWhere('nis', 'like', "%{$escaped}%")
+                        ->orWhere('rfid_uid', 'like', "%{$escaped}%");
+                });
+            })
+            ->latest('deleted_at')
+            ->paginate(15)
+            ->withQueryString();
+
+        $trashedCount = Student::onlyTrashed()->count();
+
+        return view('students.trashed', compact('students', 'search', 'trashedCount'));
+    }
+
+    public function restore(int $id)
+    {
+        $student = Student::onlyTrashed()->findOrFail($id);
+        $student->restore();
+
+        return redirect()->route('students.trashed')->with('success', "Data siswa {$student->nama} berhasil dipulihkan.");
+    }
+
+    public function forceDelete(int $id)
+    {
+        $student = Student::onlyTrashed()->findOrFail($id);
+
         if ($student->foto && Storage::disk('public')->exists($student->foto)) {
             Storage::disk('public')->delete($student->foto);
         }
-        $student->delete();
 
-        return redirect()->route('students.index')->with('success', 'Data siswa berhasil dihapus dari sistem.');
+        $nama = $student->nama;
+        $student->forceDelete();
+
+        return redirect()->route('students.trashed')->with('success', "Data siswa {$nama} telah dihapus permanen dari sistem.");
     }
 }

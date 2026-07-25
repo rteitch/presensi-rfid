@@ -52,7 +52,7 @@
 - Tombol Export PDF & Excel langsung dari dashboard
 
 ### ✅ Manajemen Data Lengkap
-- **Siswa**: CRUD lengkap + jenis kelamin (L/P), agama, foto profil, RFID tag, status aktif/non-aktif, soft delete
+- **Siswa**: CRUD lengkap + jenis kelamin (L/P), agama, foto profil, RFID tag, status aktif/non-aktif, **Soft Delete + Tong Sampah (Restore & Hapus Permanen)**
 - **Guru**: CRUD + foto, RFID tag, multi-kelas wali, soft delete
 - **Kelas**: Manajemen kelas + wali kelas + tahun ajaran
 - **Import/Export Excel**: Template siswa (termasuk L/P & agama) & guru (bulk upload)

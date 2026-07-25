@@ -27,6 +27,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/students/import', [StudentController::class, 'importStore'])->name('students.import-store');
         Route::get('/students/export', [StudentController::class, 'export'])->name('students.export');
         Route::get('/students/template', [StudentController::class, 'template'])->name('students.template');
+        Route::get('/students/trashed', [StudentController::class, 'trashed'])->name('students.trashed');
+        Route::post('/students/{id}/restore', [StudentController::class, 'restore'])->name('students.restore');
+        Route::delete('/students/{id}/force-delete', [StudentController::class, 'forceDelete'])->name('students.force-delete');
         Route::resource('students', StudentController::class)->except(['index', 'show']);
         Route::resource('classes', ClassController::class)->except(['index', 'show']);
         Route::get('/teachers/import', [TeacherController::class, 'import'])->name('teachers.import');
