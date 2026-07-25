@@ -17,12 +17,12 @@
         <link rel="shortcut icon" href="{{ $faviconUrl }}">
     @endif
 
-    <!-- Google Fonts: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
+    <!-- Fonts & Assets (bundled locally via Vite - Offline Ready) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- Vendor Libraries: served locally from public/vendor/ - 100% Offline Ready -->
+    <link rel="stylesheet" href="{{ asset('vendor/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/sweetalert2.min.css') }}">
 
     <style>
         * { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; }
@@ -752,8 +752,10 @@
         </footer>
     </div>
 
-    <!-- SweetAlert2 CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Vendor JS: jQuery, Select2, SweetAlert2 - served locally (Offline Ready) -->
+    <script src="{{ asset('vendor/jquery.min.js') }}"></script>
+    <script src="{{ asset('vendor/select2.min.js') }}"></script>
+    <script src="{{ asset('vendor/sweetalert2.all.min.js') }}"></script>
     <script>
         // Topbar clock
         function updateClock() {

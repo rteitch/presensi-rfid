@@ -211,9 +211,8 @@
         </div>
     </div>
 
-    {{-- Select2: Load jQuery first (required), then Select2 --}}
+    {{-- Select2: bundled via Vite (Offline Ready - no CDN) --}}
     @push('scripts')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <style>
         /* Select2 theming agar menyesuaikan desain aplikasi */
         .select2-container { width: 100% !important; }
@@ -319,9 +318,8 @@
             color: #94a3b8;
         }
     </style>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
+        // jQuery & Select2 already bundled via Vite (window.$ and window.jQuery are set in app.js)
         $(document).ready(function () {
             $('#select-students').select2({
                 placeholder: 'Cari nama atau NIS siswa...',

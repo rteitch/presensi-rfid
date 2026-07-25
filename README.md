@@ -255,8 +255,9 @@ flowchart TD
 | PDF Export | barryvdh/laravel-dompdf | 3.x |
 | Excel Export | maatwebsite/excel | 3.x |
 | Container | Docker + Docker Compose | — |
-| JS Widget | Alpine.js + Select2 | — |
-| Font | Plus Jakarta Sans (Google Fonts) | — |
+| JS Widget | Alpine.js + jQuery 3.7.1 + Select2 + SweetAlert2 | Full Local (`/public/vendor/`) |
+| Font System | Inter & Plus Jakarta Sans | `@fontsource` (Local WOFF2 Assets) |
+| Asset Delivery | 100% Self-Contained / Full-Lokal | Zero External CDN Dependencies |
 
 ---
 
@@ -605,6 +606,14 @@ Apakah aplikasi aman jika di-online-kan? **SANGAT AMAN**, selama checklist berik
 | **Akses Guru & Wali** | Bisa diakses dari mana saja (rumah/hp) | Hanya saat terhubung WiFi/LAN Sekolah |
 | **Perangkat RFID (ESP32)**| Mengirim POST via internet ke domain public | Mengirim POST ke IP lokal server sekolah |
 | **Keunggulan** | Fleksibel, monitoring dari luar sekolah | Bebas biaya hosting, tahan jika internet mati |
+
+#### Keputusan Arsitektur Asset: Full-Lokal Murni (Bebas CDN Eksternal)
+Sistem ini menggunakan pendekatan **Full-Lokal Murni (Self-Contained Architecture)** tanpa ketergantungan pada CDN eksternal (Google Fonts, jsDelivr, cdnjs, dll).
+
+**Mengapa Full-Lokal Lebih Unggul Dibandingkan Dual-Handler (CDN + Fallback Check)?**
+1. **Performa Instan Tanpa Latensi DNS**: Tidak membutuhkan DNS lookup atau latency handshake ke server CDN luar negeri. Semua file font (`WOFF2`) dan JS (`jquery.min.js`, `select2.min.js`, `sweetalert2.all.min.js`) dimuat langsung dari server lokal.
+2. **Eliminasi Race Condition & Fallback Lag**: Pada sistem dual-handler (mencoba CDN dulu lalu timeout baru panggil lokal), jika koneksi lambat/putus, pengguna akan mengalami *freezing* atau *FOUT (Flash of Unstyled Text)* beberapa detik menunggu timeout CDN. Dengan Full-Lokal, halaman ter-load secara deterministik tanpa jeda.
+3. **Privasi & Keamanan Data (Air-Gapped Network Ready)**: Tidak ada traffic IP atau metadata aktivitas siswa/guru yang bocor ke server pihak ketiga. Aplikasi dapat berjalan sempurna di lingkungan jaringan sekolah tertutup total tanpa koneksi internet sama sekali (*air-gapped intranet*).
 
 ---
 
