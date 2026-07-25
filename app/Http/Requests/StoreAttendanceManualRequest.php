@@ -17,7 +17,7 @@ class StoreAttendanceManualRequest extends FormRequest
             'student_id'   => ['required', 'array', 'min:1'],
             'student_id.*' => ['required', 'integer', 'exists:students,id'],
             'tanggal'      => ['required', 'date'],
-            'status'       => ['required', 'in:izin,sakit,alpha,hadir,terlambat'],
+            'status'       => ['required', 'in:izin,pulang_cepat,dispensasi,sakit,alpha,hadir,terlambat'],
             'keterangan'   => ['nullable', 'string'],
         ];
     }

@@ -59,6 +59,8 @@
                             <th class="text-center text-emerald-700">Hadir</th>
                             <th class="text-center text-amber-700">Terlambat</th>
                             <th class="text-center text-blue-700">Izin</th>
+                            <th class="text-center text-cyan-700">Plg. Cepat</th>
+                            <th class="text-center text-teal-700">Dispensasi</th>
                             <th class="text-center text-indigo-700">Sakit</th>
                             <th class="text-center text-rose-700">Alpha</th>
                             <th class="text-center">Total</th>
@@ -68,7 +70,7 @@
                     <tbody>
                         @forelse($students as $s)
                             @php
-                                $total = $s->total_hadir + $s->total_terlambat + $s->total_izin + $s->total_sakit + $s->total_alpha;
+                                $total = $s->total_hadir + $s->total_terlambat + $s->total_izin + ($s->total_pulang_cepat ?? 0) + ($s->total_dispensasi ?? 0) + $s->total_sakit + $s->total_alpha;
                                 $isAlert = ($s->total_terlambat >= 3) || ($s->total_alpha >= 2);
                             @endphp
                             <tr class="table-row {{ $isAlert ? 'bg-rose-50/30' : '' }}">
@@ -90,6 +92,8 @@
                                 <td class="text-center"><span class="badge badge-green font-bold">{{ $s->total_hadir }}</span></td>
                                 <td class="text-center"><span class="badge {{ $s->total_terlambat >= 3 ? 'badge-amber font-extrabold' : 'badge-gray' }}">{{ $s->total_terlambat }}</span></td>
                                 <td class="text-center"><span class="badge badge-blue font-bold">{{ $s->total_izin }}</span></td>
+                                <td class="text-center"><span class="badge badge-cyan font-bold">{{ $s->total_pulang_cepat ?? 0 }}</span></td>
+                                <td class="text-center"><span class="badge badge-teal font-bold">{{ $s->total_dispensasi ?? 0 }}</span></td>
                                 <td class="text-center"><span class="badge badge-indigo font-bold">{{ $s->total_sakit }}</span></td>
                                 <td class="text-center"><span class="badge {{ $s->total_alpha >= 2 ? 'badge-red font-extrabold' : 'badge-gray' }}">{{ $s->total_alpha }}</span></td>
                                 <td class="text-center font-extrabold text-slate-800">{{ $total }}</td>
@@ -98,7 +102,9 @@
                                         @php
                                             $namaOrtu = $s->nama_ortu ?: 'Bapak/Ibu';
                                             $kelas = $s->schoolClass->nama_kelas ?? '-';
-                                            $msg = "Assalamu'alaikum Wr. Wb.\nYth. {$namaOrtu},\n\nMenginfokan catatan presensi ananda *{$s->nama}* (Kelas {$kelas}) bulan {{ \Carbon\Carbon::parse($bulan . '-01')->translatedFormat('F Y') }}:\n\nHadir: *{$s->total_hadir}x*\nTerlambat: *{$s->total_terlambat}x*\nIzin: *{$s->total_izin}x*\nSakit: *{$s->total_sakit}x*\nAlpha: *{$s->total_alpha}x*\n\nMohon perhatian dan bimbingan Bapak/Ibu demi kedisiplinan ananda.\n\nTerima kasih.\n_{$schoolSettings['app_name']}_";
+                                            $pc = $s->total_pulang_cepat ?? 0;
+                                            $disp = $s->total_dispensasi ?? 0;
+                                            $msg = "Assalamu'alaikum Wr. Wb.\nYth. {$namaOrtu},\n\nMenginfokan catatan presensi ananda *{$s->nama}* (Kelas {$kelas}) bulan {{ \Carbon\Carbon::parse($bulan . '-01')->translatedFormat('F Y') }}:\n\nHadir: *{$s->total_hadir}x*\nTerlambat: *{$s->total_terlambat}x*\nIzin: *{$s->total_izin}x*\nPulang Cepat: *{$pc}x*\nDispensasi: *{$disp}x*\nSakit: *{$s->total_sakit}x*\nAlpha: *{$s->total_alpha}x*\n\nMohon perhatian dan bimbingan Bapak/Ibu demi kedisiplinan ananda.\n\nTerima kasih.\n_{$schoolSettings['app_name']}_";
                                             $waUrl = 'https://wa.me/' . $s->wa_number . '?text=' . rawurlencode($msg);
                                         @endphp
                                         <a href="{{ $waUrl }}" target="_blank"

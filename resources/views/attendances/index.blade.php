@@ -93,15 +93,22 @@
                                         <td>
                                             @php
                                                 $statusClass = match($att->status) {
-                                                    'hadir' => 'badge-green',
-                                                    'terlambat' => 'badge-amber',
-                                                    'izin' => 'badge-blue',
-                                                    'sakit' => 'badge-indigo',
-                                                    'alpha' => 'badge-red',
-                                                    default => 'badge-gray',
+                                                    'hadir'        => 'badge-green',
+                                                    'terlambat'    => 'badge-amber',
+                                                    'izin'         => 'badge-blue',
+                                                    'pulang_cepat' => 'badge-cyan',
+                                                    'dispensasi'   => 'badge-teal',
+                                                    'sakit'        => 'badge-indigo',
+                                                    'alpha'        => 'badge-red',
+                                                    default        => 'badge-gray',
+                                                };
+                                                $statusLabel = match($att->status) {
+                                                    'pulang_cepat' => 'Pulang Cepat',
+                                                    'dispensasi'   => 'Dispensasi',
+                                                    default        => ucfirst($att->status),
                                                 };
                                             @endphp
-                                            <span class="badge {{ $statusClass }}">{{ ucfirst($att->status) }}</span>
+                                            <span class="badge {{ $statusClass }}">{{ $statusLabel }}</span>
                                         </td>
                                         <td class="text-xs text-slate-500 font-medium">{{ $att->keterangan ?? '—' }}</td>
                                     </tr>
@@ -175,11 +182,17 @@
                             <div>
                                 <label class="form-label font-bold text-slate-800">Status Presensi <span class="text-rose-500">*</span></label>
                                 <select name="status" required class="form-input text-sm font-semibold">
-                                    <option value="izin">Izin / Pulang Cepat / Dispensasi</option>
-                                    <option value="sakit">Sakit</option>
-                                    <option value="alpha">Alpha (Tanpa Keterangan)</option>
-                                    <option value="hadir">Hadir (Manual)</option>
-                                    <option value="terlambat">Terlambat (Manual)</option>
+                                    <optgroup label="— Ketidakhadiran —">
+                                        <option value="izin">📋 Izin (ada keterangan)</option>
+                                        <option value="pulang_cepat">🚶 Pulang Cepat (izin keluar sebelum jam selesai)</option>
+                                        <option value="dispensasi">🏆 Dispensasi (kegiatan resmi sekolah / lomba)</option>
+                                        <option value="sakit">🤒 Sakit</option>
+                                        <option value="alpha">❌ Alpha (tanpa keterangan)</option>
+                                    </optgroup>
+                                    <optgroup label="— Kehadiran —">
+                                        <option value="hadir">✅ Hadir (manual)</option>
+                                        <option value="terlambat">⏰ Terlambat (manual)</option>
+                                    </optgroup>
                                 </select>
                             </div>
                             <div>

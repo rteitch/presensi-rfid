@@ -22,23 +22,25 @@ class RekapAttendanceExport implements FromQuery, WithHeadings, WithMapping, Wit
             ->where('status', 'aktif')
             ->when($this->classId, fn ($q) => $q->where('class_id', $this->classId))
             ->withCount([
-                'attendances as total_hadir' => fn ($q) => $q->where('tanggal', 'like', "{$this->bulan}%")->where('status', 'hadir'),
-                'attendances as total_terlambat' => fn ($q) => $q->where('tanggal', 'like', "{$this->bulan}%")->where('status', 'terlambat'),
-                'attendances as total_izin' => fn ($q) => $q->where('tanggal', 'like', "{$this->bulan}%")->where('status', 'izin'),
-                'attendances as total_sakit' => fn ($q) => $q->where('tanggal', 'like', "{$this->bulan}%")->where('status', 'sakit'),
-                'attendances as total_alpha' => fn ($q) => $q->where('tanggal', 'like', "{$this->bulan}%")->where('status', 'alpha'),
+                'attendances as total_hadir'        => fn ($q) => $q->where('tanggal', 'like', "{$this->bulan}%")->where('status', 'hadir'),
+                'attendances as total_terlambat'    => fn ($q) => $q->where('tanggal', 'like', "{$this->bulan}%")->where('status', 'terlambat'),
+                'attendances as total_izin'         => fn ($q) => $q->where('tanggal', 'like', "{$this->bulan}%")->where('status', 'izin'),
+                'attendances as total_pulang_cepat' => fn ($q) => $q->where('tanggal', 'like', "{$this->bulan}%")->where('status', 'pulang_cepat'),
+                'attendances as total_dispensasi'   => fn ($q) => $q->where('tanggal', 'like', "{$this->bulan}%")->where('status', 'dispensasi'),
+                'attendances as total_sakit'        => fn ($q) => $q->where('tanggal', 'like', "{$this->bulan}%")->where('status', 'sakit'),
+                'attendances as total_alpha'        => fn ($q) => $q->where('tanggal', 'like', "{$this->bulan}%")->where('status', 'alpha'),
             ])
             ->orderByDesc('total_terlambat');
     }
 
     public function headings(): array
     {
-        return ['NIS', 'Nama Siswa', 'Kelas', 'Hadir', 'Terlambat', 'Izin', 'Sakit', 'Alpha', 'Total', 'Keterangan'];
+        return ['NIS', 'Nama Siswa', 'Kelas', 'Hadir', 'Terlambat', 'Izin', 'Pulang Cepat', 'Dispensasi', 'Sakit', 'Alpha', 'Total', 'Keterangan'];
     }
 
     public function map($student): array
     {
-        $total = $student->total_hadir + $student->total_terlambat + $student->total_izin + $student->total_sakit + $student->total_alpha;
+        $total = $student->total_hadir + $student->total_terlambat + $student->total_izin + ($student->total_pulang_cepat ?? 0) + ($student->total_dispensasi ?? 0) + $student->total_sakit + $student->total_alpha;
         $ket = '';
         if ($student->total_terlambat >= 3 || $student->total_alpha >= 2) {
             $ket = 'PERLU PERHATIAN';
@@ -51,6 +53,8 @@ class RekapAttendanceExport implements FromQuery, WithHeadings, WithMapping, Wit
             $student->total_hadir,
             $student->total_terlambat,
             $student->total_izin,
+            $student->total_pulang_cepat ?? 0,
+            $student->total_dispensasi ?? 0,
             $student->total_sakit,
             $student->total_alpha,
             $total,

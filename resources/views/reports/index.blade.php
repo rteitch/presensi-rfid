@@ -79,15 +79,22 @@
                                 <td>
                                     @php
                                         $badgeClass = match($att->status) {
-                                            'hadir' => 'badge-green',
-                                            'terlambat' => 'badge-amber',
-                                            'izin' => 'badge-blue',
-                                            'sakit' => 'badge-indigo',
-                                            'alpha' => 'badge-red',
-                                            default => 'badge-gray',
+                                            'hadir'        => 'badge-green',
+                                            'terlambat'    => 'badge-amber',
+                                            'izin'         => 'badge-blue',
+                                            'pulang_cepat' => 'badge-cyan',
+                                            'dispensasi'   => 'badge-teal',
+                                            'sakit'        => 'badge-indigo',
+                                            'alpha'        => 'badge-red',
+                                            default        => 'badge-gray',
+                                        };
+                                        $statusLabel = match($att->status) {
+                                            'pulang_cepat' => 'Pulang Cepat',
+                                            'dispensasi'   => 'Dispensasi',
+                                            default        => ucfirst($att->status),
                                         };
                                     @endphp
-                                    <span class="badge {{ $badgeClass }}">{{ ucfirst($att->status) }}</span>
+                                    <span class="badge {{ $badgeClass }}">{{ $statusLabel }}</span>
                                 </td>
                                 <td class="text-xs text-slate-500">{{ $att->keterangan ?? '—' }}</td>
                             </tr>

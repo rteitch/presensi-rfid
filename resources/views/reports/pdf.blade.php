@@ -14,6 +14,8 @@
         .status-hadir { color: #16a34a; font-weight: bold; }
         .status-terlambat { color: #d97706; font-weight: bold; }
         .status-izin { color: #2563eb; font-weight: bold; }
+        .status-pulang_cepat { color: #0891b2; font-weight: bold; }
+        .status-dispensasi { color: #0d9488; font-weight: bold; }
         .status-sakit { color: #4f46e5; font-weight: bold; }
         .status-alpha { color: #dc2626; font-weight: bold; }
     </style>
@@ -48,7 +50,14 @@
                     <td>{{ $att->student->schoolClass->nama_kelas ?? '-' }}</td>
                     <td>{{ $att->jam_masuk ?? '-' }}</td>
                     <td>{{ $att->jam_pulang ?? '-' }}</td>
-                    <td class="status-{{ $att->status }}">{{ ucfirst($att->status) }}</td>
+                    @php
+                        $pdfLabel = match($att->status) {
+                            'pulang_cepat' => 'Pulang Cepat',
+                            'dispensasi'   => 'Dispensasi',
+                            default        => ucfirst($att->status),
+                        };
+                    @endphp
+                    <td class="status-{{ $att->status }}">{{ $pdfLabel }}</td>
                     <td>{{ $att->keterangan ?? '-' }}</td>
                 </tr>
             @empty

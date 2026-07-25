@@ -66,7 +66,7 @@ class ReportController extends Controller
         $bulan = $request->input('bulan', now()->format('Y-m'));
         [$classes, $classId, $isGuru, $managedIds] = $this->getScopedClassesAndClassId($request);
 
-        // Hitung rekap per siswa: hadir, terlambat, izin, sakit, alpha
+        // Hitung rekap per siswa: hadir, terlambat, izin, pulang_cepat, dispensasi, sakit, alpha
         $students = Student::with(['schoolClass'])
             ->where('students.status', 'aktif')
             ->when($isGuru, fn ($q) => $q->whereIn('students.class_id', $managedIds ?: [-1]))
@@ -80,6 +80,8 @@ class ReportController extends Controller
                 SUM(CASE WHEN attendances.status = 'hadir' THEN 1 ELSE 0 END) as total_hadir,
                 SUM(CASE WHEN attendances.status = 'terlambat' THEN 1 ELSE 0 END) as total_terlambat,
                 SUM(CASE WHEN attendances.status = 'izin' THEN 1 ELSE 0 END) as total_izin,
+                SUM(CASE WHEN attendances.status = 'pulang_cepat' THEN 1 ELSE 0 END) as total_pulang_cepat,
+                SUM(CASE WHEN attendances.status = 'dispensasi' THEN 1 ELSE 0 END) as total_dispensasi,
                 SUM(CASE WHEN attendances.status = 'sakit' THEN 1 ELSE 0 END) as total_sakit,
                 SUM(CASE WHEN attendances.status = 'alpha' THEN 1 ELSE 0 END) as total_alpha
             ")
@@ -202,11 +204,13 @@ class ReportController extends Controller
             ->when($isGuru, fn ($q) => $q->whereIn('class_id', $managedIds ?: [-1]))
             ->when($classId, fn ($q) => $q->where('class_id', $classId))
             ->withCount([
-                'attendances as total_hadir' => fn ($q) => $q->where('tanggal', 'like', "{$bulan}%")->where('status', 'hadir'),
-                'attendances as total_terlambat' => fn ($q) => $q->where('tanggal', 'like', "{$bulan}%")->where('status', 'terlambat'),
-                'attendances as total_izin' => fn ($q) => $q->where('tanggal', 'like', "{$bulan}%")->where('status', 'izin'),
-                'attendances as total_sakit' => fn ($q) => $q->where('tanggal', 'like', "{$bulan}%")->where('status', 'sakit'),
-                'attendances as total_alpha' => fn ($q) => $q->where('tanggal', 'like', "{$bulan}%")->where('status', 'alpha'),
+                'attendances as total_hadir'       => fn ($q) => $q->where('tanggal', 'like', "{$bulan}%")->where('status', 'hadir'),
+                'attendances as total_terlambat'   => fn ($q) => $q->where('tanggal', 'like', "{$bulan}%")->where('status', 'terlambat'),
+                'attendances as total_izin'        => fn ($q) => $q->where('tanggal', 'like', "{$bulan}%")->where('status', 'izin'),
+                'attendances as total_pulang_cepat'=> fn ($q) => $q->where('tanggal', 'like', "{$bulan}%")->where('status', 'pulang_cepat'),
+                'attendances as total_dispensasi'  => fn ($q) => $q->where('tanggal', 'like', "{$bulan}%")->where('status', 'dispensasi'),
+                'attendances as total_sakit'       => fn ($q) => $q->where('tanggal', 'like', "{$bulan}%")->where('status', 'sakit'),
+                'attendances as total_alpha'       => fn ($q) => $q->where('tanggal', 'like', "{$bulan}%")->where('status', 'alpha'),
             ])
             ->orderByDesc('total_terlambat')
             ->get();
