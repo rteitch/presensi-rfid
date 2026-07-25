@@ -394,6 +394,23 @@
                         Buka menu <strong class="text-slate-800">Rekap + WA Ortu</strong> atau **Detail Siswa**, lalu klik ikon WhatsApp untuk membuka aplikasi WA dengan pesan notifikasi yang sudah terformat otomatis.
                     </p>
                 </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/70 space-y-1.5">
+                    <h4 class="font-bold text-slate-800 text-xs flex items-center gap-2">
+                        <span class="text-indigo-600 font-extrabold text-sm">Q:</span> Apakah aplikasi ini aman jika di-online-kan (Cloud VPS / Domain Sekolah)?
+                    </h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        <strong class="text-emerald-600 font-bold">Sangat Aman!</strong> Pastikan set <code class="bg-slate-200 px-1 rounded text-slate-800 font-bold">APP_DEBUG=false</code> dan <code class="bg-slate-200 px-1 rounded text-slate-800 font-bold">APP_ENV=production</code> di file <code class="font-mono text-slate-800 font-semibold">.env</code>, gunakan protokol HTTPS (SSL Let's Encrypt), serta manfaatkan token acak perangkat (<code class="font-mono text-slate-800 font-semibold">X-Device-Token</code>) dan Rate Limiting API bawaan.
+                    </p>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/70 space-y-1.5">
+                    <h4 class="font-bold text-slate-800 text-xs flex items-center gap-2">
+                        <span class="text-indigo-600 font-extrabold text-sm">Q:</span> Apakah aplikasi bisa dijalankan 100% Offline di LAN Sekolah (Tanpa Internet)?
+                    </h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        <strong class="text-indigo-600 font-bold">Bisa 100%!</strong> Pasang aplikasi di Server Lokal Sekolah (PC / Mini PC), set <code class="bg-slate-200 px-1 rounded text-slate-800 font-bold">APP_URL=http://192.168.x.x:8000</code>. Kiosk Klien, TV Leaderboard, dan perangkat mikrokontroler RFID dapat saling berkomunikasi via jaringan WiFi/LAN lokal sekolah tanpa bergantung pada akses internet luar.
+                    </p>
+                </div>
             </div>
         </div>
 

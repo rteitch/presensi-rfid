@@ -450,7 +450,29 @@ Tab 5 — **Mode Leaderboard TV**:
 
 ---
 
-## 🚢 Deployment Produksi
+### 🔒 Checklist Keamanan Deployment Online (Production Cloud / VPS)
+Apakah aplikasi aman jika di-online-kan? **SANGAT AMAN**, selama checklist berikut dipenuhi:
+- ✅ **`APP_DEBUG=false`**: Mencegah tereksposnya stack trace & kredensial DB saat terjadi error.
+- ✅ **`APP_ENV=production`**: Mengaktifkan mode produksi Laravel.
+- ✅ **`APP_URL=https://presensi.sekolah.sch.id`**: Sesuaikan dengan domain resmi ber-SSL (HTTPS).
+- ✅ **Enkripsi HTTPS (SSL/TLS)**: Mengamankan lalu lintas data scan RFID, token, dan login session.
+- ✅ **Autentikasi Perangkat (`X-Device-Token`)**: Setiap alat RFID di-verifikasi menggunakan token acak 40 karakter.
+- ✅ **Rate Limiting Aktif**: Mencegah serangan DDoS / Brute Force pada endpoint scan API (`throttle:rfid` & `throttle:api`).
+- ✅ **Role-Based Access Control (RBAC)**: Pembatasan akses ketat antar admin, guru wali kelas, dan kepala sekolah.
+
+---
+
+### 🌐 Mode Deployment: Online vs Offline (LAN Intranet)
+
+| Parameter | Mode Online (Cloud / VPS) | Mode Offline (LAN / Intranet Sekolah) |
+|-----------|---------------------------|----------------------------------------|
+| **Kebutuhan Internet** | Wajib ada koneksi internet di server & Kiosk | **Tanpa internet** (100% lokal jaringan LAN) |
+| **Nilai `APP_URL`** | `https://presensi.sekolah.sch.id` | `http://192.168.1.100:8000` (IP Server Lokal) |
+| **Akses Guru & Wali** | Bisa diakses dari mana saja (rumah/hp) | Hanya saat terhubung WiFi/LAN Sekolah |
+| **Perangkat RFID (ESP32)**| Mengirim POST via internet ke domain public | Mengirim POST ke IP lokal server sekolah |
+| **Keunggulan** | Fleksibel, monitoring dari luar sekolah | Bebas biaya hosting, tahan jika internet mati |
+
+---
 
 ### Variabel Environment Penting (`.env`)
 
@@ -458,7 +480,7 @@ Tab 5 — **Mode Leaderboard TV**:
 APP_NAME="PRESENSI RTH NEXUS"
 APP_ENV=production
 APP_DEBUG=false
-APP_URL=https://presensi.sekolah.sch.id
+APP_URL=https://presensi.sekolah.sch.id   # (Atau http://192.168.x.x:8000 untuk Offline LAN)
 
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
@@ -497,18 +519,27 @@ docker-compose exec -T app php artisan route:cache
 docker-compose exec -T app php artisan view:cache
 ```
 
-### Nginx Reverse Proxy (Opsional)
-Jika menggunakan Nginx di depan Docker:
+### Nginx Reverse Proxy dengan SSL Let's Encrypt (Mode Online)
 ```nginx
 server {
     listen 80;
     server_name presensi.sekolah.sch.id;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name presensi.sekolah.sch.id;
+
+    ssl_certificate /etc/letsencrypt/live/presensi.sekolah.sch.id/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/presensi.sekolah.sch.id/privkey.pem;
 
     location / {
         proxy_pass http://localhost:8000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto https;
     }
 }
 ```
