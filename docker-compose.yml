@@ -18,9 +18,7 @@ services:
       DB_DATABASE: presensi_rfid
       DB_USERNAME: root
       DB_PASSWORD: rootpassword
-      CACHE_STORE: redis
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
+      CACHE_STORE: database
       SESSION_DRIVER: database
     volumes:
       - .:/var/www/html

@@ -9,6 +9,8 @@ node_modules
 vendor
 storage/app/*
 !storage/app/public
+bootstrap/cache/*.php
+!bootstrap/cache/.gitignore
 storage/framework/cache/*
 storage/framework/sessions/*
 storage/framework/views/*

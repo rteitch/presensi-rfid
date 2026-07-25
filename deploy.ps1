@@ -25,12 +25,10 @@ Start-Sleep -Seconds 15
 
 # 4. Run Laravel Migrations & Seeders
 Write-Host "Executing database migrations and seeding demo data..." -ForegroundColor Green
+Remove-Item bootstrap/cache/packages.php, bootstrap/cache/services.php -Force -ErrorAction SilentlyContinue
 docker-compose exec -T app php artisan key:generate --force
 docker-compose exec -T app php artisan migrate:fresh --seed --force
 docker-compose exec -T app php artisan storage:link --force
-docker-compose exec -T app php artisan config:cache
-docker-compose exec -T app php artisan route:cache
-docker-compose exec -T app php artisan view:cache
 
 Write-Host ""
 Write-Host "==========================================================================" -ForegroundColor Cyan

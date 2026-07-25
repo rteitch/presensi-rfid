@@ -22,12 +22,10 @@ sleep 15
 
 # 4. Run Laravel setup commands
 echo -e "\033[32m🗄️ Executing database migrations and seeding demo data...\033[0m"
+rm -f bootstrap/cache/packages.php bootstrap/cache/services.php
 docker-compose exec -T app php artisan key:generate --force
 docker-compose exec -T app php artisan migrate:fresh --seed --force
 docker-compose exec -T app php artisan storage:link --force
-docker-compose exec -T app php artisan config:cache
-docker-compose exec -T app php artisan route:cache
-docker-compose exec -T app php artisan view:cache
 
 echo ""
 echo -e "\033[36m==========================================================================\033[0m"
