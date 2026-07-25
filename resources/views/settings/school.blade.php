@@ -28,28 +28,28 @@
                     :class="activeTab === 'identitas' ? 'bg-indigo-600 text-white shadow-sm font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold'"
                     class="px-4 py-2.5 rounded-xl text-xs transition flex items-center gap-2 shrink-0">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                <span>🏫 Identitas Sekolah & Logo</span>
+                <span>Identitas Sekolah & Logo</span>
             </button>
 
             <button type="button" @click="activeTab = 'kiosk'; window.location.hash = 'kiosk'"
                     :class="activeTab === 'kiosk' ? 'bg-indigo-600 text-white shadow-sm font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold'"
                     class="px-4 py-2.5 rounded-xl text-xs transition flex items-center gap-2 shrink-0">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                <span>📺 Tampilan Kiosk Scanner</span>
+                <span>Tampilan Kiosk Scanner</span>
             </button>
 
             <button type="button" @click="activeTab = 'hari-efektif'; window.location.hash = 'hari-efektif'"
                     :class="activeTab === 'hari-efektif' ? 'bg-indigo-600 text-white shadow-sm font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold'"
                     class="px-4 py-2.5 rounded-xl text-xs transition flex items-center gap-2 shrink-0">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                <span>🗓️ Hari Sekolah Efektif</span>
+                <span>Hari Sekolah Efektif</span>
             </button>
 
             <button type="button" @click="activeTab = 'security'; window.location.hash = 'security'"
                     :class="activeTab === 'security' ? 'bg-indigo-600 text-white shadow-sm font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 font-semibold'"
                     class="px-4 py-2.5 rounded-xl text-xs transition flex items-center gap-2 shrink-0">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                <span>⚡ Security & Rate Limit</span>
+                <span>Security & Rate Limit</span>
             </button>
         </div>
 
