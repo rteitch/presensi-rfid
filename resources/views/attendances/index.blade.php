@@ -118,31 +118,70 @@
 
             <!-- Input Manual -->
             <div>
-                <div class="page-card overflow-visible">
+                <div class="page-card overflow-visible" x-data="{
+                    selectedClass: '',
+                    searchQuery: '',
+                    selectedStudent: '',
+                    students: @js($students->map(function($st) {
+                        return [
+                            'id' => $st->id,
+                            'nama' => $st->nama,
+                            'class_id' => $st->class_id,
+                            'class_name' => $st->schoolClass->nama_kelas ?? '-'
+                        ];
+                    })),
+                    get filteredStudents() {
+                        return this.students.filter(st => {
+                            const matchesClass = this.selectedClass === '' || st.class_id.toString() === this.selectedClass;
+                            const matchesSearch = st.nama.toLowerCase().includes(this.searchQuery.toLowerCase());
+                            return matchesClass && matchesSearch;
+                        });
+                    }
+                }">
                     <div class="px-5 py-4 border-b border-slate-100 bg-slate-50/50">
-                        <h3 class="font-bold text-slate-800 text-sm">Input Presensi Manual</h3>
-                        <p class="text-xs text-slate-500 mt-0.5">Untuk siswa Izin, Sakit, atau Alpha tanpa scan RFID.</p>
+                        <h3 class="font-bold text-slate-800 text-sm">Input Presensi Manual & Izin</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Untuk siswa Izin, Sakit, atau Alpha, serta Izin Pulang Cepat di tengah hari tanpa scan RFID.</p>
                     </div>
                     <div class="p-5">
                         <form method="POST" action="{{ route('attendances.manual') }}" class="space-y-4">
                             @csrf
+                            <!-- Filter Kelas untuk Siswa -->
                             <div>
-                                <label class="form-label">Pilih Siswa <span class="text-rose-500">*</span></label>
-                                <select name="student_id" required class="form-input">
-                                    <option value="">— Pilih Siswa —</option>
-                                    @foreach($students as $st)
-                                        <option value="{{ $st->id }}">{{ $st->nama }} ({{ $st->schoolClass->nama_kelas ?? '-' }})</option>
+                                <label class="form-label text-xs">Filter Kelas</label>
+                                <select x-model="selectedClass" @change="selectedStudent = ''" class="form-input text-sm">
+                                    <option value="">Semua Kelas</option>
+                                    @foreach($classes as $c)
+                                        <option value="{{ $c->id }}">{{ $c->nama_kelas }}</option>
                                     @endforeach
                                 </select>
                             </div>
+
+                            <!-- Cari Nama Siswa -->
                             <div>
-                                <label class="form-label">Tanggal <span class="text-rose-500">*</span></label>
-                                <input type="date" name="tanggal" value="{{ $tanggal }}" required class="form-input">
+                                <label class="form-label text-xs">Cari Nama Siswa</label>
+                                <input type="text" x-model="searchQuery" @input="selectedStudent = ''" placeholder="Ketik nama siswa..." class="form-input text-sm">
+                            </div>
+
+                            <!-- Pilih Siswa dari Hasil Filter -->
+                            <div>
+                                <label class="form-label font-bold text-slate-800">Pilih Siswa <span class="text-rose-500">*</span></label>
+                                <select name="student_id" x-model="selectedStudent" required class="form-input text-sm font-semibold">
+                                    <option value="">— Pilih Siswa ( <span x-text="filteredStudents.length"></span> siswa ) —</option>
+                                    <template x-for="st in filteredStudents" :key="st.id">
+                                        <option :value="st.id" x-text="st.nama + ' (' + st.class_name + ')'"></option>
+                                    </template>
+                                </select>
+                                <p x-show="filteredStudents.length === 0" class="text-xs text-rose-500 mt-1 font-medium">Tidak ada siswa ditemukan dari filter tersebut.</p>
+                            </div>
+
+                            <div>
+                                <label class="form-label font-bold text-slate-800">Tanggal <span class="text-rose-500">*</span></label>
+                                <input type="date" name="tanggal" value="{{ $tanggal }}" required class="form-input text-sm font-semibold">
                             </div>
                             <div>
-                                <label class="form-label">Status Presensi <span class="text-rose-500">*</span></label>
-                                <select name="status" required class="form-input">
-                                    <option value="izin">Izin</option>
+                                <label class="form-label font-bold text-slate-800">Status Presensi <span class="text-rose-500">*</span></label>
+                                <select name="status" required class="form-input text-sm font-semibold">
+                                    <option value="izin">Izin / Pulang Cepat</option>
                                     <option value="sakit">Sakit</option>
                                     <option value="alpha">Alpha (Tanpa Keterangan)</option>
                                     <option value="hadir">Hadir (Manual)</option>
@@ -150,12 +189,13 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="form-label">Keterangan / Alasan</label>
-                                <textarea name="keterangan" rows="3" placeholder="Contoh: Surat keterangan dokter..." class="form-input resize-none"></textarea>
+                                <label class="form-label font-bold text-slate-800">Keterangan / Alasan</label>
+                                <textarea name="keterangan" rows="3" placeholder="Contoh: Izin keluar jam 10:00 karena sakit, atau ada keperluan keluarga..." class="form-input text-sm resize-none"></textarea>
+                                <p class="text-[11px] text-slate-400 mt-1">Catatan: Mengisi presensi manual akan menimpa/memperbarui data presensi siswa hari tersebut.</p>
                             </div>
-                            <button type="submit" class="btn-primary w-full justify-center">
+                            <button type="submit" class="btn-primary w-full justify-center shadow-sm">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                Simpan Presensi Manual
+                                <span>Simpan Presensi Manual</span>
                             </button>
                         </form>
                     </div>
