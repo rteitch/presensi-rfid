@@ -139,7 +139,7 @@ class ReportController extends Controller
     {
         $bulan = $request->input('bulan', now()->format('Y-m'));
         $classId = $request->input('class_id');
-        $limit = 20;
+        $limit = 10;
         $classes = SchoolClass::all();
 
         $students = Student::with(['schoolClass'])
