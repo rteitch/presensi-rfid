@@ -256,22 +256,42 @@
             background-color: #6366f1;
             border: none;
             color: #fff;
-            border-radius: 0.375rem;
-            padding: 2px 10px 2px 6px;
-            font-size: 0.75rem;
-            line-height: 1.6;
-            display: flex;
+            border-radius: 999px;
+            padding: 3px 6px 3px 10px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            line-height: 1.5;
+            display: inline-flex;
             align-items: center;
             gap: 4px;
+            margin: 2px 3px;
         }
+        /* Teks nama siswa: urutan 1 (kiri) */
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+            order: 1;
+        }
+        /* Tombol hapus: urutan 2 (kanan) */
         .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
-            color: rgba(255,255,255,0.75);
+            order: 2;
+            color: rgba(255,255,255,0.8);
             border: none;
-            background: none;
-            margin-right: 2px;
-            font-size: 1rem;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            line-height: 1;
+            padding: 0;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: background 0.15s;
+            margin: 0;
         }
         .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+            background: rgba(255,255,255,0.35);
             color: #fff;
         }
         .select2-results__group {
