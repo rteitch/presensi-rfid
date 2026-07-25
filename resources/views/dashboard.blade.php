@@ -83,18 +83,24 @@
                 <p class="text-[11px] text-slate-500 mt-2">Lewat jam masuk</p>
             </div>
 
-            <!-- Card 4: Izin / Sakit -->
+            <!-- Card 4: Tidak Hadir (Izin/Pulang Cepat/Dispensasi/Sakit/Alpha) -->
             <div class="stat-card flex flex-col justify-between border-l-4 border-l-blue-500">
                 <div>
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold text-blue-700 uppercase tracking-wider">Izin / Sakit</span>
+                        <span class="text-xs font-semibold text-blue-700 uppercase tracking-wider">Tidak Hadir</span>
                         <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                         </div>
                     </div>
                     <div class="text-2xl font-bold text-slate-900 mt-2 tracking-tight">{{ number_format($izin_sakit_alpha) }}</div>
                 </div>
-                <p class="text-[11px] text-slate-500 mt-2">Dengan keterangan</p>
+                <div class="text-[10px] text-slate-400 mt-1 leading-relaxed">
+                    Izin {{ $izin_count }} &bull;
+                    Plg. Cepat {{ $pulang_cepat_count }} &bull;
+                    Disp. {{ $dispensasi_count }}<br>
+                    Sakit {{ $sakit_count }} &bull;
+                    Alpha {{ $alpha_count }}
+                </div>
             </div>
 
             <!-- Card 5: Belum Absen -->
@@ -170,10 +176,13 @@
                     <div class="p-3 rounded-lg bg-slate-50 border border-slate-200/70">
                         <div class="flex items-center gap-1.5 mb-1">
                             <span class="w-2.5 h-2.5 rounded-full bg-blue-400"></span>
-                            <span class="text-xs font-semibold text-slate-700">Izin / Sakit</span>
+                            <span class="text-xs font-semibold text-slate-700">Tidak Hadir</span>
                         </div>
                         <div class="text-sm font-bold text-slate-900">{{ number_format($izin_sakit_alpha) }}</div>
-                        <div class="text-[10px] text-slate-400">{{ $pctIzin }}% dari total</div>
+                        <div class="text-[10px] text-slate-400 leading-tight mt-0.5">
+                            Izin {{ $izin_count }} · Plg.Cepat {{ $pulang_cepat_count }}<br>
+                            Disp. {{ $dispensasi_count }} · Sakit {{ $sakit_count }} · Alpha {{ $alpha_count }}
+                        </div>
                     </div>
 
                     <div class="p-3 rounded-lg bg-slate-50 border border-slate-200/70">

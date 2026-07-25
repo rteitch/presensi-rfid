@@ -31,11 +31,16 @@ class DashboardController extends Controller
             $attQuery->whereHas('student', fn ($q) => $q->whereIn('class_id', $managedIds ?: [-1]));
         }
 
-        $hadirHariIni = (clone $attQuery)->where('status', 'hadir')->count();
+        $hadirHariIni    = (clone $attQuery)->where('status', 'hadir')->count();
         $terlambatHariIni = (clone $attQuery)->where('status', 'terlambat')->count();
-        $izinSakitAlpha = (clone $attQuery)->whereIn('status', ['izin', 'sakit', 'alpha'])->count();
-        $sudahPresensi = (clone $attQuery)->count();
-        $belumPresensi = max(0, $totalSiswa - $sudahPresensi);
+        $izinSakitAlpha   = (clone $attQuery)->whereIn('status', ['izin', 'pulang_cepat', 'dispensasi', 'sakit', 'alpha'])->count();
+        $izinCount        = (clone $attQuery)->where('status', 'izin')->count();
+        $pulangCepatCount = (clone $attQuery)->where('status', 'pulang_cepat')->count();
+        $dispensasiCount  = (clone $attQuery)->where('status', 'dispensasi')->count();
+        $sakitCount       = (clone $attQuery)->where('status', 'sakit')->count();
+        $alphaCount       = (clone $attQuery)->where('status', 'alpha')->count();
+        $sudahPresensi    = (clone $attQuery)->count();
+        $belumPresensi    = max(0, $totalSiswa - $sudahPresensi);
 
         // Recent RFID logs
         $logQuery = RfidLog::with('student')->latest('scanned_at');
@@ -81,14 +86,19 @@ class DashboardController extends Controller
         $maxWeekly = max(array_merge([1], $totals));
 
         return view('dashboard', [
-            'total_siswa' => $totalSiswa,
-            'hadir_hari_ini' => $hadirHariIni,
-            'terlambat_hari_ini' => $terlambatHariIni,
-            'izin_sakit_alpha' => $izinSakitAlpha,
-            'belum_presensi' => $belumPresensi,
-            'recent_logs' => $recentScanLogs,
-            'weekly_data' => $weeklyData,
-            'max_weekly' => $maxWeekly,
+            'total_siswa'       => $totalSiswa,
+            'hadir_hari_ini'    => $hadirHariIni,
+            'terlambat_hari_ini'=> $terlambatHariIni,
+            'izin_sakit_alpha'  => $izinSakitAlpha,
+            'izin_count'        => $izinCount,
+            'pulang_cepat_count'=> $pulangCepatCount,
+            'dispensasi_count'  => $dispensasiCount,
+            'sakit_count'       => $sakitCount,
+            'alpha_count'       => $alphaCount,
+            'belum_presensi'    => $belumPresensi,
+            'recent_logs'       => $recentScanLogs,
+            'weekly_data'       => $weeklyData,
+            'max_weekly'        => $maxWeekly,
         ]);
     }
 

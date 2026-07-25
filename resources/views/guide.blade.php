@@ -222,7 +222,15 @@
                         </div>
                         <h3 class="font-bold text-slate-900 text-sm">Input Presensi Harian Manual</h3>
                         <p class="text-xs text-slate-500 leading-relaxed">
-                            Jika ada siswa yang izin, sakit, atau tidak membawa kartu RFID, Anda bisa menginput presensi manual harian di menu **Presensi Harian**.
+                            Untuk siswa yang tidak tap RFID atau perlu keterangan khusus. Mendukung <strong>7 status terpisah</strong>:
+                            <span class="inline-flex flex-wrap gap-1 mt-1">
+                                <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-blue-100 text-blue-700">Izin</span>
+                                <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-cyan-100 text-cyan-700">Pulang Cepat</span>
+                                <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-teal-100 text-teal-700">Dispensasi</span>
+                                <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-indigo-100 text-indigo-700">Sakit</span>
+                                <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-red-100 text-red-700">Alpha</span>
+                            </span><br>
+                            Gunakan <strong>Select2 multi-select</strong> untuk memilih banyak siswa sekaligus — cocok untuk input dispensasi lomba atau izin massal.
                         </p>
                     </div>
                     <div class="pt-2 border-t border-slate-100">
