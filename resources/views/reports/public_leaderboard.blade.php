@@ -38,16 +38,16 @@
         /* ── Page Layout ── */
         .page { position: relative; z-index: 1; height: 100vh; display: flex; flex-direction: column; }
 
-        /* ── Top Header ── */
+        /* ── Top Header (Centered Title Layout) ── */
         header {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0.6rem 1.75rem;
+            padding: 0.65rem 1.75rem;
             border-bottom: 1px solid rgba(255,255,255,0.08);
             background: rgba(2,6,23,0.85);
             backdrop-filter: blur(20px);
             flex-shrink: 0;
         }
-        .hd-left { display: flex; align-items: center; gap: 0.85rem; }
+        .hd-left { display: flex; align-items: center; gap: 0.85rem; width: 250px; }
         .hd-logo { height: 2.6rem; width: auto; object-fit: contain; }
         .hd-logo-placeholder {
             width: 42px; height: 42px; border-radius: 0.75rem;
@@ -55,35 +55,29 @@
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 4px 20px rgba(99,102,241,0.4);
         }
-        .hd-school-name { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.01em; color: #ffffff; }
-        .hd-badge { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.12em; color: #f59e0b; font-weight: 900; }
+        .hd-school-name { font-size: 1rem; font-weight: 800; color: #ffffff; line-height: 1.2; }
 
-        .live-pill {
-            display: inline-flex; align-items: center; gap: 0.4rem;
-            padding: 0.3rem 0.8rem; border-radius: 9999px;
-            background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3);
-            color: #34d399; font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em;
+        /* Centered Header Title Block */
+        .hd-center-title {
+            text-align: center; flex: 1;
         }
-        .live-dot { width: 7px; height: 7px; border-radius: 50%; background: #34d399; animation: blink 1.4s ease-in-out infinite; }
-        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+        .hd-center-title .eyebrow {
+            font-size: 0.62rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.15em; color: #f59e0b;
+        }
+        .hd-center-title .main-title {
+            font-size: clamp(1.2rem, 1.8vw, 1.5rem); font-weight: 900; letter-spacing: -0.02em; color: #ffffff; margin-top: 1px;
+        }
 
-        .clock-wrap { text-align: right; }
+        .clock-wrap { text-align: right; width: 250px; }
         .clock-time { font-size: 1.55rem; font-weight: 900; letter-spacing: 0.04em; color: #f59e0b; line-height: 1; font-family: monospace; }
         .clock-date { font-size: 0.65rem; color: #94a3b8; font-weight: 600; margin-top: 2px; }
 
-        /* ── Sub Header / Filter Row ── */
+        /* ── Sub Header / Filter & Insights Bar ── */
         .filter-row {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0.55rem 1.75rem; flex-shrink: 0;
+            padding: 0.45rem 1.75rem; flex-shrink: 0;
             border-bottom: 1px solid rgba(255,255,255,0.06);
             background: rgba(15,23,42,0.4);
-        }
-        .title-block .eyebrow { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.15em; color: #f59e0b; font-weight: 900; }
-        .title-block .main-title {
-            font-size: clamp(1.2rem, 2.2vw, 1.55rem); font-weight: 900; letter-spacing: -0.03em;
-            background: linear-gradient(90deg, #fff 30%, #fde68a 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-            line-height: 1.1;
         }
 
         /* Executive Insights Bar */
@@ -129,7 +123,7 @@
             flex: 1; min-height: 0;
         }
 
-        /* ── STUDENT CARD (High Precision Trading Card Proportion) ── */
+        /* ── STUDENT CARD ── */
         .student-card {
             background: rgba(15, 23, 42, 0.88);
             backdrop-filter: blur(16px);
@@ -169,15 +163,15 @@
             filter: drop-shadow(0 4px 10px rgba(245,158,11,0.8));
         }
 
-        /* ── PHOTO CONTAINER (Proper 60-65% Height - Face Fully Visible!) ── */
+        /* ── PHOTO CONTAINER (Naturally Framed - Face & Hair 100% Fully Visible!) ── */
         .photo-container {
-            width: 100%; flex: 1.8; min-height: 180px;
+            width: 100%; flex: 1.7; min-height: 165px;
             position: relative; overflow: hidden;
-            background: #090d16;
+            background: #0b1120;
         }
         .photo-img {
             width: 100%; height: 100%;
-            object-fit: cover; object-position: center 15%;
+            object-fit: cover; object-position: center 25%;
             display: block;
             filter: brightness(1.05) contrast(1.05);
             transition: transform 0.5s ease;
@@ -187,7 +181,7 @@
         /* Light Bottom Gradient Overlay */
         .photo-overlay {
             position: absolute; inset: 0;
-            background: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.3) 30%, transparent 60%);
+            background: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.25) 25%, transparent 55%);
         }
 
         /* Rank Watermark Badge Top Right */
@@ -212,7 +206,7 @@
         .trend-up   { background: rgba(220,38,38,0.85); color: #ffffff; border: 1px solid rgba(248,113,113,0.5); }
         .trend-down { background: rgba(16,185,129,0.85); color: #ffffff; border: 1px solid rgba(52,211,153,0.5); }
 
-        /* ── INFO PANEL (Compact & High-Contrast - No Giant Void Gaps) ── */
+        /* ── INFO PANEL (Compact & High-Contrast - Centered) ── */
         .info-panel {
             position: relative; z-index: 10;
             padding: 0.55rem 0.65rem 0.6rem;
@@ -278,14 +272,21 @@
             font-size: 0.6rem; color: #64748b; font-weight: 700; margin-top: 1px;
         }
 
-        /* Footer */
+        /* ── Footer Area (With Centered Live Auto Refresh Pill) ── */
         footer {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0.4rem 1.75rem; border-top: 1px solid rgba(255,255,255,0.04);
+            padding: 0.45rem 1.75rem; border-top: 1px solid rgba(255,255,255,0.06);
+            background: rgba(2,6,23,0.8);
             flex-shrink: 0; font-size: 0.6rem; color: #475569; font-weight: 600;
         }
         footer a { color: #64748b; text-decoration: none; font-weight: 700; }
         footer a:hover { color: #94a3b8; }
+        .footer-center-live {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.22rem 0.75rem; border-radius: 9999px;
+            background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.25);
+            color: #34d399; font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;
+        }
 
         /* Empty state */
         .empty-state {
@@ -300,8 +301,14 @@
 
 <div class="page">
 
-    {{-- ── HEADER ── --}}
+    {{-- ── HEADER (Centered Title Layout) ── --}}
+    @php
+        $titleMode = $schoolSettings['leaderboard_title_mode'] ?? 'monitoring';
+        $privacyMode = $schoolSettings['leaderboard_privacy_mode'] ?? 'full';
+    @endphp
+
     <header>
+        {{-- Left: Logo & School Name --}}
         <div class="hd-left">
             @if($schoolSettings['logo_url'])
                 <img src="{{ $schoolSettings['logo_url'] }}" alt="Logo" class="hd-logo">
@@ -311,39 +318,30 @@
                 </div>
             @endif
             <div>
-                <div class="hd-badge">⚡ MONITORING KEDISIPLINAN SEKOLAH</div>
                 <div class="hd-school-name">{{ $schoolSettings['school_name'] }}</div>
             </div>
         </div>
 
-        <div class="live-pill">
-            <span class="live-dot"></span>
-            Live · Auto Refresh
+        {{-- Center: Main Title --}}
+        <div class="hd-center-title">
+            @if($titleMode === 'shame')
+                <div class="eyebrow">🏆 TOP 10 PERINGKAT KETERLAMBATAN</div>
+                <h1 class="main-title">Hall of Shame — Siswa Paling Sering Terlambat</h1>
+            @else
+                <div class="eyebrow">⚡ PAPAN MONITORING KEDISIPLINAN SEKOLAH</div>
+                <h1 class="main-title">Monitoring Kehadiran & Kedisiplinan Siswa</h1>
+            @endif
         </div>
 
+        {{-- Right: Live Clock --}}
         <div class="clock-wrap">
             <div class="clock-time" id="live-clock">00:00:00</div>
             <div class="clock-date" id="live-date">—</div>
         </div>
     </header>
 
-    {{-- ── FILTER & INSIGHTS BAR ── --}}
-    @php
-        $titleMode = $schoolSettings['leaderboard_title_mode'] ?? 'monitoring';
-        $privacyMode = $schoolSettings['leaderboard_privacy_mode'] ?? 'full';
-    @endphp
-
+    {{-- ── SUB HEADER: INSIGHTS & FILTERS ── --}}
     <div class="filter-row">
-        <div class="title-block">
-            @if($titleMode === 'shame')
-                <div class="eyebrow">🏆 TOP 10 PERINGKAT KETERLAMBATAN</div>
-                <div class="main-title">Hall of Shame — Siswa Paling Sering Terlambat</div>
-            @else
-                <div class="eyebrow">📋 MONITORING KEHADIRAN & KEDISIPLINAN</div>
-                <div class="main-title">Monitoring Kehadiran & Kedisiplinan Siswa</div>
-            @endif
-        </div>
-
         {{-- Executive Insights Bar --}}
         <div class="insights-bar">
             <div class="insight-pill hadir">🟢 {{ $todayStats['hadir'] ?? 0 }} Hadir</div>
@@ -352,6 +350,7 @@
             <div class="insight-pill">⚪ {{ $todayStats['alpha'] ?? 0 }} Alpha</div>
         </div>
 
+        {{-- Filter Controls --}}
         <div style="display:flex;align-items:center;gap:0.6rem;">
             @if($bulan)
                 <div class="period-chip">
@@ -417,7 +416,7 @@
                     <div class="top1-crown">👑</div>
                 @endif
 
-                {{-- Full Portrait Photo Container (~65% height - Face 100% Fully Visible!) --}}
+                {{-- Full Portrait Photo Container (Uncropped Face & Hair!) --}}
                 <div class="photo-container">
                     <img src="{{ $s->foto_url }}" alt="{{ $s->nama }}" class="photo-img">
                     <div class="photo-overlay"></div>
@@ -438,7 +437,7 @@
                     {{-- 1. STUDENT NAME --}}
                     <div class="student-name" title="{{ $s->nama }}">{{ strtoupper($displayName) }}</div>
 
-                    {{-- 2. META ROW: LATE COUNT BADGE & CLASS CHIP --}}
+                    {{-- 2. META ROW: LATE BADGE & CLASS CHIP --}}
                     <div class="meta-row">
                         <div class="late-count-box">
                             <span>⚠️</span>
@@ -468,10 +467,15 @@
         @endif
     </main>
 
-    {{-- ── FOOTER ── --}}
+    {{-- ── FOOTER (With Centered Live Auto Refresh Pill) ── --}}
     <footer>
         <span>© {{ date('Y') }} {{ $schoolSettings['school_name'] }}</span>
-        <span>Auto-refresh setiap 30 detik</span>
+        
+        <div class="footer-center-live">
+            <span class="live-dot"></span>
+            LIVE · AUTO REFRESH (30 Detik)
+        </div>
+
         <a href="{{ route('kiosk.scan') }}">↗ Buka Kiosk Scan · Powered by {{ $schoolSettings['app_name'] }}</a>
     </footer>
 
