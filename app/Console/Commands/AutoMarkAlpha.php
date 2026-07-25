@@ -18,9 +18,12 @@ class AutoMarkAlpha extends Command
     {
         $today = Carbon::today();
 
-        // 1. Skip jika hari libur (Sabtu & Minggu)
-        if ($today->isWeekend()) {
-            $this->info("Hari ini ({$today->format('Y-m-d')}) adalah akhir pekan. Auto-Alpha dilewati.");
+        $hariKerja = \App\Models\SchoolSetting::get('hari_kerja', '5_hari');
+
+        // 1. Skip jika hari libur rutin (Minggu, atau Sabtu jika sistem 5 Hari Kerja)
+        $isNonWorkingDay = $today->isSunday() || ($hariKerja === '5_hari' && $today->isSaturday());
+        if ($isNonWorkingDay) {
+            $this->info("Hari ini ({$today->format('Y-m-d')}) adalah hari libur rutin sekolah. Auto-Alpha dilewati.");
             return Command::SUCCESS;
         }
 

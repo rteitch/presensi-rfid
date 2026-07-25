@@ -27,6 +27,18 @@ class AttendanceService
 
         $today = Carbon::today();
 
+        $hariKerja = \App\Models\SchoolSetting::get('hari_kerja', '5_hari');
+        $isNonWorkingDay = $today->isSunday() || ($hariKerja === '5_hari' && $today->isSaturday());
+
+        if ($isNonWorkingDay) {
+            $this->logScan($rfidUid, $deviceId, false, 'Hari ini adalah hari libur rutin sekolah.', $student->id);
+
+            return [
+                'success' => false,
+                'message' => 'Hari ini adalah hari libur rutin sekolah.',
+            ];
+        }
+
         if (\App\Models\Holiday::isHoliday($today->toDateString())) {
             $this->logScan($rfidUid, $deviceId, false, 'Hari ini adalah Hari Libur Sekolah.', $student->id);
 

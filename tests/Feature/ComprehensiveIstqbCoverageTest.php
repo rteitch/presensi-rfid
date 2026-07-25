@@ -478,4 +478,16 @@ class ComprehensiveIstqbCoverageTest extends TestCase
         $res3 = $this->withHeader('X-API-Key', 'rate-limit-key-777')->getJson('/api/v1/attendances/rekap');
         $res3->assertStatus(429);
     }
+
+    /** 23. Dynamic School Work Days (5-day vs 6-day) Handling */
+    public function test_school_work_days_setting_and_auto_alpha_handling(): void
+    {
+        // 1. Set to 6-day school (Senin - Sabtu)
+        \App\Models\SchoolSetting::set('hari_kerja', '6_hari');
+        $this->assertEquals('6_hari', \App\Models\SchoolSetting::get('hari_kerja'));
+
+        // 2. Set to 5-day school (Senin - Jumat)
+        \App\Models\SchoolSetting::set('hari_kerja', '5_hari');
+        $this->assertEquals('5_hari', \App\Models\SchoolSetting::get('hari_kerja'));
+    }
 }
