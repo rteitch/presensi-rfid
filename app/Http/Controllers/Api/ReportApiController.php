@@ -16,6 +16,8 @@ class ReportApiController extends Controller
      */
     public function rekap(Request $request): JsonResponse
     {
+        $request->validate(['bulan' => 'nullable|date_format:Y-m']);
+
         $bulan = $request->input('bulan', now()->format('Y-m'));
         $classId = $request->input('class_id');
 
@@ -64,6 +66,8 @@ class ReportApiController extends Controller
      */
     public function studentHistory(Request $request, Student $student): JsonResponse
     {
+        $request->validate(['bulan' => 'nullable|date_format:Y-m']);
+
         $bulan = $request->input('bulan', now()->format('Y-m'));
 
         $attendances = $student->attendances()

@@ -46,7 +46,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('integrations', ApiIntegrationController::class)->except(['show']);
         Route::post('/integrations/{integration}/regenerate', [ApiIntegrationController::class, 'regenerate'])->name('integrations.regenerate');
         Route::get('/activity-logs', [\App\Http\Controllers\ActivityLogController::class, 'index'])->name('activity-logs.index');
-        Route::resource('holidays', \App\Http\Controllers\HolidayController::class)->only(['index', 'store', 'destroy']);
+        Route::resource('holidays', \App\Http\Controllers\HolidayController::class)->only(['index', 'store', 'update', 'destroy']);
     });
 
     Route::middleware('role:admin|guru')->group(function () {

@@ -261,6 +261,22 @@
                                 </div>
                             </div>
                         </div>
+                    <!-- API Rate Limiting Configuration -->
+                    <div class="border-t border-slate-100 pt-6 mt-6">
+                        <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-3 flex items-center gap-2">
+                            <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                            <span>Konfigurasi Performa & Security Rate Limit</span>
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="rate_limit_api" class="form-label">Batas Rate Limit API Eksternal (Req/Menit)</label>
+                                <input type="number" min="10" max="1000" name="rate_limit_api" id="rate_limit_api"
+                                       value="{{ old('rate_limit_api', \App\Models\SchoolSetting::get('rate_limit_api', 60)) }}"
+                                       class="form-input text-sm" required>
+                                <p class="text-xs text-slate-400 mt-1">Batas request per menit untuk API pihak ketiga. Pemindaian RFID Kiosk dijamin 100% bebas hambatan saat jam sibuk.</p>
+                                @error('rate_limit_api') <p class="text-xs text-rose-500 mt-1">{{ $message }}</p> @enderror
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -37,10 +37,14 @@
   - **Export Excel (`.xlsx`)**: Rekapitulasi lengkap siswa dalam 1 file spreadsheet dengan catatan otomatis.
   - **Export PDF (`.pdf`)**: Cetak rekap bulanan kelas dengan *alert highlighting* (kuning) untuk siswa bermasalah.
 
-### 5. ⚙️ Security Device RFID & Rate Limiting
-- **Authentication Header**: Endpoint API `/api/rfid/scan` dilindungi middleware `device.token` (`X-Device-Token`).
-- **Device Management**: Admin dapat menambahkan, mengedit, menonaktifkan, dan melakukan *Regenerate Token* device scanner.
-- **Rate Limiting**: Dibatasi 60 request/menit per device untuk mengamankan backend dari spam atau serangan DoS.
+### 5. ⚙️ Enterprise Security, Audit Trail & Rate Limiting
+- **Authentication Header**: Endpoint API `/api/rfid/scan` dilindungi middleware `device.token` (`X-Device-Token`). Pemindaian Kiosk dijamin **100% bebas hambatan** saat jam sibuk pagi hari.
+- **Konfigurasi UI Rate Limit (`/settings/school`)**: Admin dapat mengatur batas *Rate Limit API Pihak Ketiga* secara langsung dari halaman antarmuka Admin tanpa menyentuh kodingan.
+- **Audit Trail / Activity Log (`/activity-logs`)**: Mencatat setiap jejak digital pembuatan, perubahan, dan penghapusan data (Model Siswa, Guru, Kelas, User, Pengaturan) lengkap dengan perbandingan data lama vs baru, alamat IP, dan User Agent.
+- **Soft Deletes & Anti-Cascade Wipeout**: Menghapus data siswa/guru melindungi riwayat presensi masa lalu agar tidak musnah terhapus.
+- **Kalender Libur Sekolah (`/holidays`)**: Pengelolaan agenda libur nasional & sekolah. Pemindaian RFID pada hari libur otomatis ditolak dengan pesan *"Hari Libur Sekolah"*.
+- **Auto-Mark Alpha (`php artisan attendance:auto-alpha`)**: Scheduled Command harian (setiap jam 17:00) yang secara otomatis menandai siswa tanpa presensi sebagai *Alpha* pada hari sekolah efektif.
+- **Health Check Endpoint (`/api/health`)**: Monitoring real-time kesehatan Database MySQL, Cache, dan Status Aplikasi.
 
 ### 6. ⏱️ Aturan Jam Presensi & Toleransi Keterlambatan
 - Fleksibel dalam mengatur **Jam Masuk**, **Jam Pulang**, dan **Toleransi Keterlambatan (menit)**.

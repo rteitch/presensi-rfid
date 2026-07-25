@@ -24,9 +24,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Rate limiter untuk RFID scan API (60 requests per menit per device)
+        // Rate limiter untuk RFID scan API (Bebas hambatan jam sibuk)
         RateLimiter::for('rfid', function ($request) {
-            return Limit::perMinute(60);
+            return Limit::none();
+        });
+
+        // Rate limiter dinamis untuk API Pihak Ketiga (Configurable via UI Settings)
+        RateLimiter::for('api', function ($request) {
+            $limit = (int) SchoolSetting::get('rate_limit_api', 60);
+            return Limit::perMinute($limit)->by($request->ip());
         });
 
         // Set locale Carbon ke Indonesia

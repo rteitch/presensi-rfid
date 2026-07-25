@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreHolidayRequest;
 use App\Models\Holiday;
 use Illuminate\Http\Request;
 
@@ -21,18 +22,18 @@ class HolidayController extends Controller
         return view('holidays.index', compact('holidays', 'search'));
     }
 
-    public function store(Request $request)
+    public function store(StoreHolidayRequest $request)
     {
-        $request->validate([
-            'nama_libur' => 'required|string|max:255',
-            'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
-            'keterangan' => 'nullable|string',
-        ]);
-
         Holiday::create($request->only(['nama_libur', 'tanggal_mulai', 'tanggal_selesai', 'keterangan']));
 
         return back()->with('success', 'Hari libur berhasil ditambahkan ke kalender.');
+    }
+
+    public function update(StoreHolidayRequest $request, Holiday $holiday)
+    {
+        $holiday->update($request->only(['nama_libur', 'tanggal_mulai', 'tanggal_selesai', 'keterangan']));
+
+        return back()->with('success', 'Hari libur berhasil diperbarui.');
     }
 
     public function destroy(Holiday $holiday)

@@ -32,13 +32,14 @@ class SchoolSettingController extends Controller
             'kiosk_bg_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
             'kiosk_title' => 'nullable|string|max:255',
             'kiosk_subtitle' => 'nullable|string|max:255',
+            'rate_limit_api' => 'required|integer|min:10|max:1000',
         ]);
 
         $textFields = [
             'app_name', 'school_name', 'school_tagline', 'school_address',
             'school_phone', 'school_email', 'footer_text',
             'kiosk_bg_type', 'kiosk_bg_color',
-            'kiosk_title', 'kiosk_subtitle',
+            'kiosk_title', 'kiosk_subtitle', 'rate_limit_api',
         ];
 
         foreach ($textFields as $field) {

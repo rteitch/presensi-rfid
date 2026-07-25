@@ -162,34 +162,7 @@ class StudentController extends Controller
 
         $namaFile = 'presensi-' . str_replace(' ', '-', strtolower($student->nama)) . '-' . $bulan . '.xlsx';
 
-        return Excel::download(new class($attendances) implements FromCollection, WithHeadings, WithMapping, WithStyles
-        {
-            public function __construct(private $attendances) {}
-
-            public function collection() { return $this->attendances; }
-
-            public function headings(): array
-            {
-                return ['Tanggal', 'Hari', 'Jam Masuk', 'Jam Pulang', 'Status', 'Keterangan'];
-            }
-
-            public function map($row): array
-            {
-                return [
-                    \Carbon\Carbon::parse($row->tanggal)->format('d/m/Y'),
-                    \Carbon\Carbon::parse($row->tanggal)->locale('id')->isoFormat('dddd'),
-                    $row->jam_masuk  ? \Carbon\Carbon::parse($row->jam_masuk)->format('H:i:s')  : '-',
-                    $row->jam_pulang ? \Carbon\Carbon::parse($row->jam_pulang)->format('H:i:s') : '-',
-                    ucfirst($row->status),
-                    $row->keterangan ?? '-',
-                ];
-            }
-
-            public function styles(Worksheet $sheet): array
-            {
-                return [1 => ['font' => ['bold' => true]]];
-            }
-        }, $namaFile);
+        return Excel::download(new \App\Exports\StudentAttendanceExport($attendances), $namaFile);
     }
 
     public function show(Request $request, Student $student)

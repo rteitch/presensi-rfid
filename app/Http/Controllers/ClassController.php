@@ -114,45 +114,7 @@ class ClassController extends Controller
         $slugKelas = str_replace(' ', '-', strtolower($class->nama_kelas));
         $filename  = "rekap-kelas-{$slugKelas}-{$bulan}.xlsx";
 
-        return Excel::download(new class($students) implements FromCollection, WithHeadings, WithMapping, WithStyles
-        {
-            public function __construct(private $students) {}
-
-            public function collection() { return $this->students; }
-
-            public function headings(): array
-            {
-                return ['No', 'NIS', 'Nama Siswa', 'Hadir', 'Terlambat', 'Izin', 'Sakit', 'Alpha', 'Total Kehadiran', 'No HP Ortu', 'Keterangan'];
-            }
-
-            public function map($s): array
-            {
-                static $no = 1;
-                $total = $s->stat_hadir + $s->stat_terlambat;
-                $catatan = [];
-                if ($s->stat_terlambat >= 3) $catatan[] = 'Terlambat >=3x';
-                if ($s->stat_alpha >= 2) $catatan[] = 'Alpha >=2x';
-
-                return [
-                    $no++,
-                    $s->nis,
-                    $s->nama,
-                    $s->stat_hadir,
-                    $s->stat_terlambat,
-                    $s->stat_izin,
-                    $s->stat_sakit,
-                    $s->stat_alpha,
-                    $total,
-                    $s->no_hp_ortu ?? '-',
-                    implode(', ', $catatan) ?: 'Normal',
-                ];
-            }
-
-            public function styles(Worksheet $sheet): array
-            {
-                return [1 => ['font' => ['bold' => true]]];
-            }
-        }, $filename);
+        return Excel::download(new \App\Exports\ClassRekapExport($students), $filename);
     }
 
     public function exportPdf(Request $request, SchoolClass $class)
