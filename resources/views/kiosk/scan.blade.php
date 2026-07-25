@@ -194,6 +194,25 @@
             setTimeout(() => playTone(120, 'sawtooth', 0.4, 0.8), 200);
         }
 
+        function speakMessage(text) {
+            if ('speechSynthesis' in window && text) {
+                try {
+                    window.speechSynthesis.cancel();
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = 'id-ID';
+                    utterance.rate = 0.95;
+                    utterance.pitch = 1.0;
+                    
+                    const voices = window.speechSynthesis.getVoices();
+                    const indoVoice = voices.find(voice => voice.lang.includes('id-ID') || voice.lang.includes('id_ID'));
+                    if (indoVoice) {
+                        utterance.voice = indoVoice;
+                    }
+                    window.speechSynthesis.speak(utterance);
+                } catch (e) {}
+            }
+        }
+
         const activeDevices = @json($activeDevices ?? []);
         const urlParams = new URLSearchParams(window.location.search);
         let activeToken = urlParams.get('token') || localStorage.getItem('kiosk_device_token') || '{{ $defaultToken ?? "" }}';
@@ -240,6 +259,7 @@
                 const isSuccess = data.success === true || data.status === 'success';
                 if (isSuccess) {
                     playSuccessSound();
+                    speakMessage(data.message || "Presensi berhasil");
 
                     displayCard.className = "bg-emerald-950/80 backdrop-blur-xl border border-emerald-500/60 rounded-3xl p-8 text-center shadow-2xl transition-all duration-300 transform scale-105";
                     iconContainer.className = "w-24 h-24 mx-auto rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center mb-6 transition-colors duration-300";
@@ -259,13 +279,15 @@
                     }
                 } else {
                     playErrorSound();
+                    const errMsg = data.message || "Kartu RFID Anda belum terdaftar di sistem.";
+                    speakMessage(errMsg);
 
                     displayCard.className = "bg-rose-950/80 backdrop-blur-xl border border-rose-500/60 rounded-3xl p-8 text-center shadow-2xl transition-all duration-300 transform scale-105";
                     iconContainer.className = "w-24 h-24 mx-auto rounded-2xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center mb-6 transition-colors duration-300";
                     iconRfid.outerHTML = `<svg id="icon-rfid" class="w-12 h-12 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>`;
 
                     mainMessage.innerText = "Gagal Scan!";
-                    subMessage.innerText = data.message || "Kartu RFID Anda belum terdaftar di sistem.";
+                    subMessage.innerText = errMsg;
                     studentInfo.classList.add('hidden');
                 }
 
@@ -274,6 +296,7 @@
             })
             .catch(err => {
                 playErrorSound();
+                speakMessage("Kesalahan sistem, gagal terhubung ke server");
                 displayCard.className = "bg-rose-950/80 backdrop-blur-xl border border-rose-500/60 rounded-3xl p-8 text-center shadow-2xl transition-all duration-300";
                 mainMessage.innerText = "Kesalahan Sistem";
                 subMessage.innerText = "Gagal terhubung ke server.";
