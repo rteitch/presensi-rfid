@@ -14,20 +14,26 @@ class DeviceTokenMiddleware
         $token = $request->header('X-Device-Token') ?? $request->input('device_token');
 
         if (! $token) {
+            // For web session, strictly require referer from /kiosk to prevent arbitrary API impersonation
             if (auth('web')->check()) {
-                $deviceId = session('selected_device_id');
-                $device = $deviceId 
-                    ? Device::where('id', $deviceId)->where('is_active', true)->first()
-                    : Device::where('tipe_device', 'kiosk_browser')->where('is_active', true)->first();
+                $referer = (string) $request->headers->get('referer', '');
+                $isKioskSession = str_contains($referer, '/kiosk') || $request->session()->get('is_kiosk');
 
-                if (! $device) {
-                    $device = Device::where('is_active', true)->first();
-                }
+                if ($isKioskSession) {
+                    $deviceId = session('selected_device_id');
+                    $device = $deviceId 
+                        ? Device::where('id', $deviceId)->where('is_active', true)->first()
+                        : Device::where('tipe_device', 'kiosk_browser')->where('is_active', true)->first();
 
-                if ($device) {
-                    $request->attributes->set('device', $device);
+                    if (! $device) {
+                        $device = Device::where('is_active', true)->first();
+                    }
 
-                    return $next($request);
+                    if ($device) {
+                        $request->attributes->set('device', $device);
+
+                        return $next($request);
+                    }
                 }
             }
 
