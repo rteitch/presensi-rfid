@@ -1,232 +1,673 @@
-# 🏫 RTH NEXUS — Sistem Presensi RFID & Manajemen Sekolah Terintegrasi
+# 🏫 PRESENSI RTH NEXUS
 
-[![Laravel Version](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
-[![PHP Version](https://img.shields.io/badge/PHP-8.3%2B-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0%2B-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://mysql.com)
-[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
-[![License](https://img.shields.io/badge/License-MIT-22c55e?style=for-the-badge)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-101%20Passing-22c55e?style=for-the-badge&logo=checkmarx)](tests/)
+> **Sistem Manajemen Presensi Sekolah Berbasis RFID**
+> Platform modern untuk pencatatan kehadiran siswa & guru menggunakan teknologi kartu RFID, dilengkapi dashboard analytics, kiosk layar sentuh, dan TV leaderboard command center.
 
-**RTH NEXUS Presensi RFID** adalah platform sistem presensi siswa mandiri berbasis pemindai kartu RFID (*Radio Frequency Identification*) yang dirancang khusus untuk sekolah dan institusi pendidikan modern.
-
-Sistem ini terintegrasi dengan layar **Kiosk Standalone**, papan peringkat kedisiplinan (**Leaderboard Realtime**), pengiriman rekap presensi langsung ke **WhatsApp orang tua/wali**, serta manajemen hak akses bertingkat untuk **Administrator**, **Guru Wali Kelas**, dan **Kepala Sekolah**.
+![Laravel](https://img.shields.io/badge/Laravel-13.x-red?logo=laravel) ![PHP](https://img.shields.io/badge/PHP-8.3+-purple?logo=php) ![Docker](https://img.shields.io/badge/Docker-Ready-blue?logo=docker) ![Tests](https://img.shields.io/badge/Tests-101%20Passed-brightgreen?logo=phpunit) ![License](https://img.shields.io/badge/License-MIT-green)
 
 ---
 
-## ✨ Fitur Utama
+## 📋 Daftar Isi
 
-### 1. 📺 Kiosk Pemindai RFID (Self-Service Attendance Kiosk)
-- **Automatic Card Scanner**: Siswa tap kartu RFID untuk presensi *masuk* atau *pulang*
-- **Text-to-Speech (TTS)**: Kiosk membaca nama siswa dan status presensi secara lisan (`"Selamat datang, Ahmad Fauzan — Hadir"`) menggunakan Web Speech API
-- **HTML5 Audio Synthesizer**: Efek suara double-chime (sukses) dan buzzer (gagal/terlambat) tanpa file MP3 eksternal
-- **Hardware Debouncer**: Anti-double-scan 2 detik mencegah pemindaian ganda tidak sengaja
-- **Tampilan Visual**: Animasi status card, countdown reset 4 detik, shortcut ke Leaderboard Publik
-
-### 2. 🔐 Role-Based Access Control (RBAC) & Multi-Role System
-- **ADMINISTRATOR**: Akses penuh — Data Master, Pengaturan Sekolah, Device RFID, Audit Log, User, Rate Limit
-- **GURU / WALI KELAS**: Akses otomatis di-scope hanya untuk kelas binaannya sendiri
-- **KEPALA SEKOLAH**: View-only bebas untuk monitoring seluruh kelas tanpa batasan
-
-### 3. 📋 7 Status Presensi Terpisah
-Sistem mendukung **7 status presensi** yang masing-masing memiliki warna badge, laporan, dan rekap tersendiri:
-
-| Status | Warna | Keterangan |
-|---|---|---|
-| ✅ **Hadir** | Hijau | Masuk tepat waktu via RFID |
-| ⏰ **Terlambat** | Kuning | Masuk melebihi toleransi waktu |
-| 📋 **Izin** | Biru | Izin resmi ada surat/keterangan |
-| 🚶 **Pulang Cepat** | Cyan | Izin keluar sebelum jam selesai |
-| 🏆 **Dispensasi** | Teal | Kegiatan resmi sekolah / lomba / OSIS |
-| 🤒 **Sakit** | Ungu | Sakit dengan keterangan |
-| ❌ **Alpha** | Merah | Tanpa keterangan / bolos |
-
-### 4. 📝 Input Presensi Manual — Multi-Siswa (Select2)
-- **Select2 Multi-select**: Pilih banyak siswa sekaligus untuk input massal (dispensasi lomba, izin rombongan)
-- Siswa dikelompokkan per kelas dalam dropdown dengan pencarian realtime
-- Guru hanya bisa menginput untuk siswa di kelasnya sendiri (IDOR protection)
-- **Overwrite otomatis**: Jika siswa sudah ada record di hari tersebut, data diperbarui
-
-### 5. 📊 Laporan & Rekap Lengkap
-- **Laporan Harian** (`/reports`): Filter bulan + kelas, badge warna per status, export PDF & Excel
-- **Rekap Per Siswa** (`/reports/rekap`): 7 kolom status, tombol WA Ortu otomatis, highlight siswa bermasalah
-- **Leaderboard Kedisiplinan**: Podium Top 3, peringkat lengkap, tombol WA massal ke orang tua
-- **Leaderboard Publik** (tanpa login): Bisa dipasang di layar TV sekolah
-- **Export Excel (.xlsx)**: Rekap harian & per-siswa dengan kolom semua status
-- **Export PDF (.pdf)**: Laporan cetak dengan warna status berbeda tiap kategori
-
-### 6. 🔒 Enterprise Security & Monitoring
-- **Device Token Middleware**: Endpoint `/api/rfid/scan` dilindungi `X-Device-Token`
-- **Rate Limiting API**: Konfigurasi batas request API pihak ketiga via UI Admin
-- **Audit Trail** (`/activity-logs`): Rekam jejak semua perubahan data (old vs new value, IP, User Agent)
-- **Health Check** (`/api/health`): Status DB, Cache, dan environment real-time
-- **Anti-Cache Corruption**: Safeguard otomatis mendeteksi dan flush cache yang korup
-
-### 7. 🗓️ Manajemen Hari Sekolah & Libur
-- **Hari Efektif**: Konfigurasi hari sekolah (5 hari, 6 hari, atau Pesantren/Jumat libur)
-- **Kalender Libur**: Tambah/edit/hapus agenda libur nasional & sekolah
-- **Auto-Block Scan**: Pemindaian RFID pada hari libur otomatis ditolak
-- **Auto-Mark Alpha** (`attendance:auto-alpha`): Cron harian jam 17:00 — siswa tanpa scan otomatis di-alpha
-
-### 8. 📱 Notifikasi WhatsApp Orang Tua
-- Tombol WA langsung dari halaman Rekap Per Siswa dan profil siswa
-- Pesan terformat Bahasa Indonesia dengan rekap lengkap 7 status
-- Tombol WA massal Top 3 Leaderboard untuk orang tua siswa paling terlambat
-
-### 9. 📁 Data Master Lengkap
-- **Siswa**: Foto, NIS, RFID UID, kontak orang tua, riwayat presensi
-- **Guru**: NIP, kelas binaan, mata pelajaran, kontak
-- **Kelas**: Rekap statistik, export Excel/PDF rekap kelas
-- **Import Siswa**: Upload Excel massal dari template standar
+- [Fitur Utama](#-fitur-utama)
+- [Tech Stack](#-tech-stack)
+- [Persyaratan Sistem](#-persyaratan-sistem)
+- [Instalasi Cepat (Docker)](#-instalasi-cepat-docker)
+- [Instalasi Manual](#-instalasi-manual-tanpa-docker)
+- [Struktur Akun & Peran](#-struktur-akun--peran)
+- [Panduan Penggunaan](#-panduan-penggunaan)
+- [API Reference](#-api-reference)
+- [Konfigurasi Pengaturan](#-konfigurasi-pengaturan)
+- [Deployment Produksi](#-deployment-produksi)
+- [Testing](#-testing)
+- [Arsitektur Database](#-arsitektur-database)
 
 ---
 
-## 🚀 Instalasi & Setup
+## 🚀 Fitur Utama
 
-### Prasyarat
-- PHP 8.3+, Composer, Node.js 20+
-- MySQL 8.0+ / MariaDB 10.6+
-- Docker & Docker Compose (opsional, direkomendasikan)
+### ✅ Presensi RFID Otomatis
+- Siswa & guru tap kartu RFID → sistem otomatis mencatat jam masuk & status kehadiran
+- Deteksi otomatis: **Hadir**, **Terlambat** (berdasarkan jam batas yang dikonfigurasi)
+- Pencatatan jam pulang (tap kedua)
+- Validasi hari efektif sekolah (bisa dikonfigurasi: Senin–Jumat atau termasuk Sabtu)
 
-### Via Docker (Direkomendasikan)
-```bash
-git clone https://github.com/rteitch/presensi-rfid.git
+### ✅ 7 Status Kehadiran
+| Status | Deskripsi | Warna |
+|--------|-----------|-------|
+| `hadir` | Masuk tepat waktu | 🟢 Hijau |
+| `terlambat` | Masuk setelah batas jam | 🟡 Kuning |
+| `izin` | Izin resmi | 🔵 Biru |
+| `sakit` | Sakit dengan keterangan | 🟠 Oranye |
+| `dispensasi` | Kegiatan resmi sekolah | 🟣 Ungu |
+| `pulang_cepat` | Pulang sebelum jam usai | 🟤 Coklat |
+| `alpha` | Tidak hadir tanpa keterangan | 🔴 Merah |
+
+### ✅ Dashboard Analitik Real-Time
+- Ringkasan harian: total hadir, terlambat, izin, alpha, dispensasi, pulang cepat, sakit
+- Grafik tren kehadiran mingguan
+- Top 5 siswa paling sering terlambat bulan ini
+- Aktivitas presensi terbaru (live feed)
+- Widget statistik per status dengan persentase
+- Tombol Export PDF & Excel langsung dari dashboard
+
+### ✅ Manajemen Data Lengkap
+- **Siswa**: CRUD lengkap + foto profil, RFID tag, status aktif/non-aktif, soft delete
+- **Guru**: CRUD + foto, RFID tag, multi-kelas wali, soft delete
+- **Kelas**: Manajemen kelas + wali kelas + tahun ajaran
+- **Import/Export Excel**: Template siswa & guru (bulk upload)
+- **Device RFID**: Manajemen perangkat reader + token keamanan
+
+### ✅ Laporan & Export Dokumen
+- Laporan presensi harian (filter bulan, kelas)
+- Rekap bulanan per siswa (7 kolom status)
+- Export **PDF** (DomPDF) — format resmi sekolah dengan kop
+- Export **Excel** (Maatwebsite) — kompatibel Microsoft Office
+- Notifikasi WhatsApp ke orang tua (template pesan siap pakai)
+- Leaderboard siswa terlambat (internal admin, 20 teratas)
+
+### ✅ Kiosk Scanner RFID (Layar Penuh)
+- Halaman tap RFID tanpa login (akses publik)
+- Tampilan full-screen dengan animasi modern
+- Feedback visual: nama siswa, foto, status, jam masuk
+- Background kustomisasi: gradient / warna solid / foto custom
+- Judul & subtitle kustom per sekolah
+- Pilihan multi-device reader dari dropdown
+
+### ✅ Public Leaderboard TV (Command Center)
+- Tampilan full-screen untuk dipasang di **TV Lobby / Ruang Guru**
+- Grid 5×2 (10 kartu siswa terlambat terbanyak)
+- Foto siswa uncropped (100% wajah terlihat, tanpa crop)
+- Frosted glass info panel (Mac OS style) di bawah foto
+- Nama siswa besar & uppercase (mudah terbaca dari jauh)
+- Badge keterlambatan merah-emas yang mencolok
+- Chip kelas color-coded: **X = Cyan**, **XI = Emerald**, **XII = Purple**
+- Trend indicator naik/turun per siswa
+- Crown + glow animasi untuk Rank #1
+- Info terakhir terlambat per kartu
+- Clock real-time + live indicator di header
+- Filter per bulan & kelas
+- Auto-refresh 30 detik
+- 2 mode judul: *Monitoring Kedisiplinan* atau *Hall of Shame*
+- Mode privasi nama: Nama Penuh atau Inisial
+
+### ✅ Sistem Pengguna & Peran (RBAC)
+- Autentikasi via Laravel Breeze (session-based)
+- 3 peran berbeda: `admin`, `guru`, `kepala_sekolah`
+- Guru dibatasi hanya melihat data kelas yang diampu
+- Kepala sekolah: akses read-only seluruh data
+
+### ✅ API Integration
+- REST API dengan autentikasi **X-API-Key** (bukan session)
+- Rate limiting per IP yang dapat dikonfigurasi
+- Endpoint rekap presensi & riwayat siswa
+- Health check endpoint untuk monitoring uptime
+- Manajemen API Key dari panel admin
+
+### ✅ Fitur Operasional Tambahan
+- **Input Manual**: Guru bisa menambah absensi manual (multi-select siswa dengan Select2)
+- **Hari Libur Nasional**: Tambah tanggal libur, sistem otomatis tidak mencatat pada hari tersebut
+- **Tahun Ajaran**: Manajemen multi tahun ajaran (aktif/arsip)
+- **Activity Log**: Rekam jejak semua aksi admin (audit trail)
+- **Panduan Pengguna**: Halaman `/guide` built-in, bisa diakses tanpa koneksi internet
+
+---
+
+## 🛠 Tech Stack
+
+| Komponen | Teknologi | Versi |
+|----------|-----------|-------|
+| Framework | Laravel | 13.x |
+| PHP | PHP | 8.3+ |
+| Database | MySQL | 8.0 |
+| Cache/Queue | Redis | 7 Alpine |
+| Frontend Build | Vite + TailwindCSS | Latest |
+| Auth | Laravel Breeze | 2.x |
+| RBAC | Spatie Laravel Permission | 8.x |
+| PDF Export | barryvdh/laravel-dompdf | 3.x |
+| Excel Export | maatwebsite/excel | 3.x |
+| Container | Docker + Docker Compose | — |
+| JS Widget | Alpine.js + Select2 | — |
+| Font | Plus Jakarta Sans (Google Fonts) | — |
+
+---
+
+## 💻 Persyaratan Sistem
+
+### Dengan Docker (Direkomendasikan)
+- **Docker Desktop** 24.x+
+- **Docker Compose** v2+
+- RAM minimal **2 GB** (4 GB direkomendasikan)
+- Disk minimal **5 GB** bebas
+
+### Tanpa Docker (Manual)
+- **PHP** 8.3+ dengan ekstensi: `pdo_mysql`, `gd`, `zip`, `intl`, `bcmath`, `mbstring`
+- **MySQL** 8.0+ atau **MariaDB** 10.6+
+- **Redis** 7+ (opsional, bisa fallback ke database driver)
+- **Composer** 2.x
+- **Node.js** 20+ & **npm** 10+
+
+---
+
+## ⚡ Instalasi Cepat (Docker)
+
+### Windows (PowerShell)
+```powershell
+# Clone repositori
+git clone https://github.com/your-org/presensi-rfid.git
 cd presensi-rfid
 
-# Copy environment
-cp .env.example .env
-
-# Start containers
-docker-compose up -d
-
-# Setup aplikasi
-docker-compose exec app composer install
-docker-compose exec app php artisan key:generate
-docker-compose exec app php artisan migrate --seed
-docker-compose exec app npm install && npm run build
+# Jalankan script deploy otomatis (1 klik)
+.\deploy.ps1
 ```
 
-### Setup Manual
+### Linux / macOS (Bash)
 ```bash
+git clone https://github.com/your-org/presensi-rfid.git
+cd presensi-rfid
+chmod +x deploy.sh
+./deploy.sh
+```
+
+Script deploy akan otomatis:
+1. Menjalankan semua container Docker (app + MySQL + Redis)
+2. Menjalankan migrasi database + seeder data demo
+3. Membuat symlink storage
+4. Menjalankan 101 automated tests sebagai verifikasi
+5. Menampilkan URL akses dan kredensial admin
+
+### Akses Setelah Deploy
+| URL | Keterangan |
+|-----|------------|
+| `http://localhost:8000` | Dashboard Admin |
+| `http://localhost:8000/kiosk` | Kiosk Scanner RFID |
+| `http://localhost:8000/leaderboard` | TV Leaderboard Publik |
+
+**Akun Default:**
+```
+Email    : admin@sekolah.test
+Password : password
+```
+
+---
+
+## 🔧 Instalasi Manual (Tanpa Docker)
+
+```bash
+# 1. Clone & install dependencies
+git clone https://github.com/your-org/presensi-rfid.git
+cd presensi-rfid
 composer install
+npm install
+
+# 2. Konfigurasi environment
 cp .env.example .env
 php artisan key:generate
 
-# Edit .env: DB_*, APP_URL
-php artisan migrate --seed
-npm install && npm run build
-php artisan serve
-```
+# 3. Edit .env sesuai database lokal
+# DB_HOST=127.0.0.1, DB_DATABASE=presensi_rfid, dll.
 
-### Buat Akun Admin Pertama
-```bash
-# Via Artisan Command
-php artisan make:admin "Nama Admin" admin@sekolah.sch.id password123
+# 4. Migrasi & seeder
+php artisan migrate:fresh --seed
 
-# Atau via Database Seeder (sudah otomatis saat migrate --seed)
-# Email: admin@example.com | Password: password
+# 5. Build asset frontend
+npm run build
+php artisan storage:link
+
+# 6. Jalankan server dev
+composer run dev
 ```
 
 ---
 
-## ⚙️ Konfigurasi Hardware RFID
+## 👥 Struktur Akun & Peran
 
-### Opsi 1: Microcontroller / IoT Device
+### Peran yang Tersedia
+
+| Peran | Deskripsi | Batasan |
+|-------|-----------|---------|
+| `admin` | Akses penuh semua fitur | — |
+| `guru` | Akses data kelas yang diampu saja | Tidak bisa kelola user, devices, settings |
+| `kepala_sekolah` | Akses read-only semua laporan | Tidak bisa input/ubah data |
+
+### Matriks Hak Akses
+
+| Fitur | Admin | Guru | Kepala Sekolah |
+|-------|:-----:|:----:|:--------------:|
+| Dashboard | ✅ | ✅ | ✅ |
+| Data Siswa (read) | ✅ | ✅ (kelas sendiri) | ✅ |
+| Data Siswa (CRUD) | ✅ | ❌ | ❌ |
+| Import/Export Siswa | ✅ | ❌ | ❌ |
+| Data Guru (CRUD) | ✅ | ❌ | ❌ |
+| Kelola Kelas | ✅ | ❌ | ❌ |
+| Laporan & Export | ✅ | ✅ (kelas sendiri) | ✅ |
+| Input Absensi Manual | ✅ | ✅ | ❌ |
+| Kelola Device RFID | ✅ | ❌ | ❌ |
+| Pengaturan Sekolah | ✅ | ❌ | ❌ |
+| Manajemen User | ✅ | ❌ | ❌ |
+| API Key Management | ✅ | ❌ | ❌ |
+| Activity Log | ✅ | ❌ | ❌ |
+| Hari Libur | ✅ | ❌ | ❌ |
+
+### Membuat User Baru
+Panel admin → **Pengguna** → **Tambah User**
+> Atau via Artisan: `php artisan tinker` → `User::create([...])`
+
+---
+
+## 📖 Panduan Penggunaan
+
+### 1. Setup Awal Sekolah
+1. Login sebagai **admin**
+2. Buka **Pengaturan → Konfigurasi Sekolah**
+3. Isi identitas: nama sekolah, logo, tagline, alamat
+4. Atur **Hari Efektif** (centang hari yang aktif)
+5. Atur jam batas keterlambatan di **Pengaturan → Presensi**
+
+### 2. Mendaftarkan Perangkat RFID
+1. Buka **Devices** → **Tambah Device**
+2. Isi nama device & lokasi pemasangan
+3. Salin **Device Token** yang dihasilkan
+4. Konfigurasi firmware Arduino/ESP32 dengan token tersebut
+
+### 3. Mendaftarkan Siswa
+**Cara 1 — Manual:**
+- Buka **Siswa** → **Tambah Siswa**
+- Isi NISN, nama, kelas, tanggal lahir, nomor RFID
+
+**Cara 2 — Import Excel (Bulk):**
+1. Download template: **Siswa** → **Download Template**
+2. Isi data siswa di file Excel
+3. **Siswa** → **Import** → upload file
+
+### 4. Menjalankan Kiosk RFID
+1. Buka `http://[server-ip]:8000/kiosk` di browser kiosk
+2. Atur browser ke mode fullscreen (F11)
+3. Siswa tap kartu RFID → sistem otomatis mencatat
+
+### 5. Memasang TV Leaderboard
+1. Buka `http://[server-ip]:8000/leaderboard` di TV/monitor
+2. Atur browser ke fullscreen (F11 atau Ctrl+Shift+F)
+3. Layar auto-refresh setiap 30 detik
+
+**Kustomisasi Leaderboard** (admin):
+- Buka **Pengaturan → Mode Leaderboard TV**
+- Pilih mode judul: *Monitoring Kedisiplinan* vs *Hall of Shame*
+- Pilih privasi nama: *Nama Penuh* vs *Inisial*
+
+### 6. Input Absensi Manual
+Untuk siswa yang tidak bawa kartu / dispensasi grup:
+1. Buka **Presensi** → **Input Manual**
+2. Pilih tanggal, status, dan keterangan
+3. Pilih siswa (multi-select, bisa cari nama)
+4. Klik **Simpan**
+
+### 7. Export Laporan
+| Jenis Laporan | PDF | Excel | Lokasi |
+|--------------|:---:|:-----:|--------|
+| Laporan Harian | ✅ | ✅ | Menu **Laporan** |
+| Rekap Bulanan per Siswa | ✅ | ✅ | **Laporan → Rekap** |
+| Riwayat Siswa Individual | ✅ | — | **Siswa → Detail → Export** |
+| Rekap per Kelas | ✅ | ✅ | **Kelas → Detail** |
+
+### 8. Notifikasi WhatsApp Orang Tua
+Di halaman **Rekap Bulanan**:
+- Klik tombol **WhatsApp** di baris siswa
+- Sistem otomatis membuka WhatsApp Web dengan template pesan rekap
+- Template: nama siswa, bulan, total hadir/terlambat/izin/alpha
+
+---
+
+## 🔌 API Reference
+
+### Autentikasi API
+Semua endpoint API (kecuali `/health`) memerlukan header:
+```
+X-API-Key: [api_key_anda]
+```
+
+Buat API Key di: **Admin → Integrasi API → Tambah**
+
+### Endpoint RFID Scanner
 ```
 POST /api/rfid/scan
-Header: X-Device-Token: {token_dari_admin}
-Body: { "rfid_uid": "04C3D4E5" }
+Header: X-Device-Token: [token_device]
+```
+```json
+{
+  "rfid_uid": "ABC12345",
+  "device_id": "1"
+}
+```
+**Response sukses:**
+```json
+{
+  "success": true,
+  "student": { "nama": "BUDI SANTOSO", "kelas": "X IPA 1" },
+  "status": "terlambat",
+  "jam_masuk": "07:35:00",
+  "message": "Terlambat 5 menit"
+}
 ```
 
-### Opsi 2: USB RFID Reader (Keyboard Emulation)
-1. Buka `/kiosk/scan` di browser kiosk (fullscreen)
-2. Arahkan fokus ke halaman kiosk
-3. Tempel kartu — reader otomatis mengetik UID dan submit
+### Endpoint Rekap Presensi (Integrasi Pihak Ketiga)
+```
+GET /api/v1/attendances/rekap?bulan=2026-07&class_id=1
+Header: X-API-Key: [api_key]
+```
 
-### Konfigurasi Device Token
-Buka **Admin → Pengaturan → Perangkat RFID** → Tambah device baru → Salin token.
+### Endpoint Riwayat Siswa
+```
+GET /api/v1/students/{id}/history?bulan=2026-07
+Header: X-API-Key: [api_key]
+```
+
+### Health Check
+```
+GET /api/health
+```
+```json
+{
+  "status": "ok",
+  "database": "connected",
+  "cache": "connected",
+  "timestamp": "2026-07-25T05:00:00Z"
+}
+```
+
+### Rate Limiting
+| Endpoint Group | Default Limit | Configurable |
+|---------------|:-------------:|:------------:|
+| `/api/rfid/*` | Mengikuti `rate_limit_api` | ✅ |
+| `/api/v1/*` | Mengikuti `rate_limit_api` | ✅ |
+| Web routes | — | — |
+
+> Ubah batas di: **Pengaturan → Security & Rate Limit**
 
 ---
 
-## 🏗️ Arsitektur Teknis
+## ⚙️ Konfigurasi Pengaturan
+
+### Pengaturan Presensi (`/settings`)
+- **Jam Masuk** — batas jam hadir normal (contoh: `07:00`)
+- **Jam Batas Terlambat** — lewat jam ini = terlambat (contoh: `07:15`)
+- **Jam Pulang** — jam pulang normal
+- **Tahun Ajaran Aktif** — pilih atau buat tahun ajaran baru
+
+### Konfigurasi Sekolah (`/settings/school`)
+Tab 1 — **Identitas Sekolah**:
+- Nama Aplikasi, Nama Sekolah, Tagline
+- Upload Logo (PNG/JPG, maks 2MB)
+- Alamat, Telepon, Email sekolah
+- Teks footer custom
+
+Tab 2 — **Tampilan Kiosk Scanner**:
+- Judul & Subtitle kiosk
+- Tipe background: Gradient / Warna Solid / Foto Upload
+- Upload wallpaper kustom
+
+Tab 3 — **Hari Sekolah Efektif**:
+- Centang hari aktif (Senin–Sabtu)
+- Sistem tidak akan mencatat presensi di luar hari aktif
+
+Tab 4 — **Security & Rate Limit**:
+- Batas request API per menit
+- (Nilai default: 60 request/menit)
+
+Tab 5 — **Mode Leaderboard TV**:
+- Mode Judul: *Monitoring Kedisiplinan* / *Hall of Shame*
+- Mode Privasi: *Nama Penuh* / *Inisial Nama*
+
+---
+
+## 🚢 Deployment Produksi
+
+### Variabel Environment Penting (`.env`)
+
+```env
+APP_NAME="PRESENSI RTH NEXUS"
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://presensi.sekolah.sch.id
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=presensi_rfid
+DB_USERNAME=presensi_user
+DB_PASSWORD=strong_password_here
+
+CACHE_STORE=redis
+SESSION_DRIVER=redis
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
+
+MAIL_MAILER=smtp   # (opsional, untuk notifikasi email)
+```
+
+### Docker Production
+```yaml
+# docker-compose.override.yml (production)
+services:
+  app:
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
+      DB_PASSWORD: "ganti_dengan_password_kuat"
+```
+
+```bash
+# Deploy ulang setelah update kode
+docker-compose down
+git pull origin main
+docker-compose up -d --build
+docker-compose exec -T app php artisan migrate --force
+docker-compose exec -T app php artisan config:cache
+docker-compose exec -T app php artisan route:cache
+docker-compose exec -T app php artisan view:cache
+```
+
+### Nginx Reverse Proxy (Opsional)
+Jika menggunakan Nginx di depan Docker:
+```nginx
+server {
+    listen 80;
+    server_name presensi.sekolah.sch.id;
+
+    location / {
+        proxy_pass http://localhost:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+```
+
+---
+
+## 🧪 Testing
+
+### Menjalankan Test Suite
+```bash
+# Via Docker
+docker-compose exec -T -e SESSION_DRIVER=array -e CACHE_STORE=array app php artisan test
+
+# Via lokal
+php artisan test
+
+# Dengan output detail
+php artisan test --verbose
+```
+
+### Status Test Suite
+```
+Tests:    101 passed (241 assertions)
+Duration: ~13 detik
+```
+
+### Coverage Area Test
+- **Autentikasi** — login, logout, akses halaman terproteksi
+- **RBAC** — validasi hak akses per peran
+- **Siswa** — CRUD, import, export, soft delete
+- **Guru** — CRUD, import, export
+- **Kelas** — CRUD, export Excel/PDF
+- **Presensi** — pencatatan manual, validasi status
+- **Laporan** — generate PDF & Excel, rekap
+- **Device** — token generation, regenerasi
+- **API** — RFID scan, rekap endpoint, health check
+- **Pengaturan** — semua tab sekolah, hari efektif, rate limit
+
+---
+
+## 🗄 Arsitektur Database
+
+### Tabel Utama
+
+```
+academic_years          → Tahun ajaran (aktif/arsip)
+classes                 → Data kelas (nama, wali kelas)
+students                → Data siswa (RFID, foto, soft delete)
+teachers                → Data guru (RFID, foto, multi-kelas, soft delete)
+attendances             → Rekam presensi (7 status)
+attendance_settings     → Konfigurasi jam masuk/pulang/terlambat
+devices                 → Perangkat reader RFID (token keamanan)
+rfid_logs               → Log raw scan RFID (audit trail)
+school_settings         → Key-value store pengaturan sekolah
+api_integrations        → API Key pihak ketiga
+activity_logs           → Audit trail aksi admin
+holidays                → Kalender hari libur nasional/sekolah
+users                   → Akun pengguna sistem
+roles / permissions     → Spatie RBAC tables
+```
+
+### Model Relasi Utama
+```
+Student  →  belongsTo  SchoolClass
+Student  →  hasMany    Attendance
+Teacher  →  hasMany    SchoolClass (wali)
+Device   →  hasMany    RfidLog
+User     →  hasMany    Role (via Spatie)
+```
+
+---
+
+## 📁 Struktur Direktori Penting
 
 ```
 presensi-rfid/
 ├── app/
 │   ├── Http/
 │   │   ├── Controllers/
-│   │   │   ├── AttendanceController.php    # Presensi manual & index
-│   │   │   ├── DashboardController.php     # Statistik + 7 status breakdown
-│   │   │   ├── ReportController.php        # Laporan harian, rekap, leaderboard
-│   │   │   └── Api/RfidScanController.php  # Endpoint scan RFID
-│   │   ├── Middleware/
-│   │   │   └── DeviceTokenMiddleware.php   # Proteksi API endpoint
-│   │   └── Requests/
-│   │       └── StoreAttendanceManualRequest.php  # Validasi 7 status + array student_id
+│   │   │   ├── Api/                  ← Endpoint RFID & Integrasi
+│   │   │   ├── AttendanceController  ← Input manual
+│   │   │   ├── DashboardController   ← Dashboard & Guide
+│   │   │   ├── ReportController      ← Laporan, Export, Leaderboard
+│   │   │   ├── SchoolSettingController ← Pengaturan sekolah
+│   │   │   └── StudentController     ← CRUD + Import/Export
+│   │   └── Middleware/
 │   ├── Models/
-│   │   ├── Attendance.php      # Status: hadir|terlambat|izin|pulang_cepat|dispensasi|sakit|alpha
-│   │   ├── AttendanceSetting.php   # Cache jam masuk/pulang + anti-korupsi cache
-│   │   ├── Student.php
-│   │   └── SchoolClass.php
-│   └── Console/Commands/
-│       └── AutoMarkAlpha.php   # Scheduler harian
-├── database/migrations/
-│   └── ...                     # Termasuk enum 7 status (2026_07_25_*)
-├── Exports/
-│   ├── DailyAttendanceExport.php
-│   └── RekapAttendanceExport.php   # 7 kolom status (termasuk Pulang Cepat & Dispensasi)
-└── resources/views/
-    ├── kiosk/scan.blade.php    # TTS + audio feedback
-    ├── attendances/index.blade.php # Select2 multi-student manual input
-    ├── reports/
-    │   ├── index.blade.php     # Laporan harian + badge 7 status
-    │   ├── rekap.blade.php     # Rekap per siswa + WA ortu + 7 kolom
-    │   └── leaderboard.blade.php
-    └── dashboard.blade.php     # Stat cards + breakdown tidak hadir
+│   │   ├── SchoolSetting.php         ← Key-value + Cache
+│   │   ├── Student.php               ← Soft delete + scopes
+│   │   └── Attendance.php            ← 7 status kehadiran
+│   └── Exports/                      ← Excel export classes
+├── database/
+│   ├── migrations/                   ← 21 migrasi database
+│   └── seeders/
+│       ├── DatabaseSeeder.php
+│       ├── RolePermissionSeeder.php  ← 3 peran (admin, guru, kepsek)
+│       └── DemoDataSeeder.php        ← 10 siswa + kelas + absensi demo
+├── resources/views/
+│   ├── dashboard.blade.php           ← Dashboard utama
+│   ├── guide.blade.php               ← Panduan pengguna built-in
+│   ├── kiosk/scan.blade.php          ← Kiosk RFID (tanpa auth)
+│   └── reports/
+│       ├── public_leaderboard.blade.php ← TV Leaderboard (tanpa auth)
+│       └── leaderboard.blade.php        ← Leaderboard admin
+├── routes/
+│   ├── web.php                       ← Routes web + RBAC middleware
+│   └── api.php                       ← API RFID + Integrasi + Health
+├── deploy.ps1                        ← Script deploy Windows
+├── deploy.sh                         ← Script deploy Linux/macOS
+├── Dockerfile                        ← Container image
+└── docker-compose.yml                ← Stack: app + MySQL + Redis
 ```
 
 ---
 
-## 🧪 Test Suite
+## 🔒 Keamanan
 
-```bash
-# Jalankan semua 101 test
-php artisan test
-
-# Atau via Docker
-docker-compose exec -T -e SESSION_DRIVER=array -e CACHE_STORE=array app php artisan test
-```
-
-**Coverage**: 101 Tests, 240+ Assertions — Authentication, RBAC, RFID API, Manual Attendance, Reports, Import/Export, Auto-Alpha, Rate Limiting, Security (IDOR), Race Condition.
-
----
-
-## 📋 Status Badge Color Map
-
-| Status | Badge CSS Class | Warna |
-|---|---|---|
-| hadir | `badge-green` | #22c55e |
-| terlambat | `badge-amber` | #f59e0b |
-| izin | `badge-blue` | #3b82f6 |
-| pulang_cepat | `badge-cyan` | #06b6d4 |
-| dispensasi | `badge-teal` | #14b8a6 |
-| sakit | `badge-indigo` | #6366f1 |
-| alpha | `badge-red` | #ef4444 |
+- **Autentikasi** berbasis session Laravel (CSRF protected)
+- **API RFID** diamankan dengan `X-Device-Token` per device
+- **API Integrasi** diamankan dengan `X-API-Key` unik per mitra
+- **Rate Limiting** per IP (configurable, default 60 req/menit)
+- **Soft Delete** untuk data siswa & guru (tidak pernah hilang permanen)
+- **Activity Log** semua aksi admin tersimpan di database
+- **Middleware RBAC** di setiap route group
+- File upload (logo, foto, wallpaper) disimpan di `storage/app/public`
 
 ---
 
-## 🔄 Changelog Terbaru
+## 🤝 Kontribusi
 
-### v2.5.0 — Juli 2026
-- ✅ **Tambah 2 Status Presensi Baru**: `pulang_cepat` dan `dispensasi` (migration + semua laporan)
-- ✅ **Select2 Multi-Student**: Form manual presensi mendukung pilih banyak siswa sekaligus
-- ✅ **TTS Audio Feedback**: Kiosk membaca status presensi secara lisan (Web Speech API)
-- ✅ **Dashboard Breakdown**: Card "Tidak Hadir" menampilkan breakdown 5 sub-status
-- ✅ **Cache Corruption Guard**: Auto-flush cache korup di `AttendanceSetting`
-- ✅ **Rekap WA Orang Tua**: Pesan WhatsApp sekarang menyertakan Pulang Cepat & Dispensasi
-- ✅ **Export Excel/PDF**: Kolom baru untuk semua 7 status di semua format export
+1. Fork repositori
+2. Buat branch fitur: `git checkout -b feature/nama-fitur`
+3. Commit dengan pesan deskriptif: `git commit -m "add: fitur X"`
+4. Push: `git push origin feature/nama-fitur`
+5. Buat Pull Request
+
+### Standar Kode
+- PHP: ikuti PSR-12 (gunakan `./vendor/bin/pint` untuk format otomatis)
+- Blade: satu komponen per file, gunakan `x-` prefix
+- Test: setiap fitur baru wajib disertai test
 
 ---
 
 ## 📄 Lisensi
 
-[MIT License](LICENSE) — RTH NEXUS © 2026
+MIT License — bebas digunakan, dimodifikasi, dan didistribusikan dengan mencantumkan atribusi.
+
+---
+
+## 🆘 Troubleshooting
+
+### Container tidak mau start
+```bash
+docker-compose logs app     # cek error PHP/Laravel
+docker-compose logs db      # cek error MySQL
+docker-compose down -v      # reset total (hati-hati: data hilang)
+docker-compose up -d
+```
+
+### Error "permission denied" pada storage
+```bash
+docker-compose exec app chmod -R 775 storage bootstrap/cache
+docker-compose exec app chown -R www-data:www-data storage
+```
+
+### RFID tidak terbaca
+1. Cek `X-Device-Token` di firmware sudah sesuai dengan token di panel **Devices**
+2. Cek device **is_active = true** di panel admin
+3. Cek endpoint: `POST http://[server]:8000/api/rfid/scan`
+4. Cek log: `docker-compose exec app tail -f storage/logs/laravel.log`
+
+### Foto siswa tidak muncul di leaderboard
+1. Jalankan: `docker-compose exec app php artisan storage:link`
+2. Pastikan kolom `foto` di tabel `students` berisi path yang valid
+3. File foto harus ada di `storage/app/public/`
+
+### Database error setelah update
+```bash
+docker-compose exec app php artisan migrate --force
+docker-compose exec app php artisan config:clear
+docker-compose exec app php artisan cache:clear
+```
+
+---
+
+<div align="center">
+
+**PRESENSI RTH NEXUS** — Dibuat dengan ❤️ untuk kemajuan pendidikan Indonesia
+
+*Laravel 13 · PHP 8.3 · Docker · Redis · MySQL 8*
+
+</div>
