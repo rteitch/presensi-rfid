@@ -27,6 +27,10 @@ docker-compose exec -T app php artisan key:generate --force
 docker-compose exec -T app php artisan migrate:fresh --seed --force
 docker-compose exec -T app php artisan storage:link --force
 
+# 5. Execute Automated Test Suite Verification (101 Tests)
+echo -e "\033[32m🧪 Executing automated test suite verification (101 tests)...\033[0m"
+docker-compose exec -T -e SESSION_DRIVER=array -e CACHE_STORE=array app php artisan test
+
 echo ""
 echo -e "\033[36m==========================================================================\033[0m"
 echo -e "\033[32m🎉 DEPLOYMENT SUCCESSFUL!\033[0m"

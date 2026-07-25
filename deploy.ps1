@@ -30,6 +30,10 @@ docker-compose exec -T app php artisan key:generate --force
 docker-compose exec -T app php artisan migrate:fresh --seed --force
 docker-compose exec -T app php artisan storage:link --force
 
+# 5. Execute Automated Test Suite Verification (101 Tests)
+Write-Host "Running automated test suite verification (101 tests)..." -ForegroundColor Green
+docker-compose exec -T -e SESSION_DRIVER=array -e CACHE_STORE=array app php artisan test
+
 Write-Host ""
 Write-Host "==========================================================================" -ForegroundColor Cyan
 Write-Host "DEPLOYMENT SUCCESSFUL!" -ForegroundColor Green
